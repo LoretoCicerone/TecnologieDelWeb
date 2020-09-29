@@ -1,0 +1,210 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+create table utente(
+    id integer unsigned not null PRIMARY KEY AUTO_INCREMENT,
+    user_name varchar(200) not null,
+    email varchar(200) not null,
+    pass_word varchar(200) not null,
+    remember_token varchar(200) default null,
+    created_at TIMESTAMP default null,
+    updated_at TIMESTAMP default null
+    );
+  
+create table indirizzo(
+   id integer UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+   nome_utente varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   nome_indirizzo varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   citta varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   cap int(11) NOT NULL,
+   paese varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   id_utente int(11) NOT NULL,
+   telefono varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   created_at timestamp NULL DEFAULT NULL,
+   updated_at timestamp NULL DEFAULT NULL
+    );
+
+create table carrello(
+   id integer UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+   email_utente varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+   id_prodotto int(20) NOT NULL,
+   quantita int(11) NOT NULL,
+   id_sessione varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+   created_at timestamp NULL DEFAULT NULL,
+   updated_at timestamp NULL DEFAULT NULL
+    );
+
+create table categoria(
+   id integer UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+   nome varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   descrizione text COLLATE utf8mb4_unicode_ci NOT NULL,
+   url varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   immagine varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+   remember_token varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+   created_at timestamp NULL DEFAULT NULL,
+   updated_at timestamp NULL DEFAULT NULL
+    );
+    
+create table commento(
+   id integer UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+   id_utente int(11) NOT NULL,
+   id_prodotto int(11) NOT NULL,
+   email varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   testo text COLLATE utf8mb4_unicode_ci NOT NULL,
+   approvato int(11) NOT NULL DEFAULT '0',
+   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+   );
+   
+create table corriere(
+    id integer unsigned not null AUTO_INCREMENT PRIMARY KEY,
+    nome varchar(200) not null,
+    created_at timestamp NULL DEFAULT NULL,
+    updated_at timestamp NULL DEFAULT NULL
+   );
+   
+create table immagine(
+    id integer UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(300) not null,
+    id_prodotto integer unsigned not null,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+   );
+
+create table migrations(
+   id integer unsigned not null AUTO_INCREMENT PRIMARY KEY,
+   migration varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   batch int(11) NOT NULL
+   );
+   
+create table ordine(
+   id integer unsigned not null PRIMARY KEY AUTO_INCREMENT,
+   id_utente int(11) NOT NULL,
+   id_indirizzo int(20) NOT NULL,
+   nome varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   email_utente varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   stato int(11) NOT NULL,
+   metodo_pagamento varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   totale double(8,2) NOT NULL,
+   created_at timestamp NULL DEFAULT NULL,
+   updated_at timestamp NULL DEFAULT NULL
+   );
+   
+create table ordine_prodotto(
+   id integer unsigned not null AUTO_INCREMENT PRIMARY KEY,
+   id_ordine int(11) NOT NULL,
+   id_prodotto int(11) NOT NULL,
+   quantità int(11) NOT NULL,
+   created_at timestamp NULL DEFAULT NULL,
+   updated_at timestamp NULL DEFAULT NULL
+   );
+   
+create table preferiti(
+   id_utente int(11) NOT NULL,
+   id_prodotto int(11) NOT NULL,
+   created_at timestamp NULL DEFAULT NULL,
+   updated_at timestamp NULL DEFAULT NULL,
+   PRIMARY KEY(id_utente,id_prodotto)
+  );
+  
+create table prodotto(
+   id integer unsigned not null primary key AUTO_INCREMENT,
+   id_categoria int(11) UNSIGNED NOT NULL,
+   nome varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   codice varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   brand varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   descrizione text COLLATE utf8mb4_unicode_ci NOT NULL,
+   prezzo double(8,2) NOT NULL,
+   immagine varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+   stock int(11) NOT NULL,
+   raccomandato tinyint(1) DEFAULT '0',
+   created_at timestamp NULL DEFAULT NULL,
+   updated_at timestamp NULL DEFAULT NULL
+  );
+  
+create table recensione(
+   id integer unsigned not null PRIMARY KEY AUTO_INCREMENT,
+   id_prodotto int(11) NOT NULL,
+   id_utente int(11) NOT NULL,
+   user_name varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   commento text COLLATE utf8mb4_unicode_ci NOT NULL,
+   approvato int(11) NOT NULL DEFAULT '0',
+   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  );
+  
+create table tag(
+  id integer unsigned not null PRIMARY KEY AUTO_INCREMENT,
+  nome_tag varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  created_at timestamp NULL DEFAULT NULL,
+  updated_at timestamp NULL DEFAULT NULL
+  );
+  
+create table prodotto_has_tags(
+   id integer unsigned not null PRIMARY KEY AUTO_INCREMENT,
+   id_prodotto integer unsigned not null,
+   id_tag integer unsigned not null,
+   created_at timestamp NULL DEFAULT NULL,
+   updated_at timestamp NULL DEFAULT NULL
+  );
+
+create table contenuto(
+   id integer unsigned not null PRIMARY KEY AUTO_INCREMENT,
+   id_prodotto integer unsigned not null,
+   id_categoria integer unsigned not null,
+   created_at timestamp null DEFAULT null,
+   updated_at timestamp NULL DEFAULT NULL
+   );
+   
+create table coupon(
+   id integer unsigned not null PRIMARY KEY AUTO_INCREMENT,
+   codice varchar(100) not null,
+   percentuale varchar(5) not null,
+   created_at timestamp null default null,
+   updated_at timestamp null DEFAULT null
+   );
+   
+create table consegna(
+    id integer unsigned not null PRIMARY KEY AUTO_INCREMENT,
+    id_corriere integer unsigned not null,
+    id_indirizzo integer unsigned not null,
+    created_at timestamp null default null,
+    updated_at timestamp null DEFAULT null
+    );
+
+create table user_has_coupon(
+    id integer unsigned not null PRIMARY KEY AUTO_INCREMENT,
+    id_utente integer unsigned not null,
+    id_coupon integer unsigned not null,
+    created_at timestamp null default null,
+    updated_at timestamp null DEFAULT null
+    );
+
+create table articolo(
+    id integer unsigned not null PRIMARY KEY AUTO_INCREMENT,
+    titolo varchar(300) not null,
+    autore varchar(300) not null,
+    descrizione varchar(2000) COLLATE utf8mb4_unicode_ci NOT NULL,
+    image varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+    
+create table articolo_has_tags(
+    id integer unsigned not null primary key AUTO_INCREMENT,
+    id_articolo integer unsigned not null,
+    id_tag integer unsigned not null,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+    
+
+  
