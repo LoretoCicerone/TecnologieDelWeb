@@ -38,6 +38,8 @@ CREATE TABLE `articolo` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+insert into articolo(id, titolo, autore, descrizione, image) values (1, 'Nuovo rasoio per rasatura perfetta', 'Simone', 'doc'),
+(2, 'Nuova lametta', 'Simone', 'doc');
 -- --------------------------------------------------------
 
 --
@@ -85,6 +87,17 @@ CREATE TABLE `categoria` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+insert into categoria(id,nome,descrizione,url, immagine, remember_token, created_at, updated_at)
+values(1, 'rasoi', 'rasoi', 'rasoi', null, 'token', current_timestamp, null),
+(2, 'lamette', 'lamette', 'lamette', null, 'token', current_timestamp, null),
+(3, 'forbici', 'forbici', 'forbici', null, 'token', current_timestamp, null),
+(4, 'schiuma' 'schiuma', 'schiuma', null, 'token', current_timestamp, null),
+(5, 'regolatori', 'regolatori', 'regolatori', null, 'token', current_timestamp, null),
+(6, 'pennellino', 'pennellino', 'pennellino', null, 'token', current_timestamp, null),
+(7, 'dopobarba', 'floid dopobarba', 'floid dopobarba', null, 'token', current_timestamp, null),
+(8, 'bottigliette spray', 'bottigliette spray', 'bottigliette spray', null, 'token', current_timestamp, null),
+(9, 'pennelli per tinta','pennelli per tinta', 'pennelli per tinta', null, 'token', current_timestamp,null),
+(10, 'grembiuli', 'grembiuli', 'grembiuli', null, 'token', current_timestamp, null);
 -- --------------------------------------------------------
 
 --
@@ -101,6 +114,10 @@ CREATE TABLE `commento` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+insert into commento(id, id_utente, id_prodotto, email, testo, approvato, created_at, updated_at) values
+(1, 2, 1, 'marcodecesaris146@gmail.com', 'grande!', 0, current_timestamp, current_timestamp),
+(1, 1, 2, 'marcodecesaris146@gmail.com', 'ottimo prodotto!', 0, current_timestamp, current_timestamp);
 
 -- --------------------------------------------------------
 
@@ -143,6 +160,7 @@ CREATE TABLE `corriere` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+insert into corriere (id, nome, created_at) values (1, 'Bartolini', current_timestamp);
 -- --------------------------------------------------------
 
 --
@@ -157,6 +175,10 @@ CREATE TABLE `coupon` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+insert into coupon (id,codice, percentuale, created_at, updated_at)
+values(1,'barbershop_25', '25%', current_timestamp, null),
+(2, 'barbershop_30', '30%', current_timestamp, null),
+(3, 'barbershop_10', '10%', current_timestamp, null);
 -- --------------------------------------------------------
 
 --
@@ -213,6 +235,10 @@ CREATE TABLE `indirizzo` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+insert into indirizzo (id, nome_utente, nome_indirizzo, citta, cap, paese, id_utente, telefono, crated_at, updated_at)
+values(1, 'Loreto Cicerone', 'Via Umberto 1', 'Pagliara', '02021', 'Italia', 1, '3890233514', current_timestamp, null),
+(2, 'Marco De Cesaris', 'Via dei salici', 'Borgorose', '02021', 'Italia', 2, '3920607183', current_timestamp, null),
+(3, 'Simone Caruso', 'Via Sandonato', 'Pescara', '65129', 'Italia', 3, '3881046378', current_timestamp, null);
 -- --------------------------------------------------------
 
 --
@@ -293,6 +319,33 @@ CREATE TABLE `prodotto` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+insert into prodotto(id, id_categoria, nome, codice, brand, descrizione, prezzo, immagine, stock, raccomandato, created_at, updated_at)
+values(1, 1, 'Braun Series 9', 'braun1', 'Braun', 'Leva completamente regolabile. Elimina la necessita di utilizzare più lame.', '85,00€', null, 10, 1, current_timestamp, null),
+(2,1,'Philips Aquatouch','philips2', 'Philips', 'Completamente in alluminio leggero e infrangibile, molto affidabile.', '50,00€', null, 15, 1, current_timestamp, null),
+(3,1,'Philips Multigroom Series', 'philips3', 'Philips', 'Fornito di leva regolabile per una rasatura completa.', '21,00€', null, 30,1, current_timestamp, null),
+(4,2,'Eberbart rasoio', 'eberbart1','Eberbart', 'Rasoio barbiere in legno di rose e acciaio inossidabile, per rasatura e rifinitura di barba e capelli.', '15,00€', null, 10,0, current_timestamp, null),
+(5,2,'Morocutti magic rasoio', 'morocutti1','Morocutti', 'Comodo sistema di montaggio della lama con binario scorrevole, in acciaio inossidabile che consente un limitato contatto con la lametta.', '27,00€',null, 40,1,current_timestamp, null),
+(6,2,'Wilkinson Sword', 'wilkinson1', 'Wilkinson', 'Ideale per una rasatura precisa con una finitura perfetta, è il must-have tipico dei dei barbershop per rifinire i bordi della barba in modo impeccabile.','50,00€',null, 30, 1, current_timestamp, null),
+(7,3,'Giubra Mastr sfloty', 'giubra2', 'Giubra', 'Forbici per sfoltitura capelli.','15,00€', null, 30,1, current_timestamp, null),
+(8,3,'Sharaonds Pharaoh.', 'sharaonds2', 'Sharaonds', 'Forbici eleganti per sfoltitura capelli.', '50,00€', null, 10, 1, current_timestamp, null),
+(9,3,'BeautyTime International','beauty1', 'BeautyTime International SRL', 'Forbici per sfoltitura capelli.', '60,00€',null,10,1,current_timestamp, null),
+(10,4,'Schiuma da barba gillette.', 'gillette2','Gillette', 'Schiuma da barba.','10,00€', null, 40,1,current_timestamp,null),
+(11,4,'Palmolive schiuma da barba.','palmolive2','Palmolive', 'Schiuma da barba', '10,00€',null,40,1,current_timestamp,null),
+(12,4,'Avene schiuma da barba', 'avene1', 'Avene', 'Schiuma da barba', '10,00€', null, 30,1,current_timestamp,null),
+(13,5,'Braun pettine regolabile', 'pettine1', 'Braun', 'Pettine regolabile per rasoi.','5,00€', null, 10,1,current_timestamp,null),
+(14,5,'Braun pettine regolabile', 'pettine2', 'Braun', 'Pettine regolabile per rasoi.','6,00€', null, 10,1,current_timestamp, null),
+(15,5,'Philips pettine regolabile', 'pettine3','Philips', 'Pettine regolabile per rasoi.' '6,00€', null, 10,1,current_timestamp,null),
+(16,6,'UEB pennello spargitalco', 'pennello1', 'UEB', 'Pennello spargitalco.', '10,00€', null, 10,1,current_timestamp,null),
+(17,6,'Teriam pennello spargitalco', 'pennello2', 'Teriam','Pennello spargitalco.','10,00€',null,15,1,current_timestamp,null),
+(18,6,'Wahl pennello spargitalco', 'pennello3', 'Wahl', 'Pennello spargitalco.', '10,00€', null, 15,1, current_timestamp, null),
+(19,7,'CubaGold dopobarba', 'dopobarba1', 'CubaGold', 'Dopobarba', '21,00€', null, 15, 1, current_timestamp, null),
+(20,7,'Hipsteria after shave', 'dopobarba2', 'Hipesteria', 'Dopobarba', '21,00€', null, 30,1,current_timestamp, null),
+(21,7,'Denim after shave', 'dopobarba3', 'Denim', 'Dopobarba', '21,00€', null, 24,1,current_timestamp, null),
+(22,8,'Bakaji vaporizzatore', 'bottigliette1', 'Bakaji', 'Bottigliette spray', '7,00€', null, 60, current_timestamp, null),
+(23,9,'Goldwell - color brush', 'pennelli1', 'Goldwell', 'Pennello per tinta capelli.', '10,00€', null, 70, current_timestamp,null),
+(24,10,'grembiule', 'grembiule1', 'Sconosciuto', 'Grembiule da indossare durante acconciatura.', '10,00€', null, 40, current_timestamp, null);
+
+
 -- --------------------------------------------------------
 
 --
@@ -323,6 +376,11 @@ CREATE TABLE `recensione` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+insert into recensione(id, id_prodotto, id_utente, user_name, commento, approvato, created_at, updated_at)
+values(1, 15, 3, 'Simone Caruso', 'Ottimo prodotto.', 1, current_timestamp, null),
+(2, 12, 3, 'Simone Caruso', 'Ottimo', 1, current_timestamp, null),
+(3, 21, 3, 'Simone Caruso', 'Bel prodotto.',1, current_timestamp, null);
 
 -- --------------------------------------------------------
 
@@ -390,6 +448,10 @@ CREATE TABLE `utente` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+insert into utente(id, user_name, email, pass_word, remember_token, created_at, updated_at) values
+(1, 'Loreto Cicerone', 'loretocicerone1@gmail.com', 'pass', 'token'),
+(2, 'Marco De Cesaris', 'marcodecesaris146@gmail.com', 'pass','token'),
+(3, 'Simone Caruso', 'scaruso96@gmail.com', 'pass', 'token');
 --
 -- Indici per le tabelle scaricate
 --
