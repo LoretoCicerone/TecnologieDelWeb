@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Set 30, 2020 alle 17:00
--- Versione del server: 10.4.11-MariaDB
--- Versione PHP: 7.2.27
+-- Creato il: Ott 07, 2020 alle 18:17
+-- Versione del server: 10.4.14-MariaDB
+-- Versione PHP: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -38,8 +37,14 @@ CREATE TABLE `articolo` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into articolo(id, titolo, autore, descrizione, image) values (1, 'Nuovo rasoio per rasatura perfetta', 'Simone', 'doc'),
-(2, 'Nuova lametta', 'Simone', 'doc');
+--
+-- Dump dei dati per la tabella `articolo`
+--
+
+INSERT INTO `articolo` (`id`, `titolo`, `autore`, `descrizione`, `image`, `created_at`, `updated_at`) VALUES
+(1, 'Nuovo rasoio per rasatura perfetta', 'Simone', 'doc', NULL, '2020-10-07 16:14:29', '2020-10-07 16:14:29'),
+(2, 'Nuova lametta', 'Simone', 'doc', NULL, '2020-10-07 16:14:29', '2020-10-07 16:14:29');
+
 -- --------------------------------------------------------
 
 --
@@ -87,17 +92,22 @@ CREATE TABLE `categoria` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into categoria(id,nome,descrizione,url, immagine, remember_token, created_at, updated_at)
-values(1, 'rasoi', 'rasoi', 'rasoi', null, 'token', current_timestamp, null),
-(2, 'lamette', 'lamette', 'lamette', null, 'token', current_timestamp, null),
-(3, 'forbici', 'forbici', 'forbici', null, 'token', current_timestamp, null),
-(4, 'schiuma' 'schiuma', 'schiuma', null, 'token', current_timestamp, null),
-(5, 'regolatori', 'regolatori', 'regolatori', null, 'token', current_timestamp, null),
-(6, 'pennellino', 'pennellino', 'pennellino', null, 'token', current_timestamp, null),
-(7, 'dopobarba', 'floid dopobarba', 'floid dopobarba', null, 'token', current_timestamp, null),
-(8, 'bottigliette spray', 'bottigliette spray', 'bottigliette spray', null, 'token', current_timestamp, null),
-(9, 'pennelli per tinta','pennelli per tinta', 'pennelli per tinta', null, 'token', current_timestamp,null),
-(10, 'grembiuli', 'grembiuli', 'grembiuli', null, 'token', current_timestamp, null);
+--
+-- Dump dei dati per la tabella `categoria`
+--
+
+INSERT INTO `categoria` (`id`, `nome`, `descrizione`, `url`, `immagine`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'rasoi', 'rasoi', 'rasoi', NULL, 'token', '2020-10-07 16:14:29', NULL),
+(2, 'lamette', 'lamette', 'lamette', NULL, 'token', '2020-10-07 16:14:29', NULL),
+(3, 'forbici', 'forbici', 'forbici', NULL, 'token', '2020-10-07 16:14:29', NULL),
+(4, 'schiuma', 'schiuma', 'schiuma', NULL, 'token', '2020-10-07 16:14:29', NULL),
+(5, 'regolatori', 'regolatori', 'regolatori', NULL, 'token', '2020-10-07 16:14:29', NULL),
+(6, 'pennellino', 'pennellino', 'pennellino', NULL, 'token', '2020-10-07 16:14:29', NULL),
+(7, 'dopobarba', 'floid dopobarba', 'floid dopobarba', NULL, 'token', '2020-10-07 16:14:29', NULL),
+(8, 'bottigliette spray', 'bottigliette spray', 'bottigliette spray', NULL, 'token', '2020-10-07 16:14:29', NULL),
+(9, 'pennelli per tinta', 'pennelli per tinta', 'pennelli per tinta', NULL, 'token', '2020-10-07 16:14:29', NULL),
+(10, 'grembiuli', 'grembiuli', 'grembiuli', NULL, 'token', '2020-10-07 16:14:29', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -115,9 +125,13 @@ CREATE TABLE `commento` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into commento(id, id_utente, id_prodotto, email, testo, approvato, created_at, updated_at) values
-(1, 2, 1, 'marcodecesaris146@gmail.com', 'grande!', 0, current_timestamp, current_timestamp),
-(1, 1, 2, 'marcodecesaris146@gmail.com', 'ottimo prodotto!', 0, current_timestamp, current_timestamp);
+--
+-- Dump dei dati per la tabella `commento`
+--
+
+INSERT INTO `commento` (`id`, `id_utente`, `id_prodotto`, `email`, `testo`, `approvato`, `created_at`, `updated_at`) VALUES
+(1, 2, 1, 'marcodecesaris146@gmail.com', 'grande!', 0, '2020-10-07 16:14:29', '2020-10-07 16:14:29'),
+(2, 1, 2, 'marcodecesaris146@gmail.com', 'ottimo prodotto!', 0, '2020-10-07 16:14:29', '2020-10-07 16:14:29');
 
 -- --------------------------------------------------------
 
@@ -160,7 +174,13 @@ CREATE TABLE `corriere` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into corriere (id, nome, created_at) values (1, 'Bartolini', current_timestamp);
+--
+-- Dump dei dati per la tabella `corriere`
+--
+
+INSERT INTO `corriere` (`id`, `nome`, `created_at`, `updated_at`) VALUES
+(1, 'Bartolini', '2020-10-07 16:14:29', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -175,10 +195,15 @@ CREATE TABLE `coupon` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into coupon (id,codice, percentuale, created_at, updated_at)
-values(1,'barbershop_25', '25%', current_timestamp, null),
-(2, 'barbershop_30', '30%', current_timestamp, null),
-(3, 'barbershop_10', '10%', current_timestamp, null);
+--
+-- Dump dei dati per la tabella `coupon`
+--
+
+INSERT INTO `coupon` (`id`, `codice`, `percentuale`, `created_at`, `updated_at`) VALUES
+(1, 'barbershop_25', '25%', '2020-10-07 16:14:29', NULL),
+(2, 'barbershop_30', '30%', '2020-10-07 16:14:29', NULL),
+(3, 'barbershop_10', '10%', '2020-10-07 16:14:29', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -235,10 +260,15 @@ CREATE TABLE `indirizzo` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into indirizzo (id, nome_utente, nome_indirizzo, citta, cap, paese, id_utente, telefono, crated_at, updated_at)
-values(1, 'Loreto Cicerone', 'Via Umberto 1', 'Pagliara', '02021', 'Italia', 1, '3890233514', current_timestamp, null),
-(2, 'Marco De Cesaris', 'Via dei salici', 'Borgorose', '02021', 'Italia', 2, '3920607183', current_timestamp, null),
-(3, 'Simone Caruso', 'Via Sandonato', 'Pescara', '65129', 'Italia', 3, '3881046378', current_timestamp, null);
+--
+-- Dump dei dati per la tabella `indirizzo`
+--
+
+INSERT INTO `indirizzo` (`id`, `nome_utente`, `nome_indirizzo`, `citta`, `cap`, `paese`, `id_utente`, `telefono`, `created_at`, `updated_at`) VALUES
+(1, 'Loreto Cicerone', 'Via Umberto 1', 'Pagliara', 2021, 'Italia', 1, '3890233514', '2020-10-07 16:14:29', NULL),
+(2, 'Marco De Cesaris', 'Via dei salici', 'Borgorose', 2021, 'Italia', 2, '3920607183', '2020-10-07 16:14:29', NULL),
+(3, 'Simone Caruso', 'Via Sandonato', 'Pescara', 65129, 'Italia', 3, '3881046378', '2020-10-07 16:14:29', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -319,32 +349,35 @@ CREATE TABLE `prodotto` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into prodotto(id, id_categoria, nome, codice, brand, descrizione, prezzo, immagine, stock, raccomandato, created_at, updated_at)
-values(1, 1, 'Braun Series 9', 'braun1', 'Braun', 'Leva completamente regolabile. Elimina la necessita di utilizzare più lame.', '85,00€', null, 10, 1, current_timestamp, null),
-(2,1,'Philips Aquatouch','philips2', 'Philips', 'Completamente in alluminio leggero e infrangibile, molto affidabile.', '50,00€', null, 15, 1, current_timestamp, null),
-(3,1,'Philips Multigroom Series', 'philips3', 'Philips', 'Fornito di leva regolabile per una rasatura completa.', '21,00€', null, 30,1, current_timestamp, null),
-(4,2,'Eberbart rasoio', 'eberbart1','Eberbart', 'Rasoio barbiere in legno di rose e acciaio inossidabile, per rasatura e rifinitura di barba e capelli.', '15,00€', null, 10,0, current_timestamp, null),
-(5,2,'Morocutti magic rasoio', 'morocutti1','Morocutti', 'Comodo sistema di montaggio della lama con binario scorrevole, in acciaio inossidabile che consente un limitato contatto con la lametta.', '27,00€',null, 40,1,current_timestamp, null),
-(6,2,'Wilkinson Sword', 'wilkinson1', 'Wilkinson', 'Ideale per una rasatura precisa con una finitura perfetta, è il must-have tipico dei dei barbershop per rifinire i bordi della barba in modo impeccabile.','50,00€',null, 30, 1, current_timestamp, null),
-(7,3,'Giubra Mastr sfloty', 'giubra2', 'Giubra', 'Forbici per sfoltitura capelli.','15,00€', null, 30,1, current_timestamp, null),
-(8,3,'Sharaonds Pharaoh.', 'sharaonds2', 'Sharaonds', 'Forbici eleganti per sfoltitura capelli.', '50,00€', null, 10, 1, current_timestamp, null),
-(9,3,'BeautyTime International','beauty1', 'BeautyTime International SRL', 'Forbici per sfoltitura capelli.', '60,00€',null,10,1,current_timestamp, null),
-(10,4,'Schiuma da barba gillette.', 'gillette2','Gillette', 'Schiuma da barba.','10,00€', null, 40,1,current_timestamp,null),
-(11,4,'Palmolive schiuma da barba.','palmolive2','Palmolive', 'Schiuma da barba', '10,00€',null,40,1,current_timestamp,null),
-(12,4,'Avene schiuma da barba', 'avene1', 'Avene', 'Schiuma da barba', '10,00€', null, 30,1,current_timestamp,null),
-(13,5,'Braun pettine regolabile', 'pettine1', 'Braun', 'Pettine regolabile per rasoi.','5,00€', null, 10,1,current_timestamp,null),
-(14,5,'Braun pettine regolabile', 'pettine2', 'Braun', 'Pettine regolabile per rasoi.','6,00€', null, 10,1,current_timestamp, null),
-(15,5,'Philips pettine regolabile', 'pettine3','Philips', 'Pettine regolabile per rasoi.' '6,00€', null, 10,1,current_timestamp,null),
-(16,6,'UEB pennello spargitalco', 'pennello1', 'UEB', 'Pennello spargitalco.', '10,00€', null, 10,1,current_timestamp,null),
-(17,6,'Teriam pennello spargitalco', 'pennello2', 'Teriam','Pennello spargitalco.','10,00€',null,15,1,current_timestamp,null),
-(18,6,'Wahl pennello spargitalco', 'pennello3', 'Wahl', 'Pennello spargitalco.', '10,00€', null, 15,1, current_timestamp, null),
-(19,7,'CubaGold dopobarba', 'dopobarba1', 'CubaGold', 'Dopobarba', '21,00€', null, 15, 1, current_timestamp, null),
-(20,7,'Hipsteria after shave', 'dopobarba2', 'Hipesteria', 'Dopobarba', '21,00€', null, 30,1,current_timestamp, null),
-(21,7,'Denim after shave', 'dopobarba3', 'Denim', 'Dopobarba', '21,00€', null, 24,1,current_timestamp, null),
-(22,8,'Bakaji vaporizzatore', 'bottigliette1', 'Bakaji', 'Bottigliette spray', '7,00€', null, 60, current_timestamp, null),
-(23,9,'Goldwell - color brush', 'pennelli1', 'Goldwell', 'Pennello per tinta capelli.', '10,00€', null, 70, current_timestamp,null),
-(24,10,'grembiule', 'grembiule1', 'Sconosciuto', 'Grembiule da indossare durante acconciatura.', '10,00€', null, 40, current_timestamp, null);
+--
+-- Dump dei dati per la tabella `prodotto`
+--
 
+INSERT INTO `prodotto` (`id`, `id_categoria`, `nome`, `codice`, `brand`, `descrizione`, `prezzo`, `immagine`, `stock`, `raccomandato`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Braun Series 9', 'braun1', 'Braun', 'Leva completamente regolabile. Elimina la necessita di utilizzare più lame.', 85.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
+(2, 1, 'Philips Aquatouch', 'philips2', 'Philips', 'Completamente in alluminio leggero e infrangibile, molto affidabile.', 50.00, NULL, 15, 1, '2020-10-07 16:14:29', NULL),
+(3, 1, 'Philips Multigroom Series', 'philips3', 'Philips', 'Fornito di leva regolabile per una rasatura completa.', 21.00, NULL, 30, 1, '2020-10-07 16:14:29', NULL),
+(4, 2, 'Eberbart rasoio', 'eberbart1', 'Eberbart', 'Rasoio barbiere in legno di rose e acciaio inossidabile, per rasatura e rifinitura di barba e capelli.', 15.00, NULL, 10, 0, '2020-10-07 16:14:29', NULL),
+(5, 2, 'Morocutti magic rasoio', 'morocutti1', 'Morocutti', 'Comodo sistema di montaggio della lama con binario scorrevole, in acciaio inossidabile che consente un limitato contatto con la lametta.', 27.00, NULL, 40, 1, '2020-10-07 16:14:29', NULL),
+(6, 2, 'Wilkinson Sword', 'wilkinson1', 'Wilkinson', 'Ideale per una rasatura precisa con una finitura perfetta, è il must-have tipico dei dei barbershop per rifinire i bordi della barba in modo impeccabile.', 50.00, NULL, 30, 1, '2020-10-07 16:14:29', NULL),
+(7, 3, 'Giubra Mastr sfloty', 'giubra2', 'Giubra', 'Forbici per sfoltitura capelli.', 15.00, NULL, 30, 1, '2020-10-07 16:14:29', NULL),
+(8, 3, 'Sharaonds Pharaoh.', 'sharaonds2', 'Sharaonds', 'Forbici eleganti per sfoltitura capelli.', 50.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
+(9, 3, 'BeautyTime International', 'beauty1', 'BeautyTime International SRL', 'Forbici per sfoltitura capelli.', 60.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
+(10, 4, 'Schiuma da barba gillette.', 'gillette2', 'Gillette', 'Schiuma da barba.', 10.00, NULL, 40, 1, '2020-10-07 16:14:29', NULL),
+(11, 4, 'Palmolive schiuma da barba.', 'palmolive2', 'Palmolive', 'Schiuma da barba.', 10.00, NULL, 40, 1, '2020-10-07 16:14:29', NULL),
+(12, 4, 'Avene schiuma da barba', 'avene1', 'Avene', 'Schiuma da barba.', 10.00, NULL, 30, 1, '2020-10-07 16:14:29', NULL),
+(13, 5, 'Braun pettine regolabile', 'pettine1', 'Braun', 'Pettine regolabile per rasoi.', 5.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
+(14, 5, 'Braun pettine regolabile', 'pettine2', 'Braun', 'Pettine regolabile per rasoi.', 6.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
+(15, 5, 'Philips pettine regolabile', 'pettine3', 'Philips', 'Pettine regolabile per rasoi.', 6.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
+(16, 6, 'UEB pennello spargitalco', 'pennello1', 'UEB', 'Pennello spargitalco.', 10.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
+(17, 6, 'Teriam pennello spargitalco', 'pennello2', 'Teriam', 'Pennello spargitalco.', 10.00, NULL, 15, 1, '2020-10-07 16:14:29', NULL),
+(18, 6, 'Wahl pennello spargitalco', 'pennello3', 'Wahl', 'Pennello spargitalco.', 10.00, NULL, 15, 1, '2020-10-07 16:14:29', NULL),
+(19, 7, 'CubaGold dopobarba', 'dopobarba1', 'CubaGold', 'Dopobarba', 21.00, NULL, 15, 1, '2020-10-07 16:14:29', NULL),
+(20, 7, 'Hipsteria after shave', 'dopobarba2', 'Hipesteria', 'Dopobarba', 21.00, NULL, 30, 1, '2020-10-07 16:14:29', NULL),
+(21, 7, 'Denim after shave', 'dopobarba3', 'Denim', 'Dopobarba', 21.00, NULL, 24, 1, '2020-10-07 16:14:29', NULL),
+(22, 8, 'Bakaji vaporizzatore', 'bottigliette1', 'Bakaji', 'Bottigliette spray', 7.00, NULL, 60, 1, '2020-10-07 16:14:29', NULL),
+(23, 9, 'Goldwell - color brush', 'pennelli1', 'Goldwell', 'Pennello per tinta capelli.', 10.00, NULL, 70, 1, '2020-10-07 16:14:29', NULL),
+(24, 10, 'grembiule', 'grembiule1', 'Sconosciuto', 'Grembiule da indossare durante acconciatura.', 10.00, NULL, 40, 1, '2020-10-07 16:14:29', NULL);
 
 -- --------------------------------------------------------
 
@@ -377,10 +410,14 @@ CREATE TABLE `recensione` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into recensione(id, id_prodotto, id_utente, user_name, commento, approvato, created_at, updated_at)
-values(1, 15, 3, 'Simone Caruso', 'Ottimo prodotto.', 1, current_timestamp, null),
-(2, 12, 3, 'Simone Caruso', 'Ottimo', 1, current_timestamp, null),
-(3, 21, 3, 'Simone Caruso', 'Bel prodotto.',1, current_timestamp, null);
+--
+-- Dump dei dati per la tabella `recensione`
+--
+
+INSERT INTO `recensione` (`id`, `id_prodotto`, `id_utente`, `user_name`, `commento`, `approvato`, `created_at`, `updated_at`) VALUES
+(1, 15, 3, 'Simone Caruso', 'Ottimo prodotto.', 1, '2020-10-07 16:14:29', '2020-10-07 16:14:29'),
+(2, 12, 3, 'Simone Caruso', 'Ottimo', 1, '2020-10-07 16:14:29', '2020-10-07 16:14:29'),
+(3, 21, 3, 'Simone Caruso', 'Bel prodotto.', 1, '2020-10-07 16:14:29', '2020-10-07 16:14:29');
 
 -- --------------------------------------------------------
 
@@ -448,10 +485,15 @@ CREATE TABLE `utente` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into utente(id, user_name, email, pass_word, remember_token, created_at, updated_at) values
-(1, 'Loreto Cicerone', 'loretocicerone1@gmail.com', 'pass', 'token'),
-(2, 'Marco De Cesaris', 'marcodecesaris146@gmail.com', 'pass','token'),
-(3, 'Simone Caruso', 'scaruso96@gmail.com', 'pass', 'token');
+--
+-- Dump dei dati per la tabella `utente`
+--
+
+INSERT INTO `utente` (`id`, `user_name`, `email`, `pass_word`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Loreto Cicerone', 'loretocicerone1@gmail.com', 'pass', 'token', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 'Marco De Cesaris', 'marcodecesaris146@gmail.com', 'pass', 'token', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 'Simone Caruso', 'scaruso96@gmail.com', 'pass', 'token', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
 --
 -- Indici per le tabelle scaricate
 --
@@ -641,7 +683,7 @@ ALTER TABLE `utente`
 -- AUTO_INCREMENT per la tabella `articolo`
 --
 ALTER TABLE `articolo`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT per la tabella `articolo_has_tags`
@@ -659,13 +701,13 @@ ALTER TABLE `carrello`
 -- AUTO_INCREMENT per la tabella `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT per la tabella `commento`
 --
 ALTER TABLE `commento`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT per la tabella `consegna`
@@ -683,13 +725,13 @@ ALTER TABLE `contenuto`
 -- AUTO_INCREMENT per la tabella `corriere`
 --
 ALTER TABLE `corriere`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT per la tabella `coupon`
 --
 ALTER TABLE `coupon`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT per la tabella `group_has_service`
@@ -713,7 +755,7 @@ ALTER TABLE `immagine`
 -- AUTO_INCREMENT per la tabella `indirizzo`
 --
 ALTER TABLE `indirizzo`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT per la tabella `migrations`
@@ -737,7 +779,7 @@ ALTER TABLE `ordine_prodotto`
 -- AUTO_INCREMENT per la tabella `prodotto`
 --
 ALTER TABLE `prodotto`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT per la tabella `prodotto_has_tags`
@@ -749,7 +791,7 @@ ALTER TABLE `prodotto_has_tags`
 -- AUTO_INCREMENT per la tabella `recensione`
 --
 ALTER TABLE `recensione`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT per la tabella `servizio`
@@ -779,7 +821,7 @@ ALTER TABLE `user_has_groups`
 -- AUTO_INCREMENT per la tabella `utente`
 --
 ALTER TABLE `utente`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Limiti per le tabelle scaricate
