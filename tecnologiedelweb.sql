@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Ott 07, 2020 alle 18:41
+-- Creato il: Ott 08, 2020 alle 10:59
 -- Versione del server: 10.4.14-MariaDB
 -- Versione PHP: 7.4.10
 
@@ -265,9 +265,9 @@ CREATE TABLE `indirizzo` (
 --
 
 INSERT INTO `indirizzo` (`id`, `nome_utente`, `nome_indirizzo`, `citta`, `cap`, `paese`, `id_utente`, `telefono`, `created_at`, `updated_at`) VALUES
-(1, 'Loreto Cicerone', 'Via Umberto 1', 'Pagliara', '02021', 'Italia', 1, '3890233514', '2020-10-07 16:14:29', NULL),
-(2, 'Marco De Cesaris', 'Via dei salici', 'Borgorose', '02021', 'Italia', 2, '3920607183', '2020-10-07 16:14:29', NULL),
-(3, 'Simone Caruso', 'Via Sandonato', 'Pescara', '65129', 'Italia', 3, '3881046378', '2020-10-07 16:14:29', NULL);
+(1, 'Loreto Cicerone', 'Via Umberto 1', 'Pagliara', 2021, 'Italia', 1, '3890233514', '2020-10-07 16:14:29', NULL),
+(2, 'Marco De Cesaris', 'Via dei salici', 'Borgorose', 2021, 'Italia', 2, '3920607183', '2020-10-07 16:14:29', NULL),
+(3, 'Simone Caruso', 'Via Sandonato', 'Pescara', 65129, 'Italia', 3, '3881046378', '2020-10-07 16:14:29', NULL);
 
 -- --------------------------------------------------------
 
@@ -280,6 +280,14 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dump dei dati per la tabella `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2014_10_12_000000_create_users_table', 1),
+(2, '2014_10_12_100000_create_password_resets_table', 1);
 
 -- --------------------------------------------------------
 
@@ -318,6 +326,18 @@ CREATE TABLE `ordine_prodotto` (
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `preferiti`
 --
 
@@ -345,8 +365,8 @@ CREATE TABLE `prodotto` (
   `immagine` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `stock` int(11) NOT NULL,
   `raccomandato` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp,
-  `updated_at` timestamp NULL DEFAULT current_timestamp
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -439,13 +459,47 @@ CREATE TABLE `servizio` (
 CREATE TABLE `tag` (
   `id` int(10) UNSIGNED NOT NULL,
   `nome_tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp not NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp not NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into tag(id, nome_tag) values 
-(1, 'rasoi'),(2,'lamette'),(3,'dopobarba'),(4,'forbici'),(5,'pettine'),
-(6,'schiuma'),(7,'pennello'),(8,'grembiule');
+--
+-- Dump dei dati per la tabella `tag`
+--
+
+INSERT INTO `tag` (`id`, `nome_tag`, `created_at`, `updated_at`) VALUES
+(1, 'rasoi', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
+(2, 'lamette', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
+(3, 'dopobarba', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
+(4, 'forbici', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
+(5, 'pettine', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
+(6, 'schiuma', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
+(7, 'pennello', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
+(8, 'grembiule', '2020-10-08 08:15:51', '2020-10-08 08:15:51');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `admin` tinyint(1) DEFAULT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dump dei dati per la tabella `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `admin`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Simone', 'scaruso96@gmail.com', '$2y$10$y3i4Tg0JY8gOwcBqoGEtB.GUqFSx6qcA9af/qGZIE6GH9XoGaeF6G', 1, 'TAt85B9mYEgPBSVGwdQHBFBGFOuALK25BT64M5QPrAZbv6Rx4AL4d5Xom9jf', '2020-10-08 06:16:38', '2020-10-08 06:16:38');
 
 -- --------------------------------------------------------
 
@@ -492,12 +546,6 @@ CREATE TABLE `utente` (
 --
 -- Dump dei dati per la tabella `utente`
 --
---
-
-
-
---
--- 
 
 INSERT INTO `utente` (`id`, `user_name`, `email`, `pass_word`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Loreto Cicerone', 'loretocicerone1@gmail.com', 'pass', 'token', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
@@ -623,6 +671,12 @@ ALTER TABLE `ordine_prodotto`
   ADD KEY `pr_ordine` (`id_prodotto`);
 
 --
+-- Indici per le tabelle `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD KEY `password_resets_email_index` (`email`);
+
+--
 -- Indici per le tabelle `preferiti`
 --
 ALTER TABLE `preferiti`
@@ -662,6 +716,13 @@ ALTER TABLE `servizio`
 --
 ALTER TABLE `tag`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indici per le tabelle `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
 -- Indici per le tabelle `user_has_coupon`
@@ -771,7 +832,7 @@ ALTER TABLE `indirizzo`
 -- AUTO_INCREMENT per la tabella `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT per la tabella `ordine`
@@ -813,7 +874,13 @@ ALTER TABLE `servizio`
 -- AUTO_INCREMENT per la tabella `tag`
 --
 ALTER TABLE `tag`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT per la tabella `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT per la tabella `user_has_coupon`
