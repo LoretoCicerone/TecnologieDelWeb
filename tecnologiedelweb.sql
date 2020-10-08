@@ -71,8 +71,8 @@ CREATE TABLE `carrello` (
   `id_prodotto` int(10) UNSIGNED NOT NULL,
   `quantita` int(11) NOT NULL,
   `id_sessione` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -88,8 +88,8 @@ CREATE TABLE `categoria` (
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `immagine` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -143,8 +143,8 @@ CREATE TABLE `consegna` (
   `id` int(10) UNSIGNED NOT NULL,
   `id_corriere` int(10) UNSIGNED NOT NULL,
   `id_indirizzo` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -157,8 +157,8 @@ CREATE TABLE `contenuto` (
   `id` int(10) UNSIGNED NOT NULL,
   `id_prodotto` int(10) UNSIGNED NOT NULL,
   `id_categoria` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -170,8 +170,8 @@ CREATE TABLE `contenuto` (
 CREATE TABLE `corriere` (
   `id` int(10) UNSIGNED NOT NULL,
   `nome` varchar(200) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -191,8 +191,8 @@ CREATE TABLE `coupon` (
   `id` int(10) UNSIGNED NOT NULL,
   `codice` varchar(100) NOT NULL,
   `percentuale` varchar(5) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -265,9 +265,9 @@ CREATE TABLE `indirizzo` (
 --
 
 INSERT INTO `indirizzo` (`id`, `nome_utente`, `nome_indirizzo`, `citta`, `cap`, `paese`, `id_utente`, `telefono`, `created_at`, `updated_at`) VALUES
-(1, 'Loreto Cicerone', 'Via Umberto 1', 'Pagliara', 2021, 'Italia', 1, '3890233514', '2020-10-07 16:14:29', NULL),
-(2, 'Marco De Cesaris', 'Via dei salici', 'Borgorose', 2021, 'Italia', 2, '3920607183', '2020-10-07 16:14:29', NULL),
-(3, 'Simone Caruso', 'Via Sandonato', 'Pescara', 65129, 'Italia', 3, '3881046378', '2020-10-07 16:14:29', NULL);
+(1, 'Loreto Cicerone', 'Via Umberto 1', 'Pagliara', '02021', 'Italia', 1, '3890233514', '2020-10-07 16:14:29', NULL),
+(2, 'Marco De Cesaris', 'Via dei salici', 'Borgorose', '02021', 'Italia', 2, '3920607183', '2020-10-07 16:14:29', NULL),
+(3, 'Simone Caruso', 'Via Sandonato', 'Pescara', '65129', 'Italia', 3, '3881046378', '2020-10-07 16:14:29', NULL);
 
 -- --------------------------------------------------------
 
@@ -345,8 +345,8 @@ CREATE TABLE `prodotto` (
   `immagine` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `stock` int(11) NOT NULL,
   `raccomandato` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT current_timestamp,
+  `updated_at` timestamp NULL DEFAULT current_timestamp
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -439,9 +439,13 @@ CREATE TABLE `servizio` (
 CREATE TABLE `tag` (
   `id` int(10) UNSIGNED NOT NULL,
   `nome_tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp not NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp not NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+insert into tag(id, nome_tag) values 
+(1, 'rasoi'),(2,'lamette'),(3,'dopobarba'),(4,'forbici'),(5,'pettine'),
+(6,'schiuma'),(7,'pennello'),(8,'grembiule');
 
 -- --------------------------------------------------------
 
@@ -488,6 +492,12 @@ CREATE TABLE `utente` (
 --
 -- Dump dei dati per la tabella `utente`
 --
+--
+
+
+
+--
+-- 
 
 INSERT INTO `utente` (`id`, `user_name`, `email`, `pass_word`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Loreto Cicerone', 'loretocicerone1@gmail.com', 'pass', 'token', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
