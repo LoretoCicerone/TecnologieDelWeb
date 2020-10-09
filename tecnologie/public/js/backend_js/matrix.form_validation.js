@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 
-    $("#new_pwd").click(function (){
+    $("#current_pwd").keyup(function (){
         var current_pwd = $("#current_pwd").val();
         $.ajax({
             type:'get',
@@ -12,7 +12,7 @@ $(document).ready(function(){
                 if(resp=="false"){
                     $("#chkPwd").html("<font color='red'>Current Password is Incorrect</font>");
                 }else if(resp=="true"){
-                    $("#chkPwd").html("<font color='green'>Current Password is Corrent</font>");
+                    $("#chkPwd").html("<font color='green'>Current Password is Correct</font>");
                 }
             },error:function (){
                 alert("Error");
@@ -26,21 +26,45 @@ $(document).ready(function(){
 
 	// Form Validation
     $("#basic_validate").validate({
+        rules:{
+            required:{
+                required:true
+            },
+            email:{
+                required:true,
+                email:true
+            },
+            date:{
+                required:true,
+                date: true
+            },
+            url:{
+                required:true,
+                url: true
+            }
+        },
+        errorClass: "help-inline",
+        errorElement: "span",
+        highlight:function(element, errorClass, validClass) {
+            $(element).parents('.control-group').addClass('error');
+        },
+        unhighlight: function(element, errorClass, validClass) {
+            $(element).parents('.control-group').removeClass('error');
+            $(element).parents('.control-group').addClass('success');
+        }
+    });
+
+    //Add Category Validation
+    $("#add_category").validate({
 		rules:{
-			required:{
+			category_name:{
 				required:true
 			},
-			email:{
+			description:{
 				required:true,
-				email: true
-			},
-			date:{
-				required:true,
-				date: true
 			},
 			url:{
 				required:true,
-				url: true
 			}
 		},
 		errorClass: "help-inline",

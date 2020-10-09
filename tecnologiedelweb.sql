@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Ott 08, 2020 alle 10:59
+-- Creato il: Ott 09, 2020 alle 22:08
 -- Versione del server: 10.4.14-MariaDB
 -- Versione PHP: 7.4.10
 
@@ -107,6 +107,24 @@ INSERT INTO `categoria` (`id`, `nome`, `descrizione`, `url`, `immagine`, `rememb
 (8, 'bottigliette spray', 'bottigliette spray', 'bottigliette spray', NULL, 'token', '2020-10-07 16:14:29', NULL),
 (9, 'pennelli per tinta', 'pennelli per tinta', 'pennelli per tinta', NULL, 'token', '2020-10-07 16:14:29', NULL),
 (10, 'grembiuli', 'grembiuli', 'grembiuli', NULL, 'token', '2020-10-07 16:14:29', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `parent_id` int(11) NOT NULL DEFAULT 0,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `desctiption` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -287,7 +305,11 @@ CREATE TABLE `migrations` (
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '2014_10_12_000000_create_users_table', 1),
-(2, '2014_10_12_100000_create_password_resets_table', 1);
+(2, '2014_10_12_100000_create_password_resets_table', 1),
+(3, '2020_10_09_144814_create_category_table', 2),
+(4, '2020_10_09_192547_create_category_table', 3),
+(5, '2020_10_09_193229_create_categories_table', 4),
+(6, '2020_10_09_193506_create_category_table', 5);
 
 -- --------------------------------------------------------
 
@@ -499,7 +521,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `admin`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Simone', 'scaruso96@gmail.com', '$2y$10$y3i4Tg0JY8gOwcBqoGEtB.GUqFSx6qcA9af/qGZIE6GH9XoGaeF6G', 1, 'TAt85B9mYEgPBSVGwdQHBFBGFOuALK25BT64M5QPrAZbv6Rx4AL4d5Xom9jf', '2020-10-08 06:16:38', '2020-10-08 06:16:38');
+(1, 'Simone', 'scaruso96@gmail.com', '$2y$10$ioN618jqyMmoYxdVFQDYqO54Cm.S9wT26nDDERoLzgKDof3H/0Fim', 1, 'tBxEqnwYUPpmJcDJ13GIM7GKUuj30jl7QPvMx3jhfAtp496cALuXxHTCf4F9', '2020-10-08 06:16:38', '2020-10-09 11:46:24');
 
 -- --------------------------------------------------------
 
@@ -582,6 +604,12 @@ ALTER TABLE `carrello`
 -- Indici per le tabelle `categoria`
 --
 ALTER TABLE `categoria`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indici per le tabelle `categories`
+--
+ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -775,6 +803,12 @@ ALTER TABLE `categoria`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT per la tabella `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT per la tabella `commento`
 --
 ALTER TABLE `commento`
@@ -832,7 +866,7 @@ ALTER TABLE `indirizzo`
 -- AUTO_INCREMENT per la tabella `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT per la tabella `ordine`
