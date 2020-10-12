@@ -27,6 +27,9 @@ Route::group(['middleware'=>['auth']],function () {
 
     // Categorie Routes (Admin)
     Route::match(['get','post'],'/admin/add-category','CategoryController@addCategory');
+    Route::match(['get','post'],'/admin/edit-category/{id}','CategoryController@editCategory');
+    Route::match(['get','post'],'/admin/delete-category/{id}','CategoryController@deleteCategory');
+    Route::get('/admin/view-categories','CategoryController@viewCategories');
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
