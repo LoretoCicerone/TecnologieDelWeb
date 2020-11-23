@@ -63,6 +63,9 @@ $(document).ready(function(){
 			description:{
 				required:true,
 			},
+            image:{
+                required: true,
+            },
 			url:{
 				required:true,
 			}
@@ -77,6 +80,79 @@ $(document).ready(function(){
 			$(element).parents('.control-group').addClass('success');
 		}
 	});
+
+    //Add Product Validation
+    $("#add_product").validate({
+        rules:{
+            category_id:{
+                required: true
+            },
+            product_name:{
+                required:true
+            },
+            product_code:{
+                required:true,
+            },
+            product_brand:{
+                required:true,
+            },
+            price:{
+                required: true,
+                number: true,
+            },
+            image:{
+                required: true,
+            },
+            stock:{
+                required: true,
+                number: true
+            },
+        },
+        errorClass: "help-inline",
+        errorElement: "span",
+        highlight:function(element, errorClass, validClass) {
+            $(element).parents('.control-group').addClass('error');
+        },
+        unhighlight: function(element, errorClass, validClass) {
+            $(element).parents('.control-group').removeClass('error');
+            $(element).parents('.control-group').addClass('success');
+        }
+    });
+
+    //Edit Product Validation
+    $("#edit_product").validate({
+        rules:{
+            category_id:{
+                required: true
+            },
+            product_name:{
+                required:true
+            },
+            product_code:{
+                required:true,
+            },
+            product_brand:{
+                required:true,
+            },
+            price:{
+                required: true,
+                number: true,
+            },
+            stock:{
+                required: true,
+                number: true
+            }
+        },
+        errorClass: "help-inline",
+        errorElement: "span",
+        highlight:function(element, errorClass, validClass) {
+            $(element).parents('.control-group').addClass('error');
+        },
+        unhighlight: function(element, errorClass, validClass) {
+            $(element).parents('.control-group').removeClass('error');
+            $(element).parents('.control-group').addClass('success');
+        }
+    });
 
     //Edit Category Validation
     $("#edit_category").validate({
@@ -158,11 +234,33 @@ $(document).ready(function(){
 		}
 	});
 
-	$("#delCat").click(function () {
+	/*$("#delCat").click(function () {
         if (confirm('Are you sure you want to delete this Category?')){
             return true;
         }
         return false;
+    });*/
+
+    $(".deleteRecord").click(function (){
+        var id = $(this).attr('rel');
+        var deleteFunction = $(this).attr('rel1');
+        swal({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#dd3333',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonStyling: false,
+            reverseButtons: true,
+        },
+            function(){
+            window.location.href="/admin/"+deleteFunction+"/"+id;
+            });
     });
 
 });

@@ -39,6 +39,16 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
+                                    <label class="control-label">Image</label>
+                                    <div class="controls">
+                                        <input type="file" name="image" id="image">
+                                        <input type="hidden" name="current_image" value="{{ $categoryDetails->image }}">
+                                        @if(!empty($categoryDetails->image))
+                                            <img style="width: 50px;" src="{{ asset('/images/backend_images/categories/small/'.$categoryDetails->image) }}"> | <a href="{{url('/admin/delete-category-image/'.$categoryDetails->id)}}">Delete</a>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label">URL</label>
                                     <div class="controls">
                                         <input type="text" name="url" id="url" value="{{ $categoryDetails->url }}">
