@@ -260,7 +260,6 @@ jQuery(document).ready(function($){
 			});
 		}
 	});
-});
 
 
     //Check Current Password
@@ -283,7 +282,7 @@ jQuery(document).ready(function($){
                 alert("Error");
             }
         });
-});
+    });
 
     $("#passwordForm").validate({
     rules:{
@@ -303,7 +302,7 @@ jQuery(document).ready(function($){
         $(element).parents('.control-group').removeClass('error');
         $(element).parents('.control-group').addClass('success');
     }
-});
+    });
 
     // Password Strength script
     $('#myPassword').passtrength({
@@ -312,4 +311,36 @@ jQuery(document).ready(function($){
         tooltip: true,
         eyeImg: "/images/frontend_images/eye.svg",
     });
+
+
+    //Copy Billing Address to Shipping Address Script
+    $("#copyAddress").click(function (){
+        if(this.checked){
+            $("#shipping_name").val($("#billing_name").val());
+            $("#shipping_address").val($("#billing_address").val());
+            $("#shipping_city").val($("#billing_city").val());
+            $("#shipping_state").val($("#billing_state").val());
+            $("#shipping_pincode").val($("#billing_pincode").val());
+            $("#shipping_mobile").val($("#billing_mobile").val());
+            $("#shipping_country").val($("#billing_country").val());
+        }else{
+            $("#shipping_name").val('');
+            $("#shipping_address").val('');
+            $("#shipping_city").val('');
+            $("#shipping_state").val('');
+            $("#shipping_pincode").val('');
+            $("#shipping_mobile").val('');
+            $("#shipping_country").val('');
+        }
+    });
+});
+
+function selectPaymentMethod(){
+    if($('#Paypal').is(':checked') || $('#COD').is(':checked')){
+
+    }else{
+        alert ("Per favore seleziona un metodo di pagamento");
+        return false;
+    }
+}
 

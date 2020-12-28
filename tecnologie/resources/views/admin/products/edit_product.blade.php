@@ -26,7 +26,9 @@
                             <h5>Edit Product</h5>
                         </div>
                         <div class="widget-content nopadding">
-                            <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/edit-product/'.$productDetails->id) }}" name="edit_product" id="edit_product" novalidate="novalidate"> {{csrf_field()}}
+                            <form enctype="multipart/form-data" class="form-horizontal" method="post"
+                                  action="{{ url('/admin/edit-product/'.$productDetails->id) }}" name="edit_product"
+                                  id="edit_product" novalidate="novalidate"> {{csrf_field()}}
                                 <div class="control-group">
                                     <label class="control-label">Under Category</label>
                                     <div class="controls">
@@ -71,7 +73,8 @@
                                         <input type="file" name="image" id="image">
                                         <input type="hidden" name="current_image" value="{{ $productDetails->image }}">
                                         @if(!empty($productDetails->image))
-                                        <img style="width: 50px;" src="{{ asset('/images/backend_images/products/small/'.$productDetails->image) }}"> | <a href="{{url('/admin/delete-product-image/'.$productDetails->id)}}">Delete</a>
+                                        <img style="width: 50px;" src="{{ asset('/images/backend_images/products/small/'.$productDetails->image) }}">
+                                            | <a href="{{url('/admin/delete-product-image/'.$productDetails->id)}}">Delete</a>
                                         @endif
                                     </div>
                                 </div>
@@ -79,6 +82,13 @@
                                     <label class="control-label">Stock</label>
                                     <div class="controls">
                                         <input type="text" name="stock" id="stock" value="{{ $productDetails->stock }}">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Feature Item</label>
+                                    <div class="controls">
+                                        <input type="checkbox" name="feature_item" id="feature_item"
+                                        @if($productDetails->feature_item == "1") checked @endif value ="1">
                                     </div>
                                 </div>
                                 <div class="form-actions">

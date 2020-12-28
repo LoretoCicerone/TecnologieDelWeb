@@ -5,18 +5,6 @@
         <div id="content-header">
             <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Products</a> <a href="#" class="current">View Products</a> </div>
             <h1>Products</h1>
-            @if(Session::has('flash_message_error'))
-                <div class="alert alert-error alert-block">
-                    <button type="button" class="close" data-dismiss="alert">x</button>
-                    <strong>{!! session('flash_message_error') !!}</strong>
-                </div>
-            @endif
-            @if(Session::has('flash_message_success'))
-                <div class="alert alert-success alert-block">
-                    <button type="button" class="close" data-dismiss="alert">x</button>
-                    <strong>{!! session('flash_message_success') !!}</strong>
-                </div>
-            @endif
         </div>
         <div class="container-fluid">
             <hr>
@@ -26,6 +14,18 @@
                         <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                             <h5>View Products</h5>
                         </div>
+                        @if(Session::has('flash_message_error'))
+                            <div class="alert alert-error alert-block">
+                                <button type="button" class="close" data-dismiss="alert">x</button>
+                                <strong>{!! session('flash_message_error') !!}</strong>
+                            </div>
+                        @endif
+                        @if(Session::has('flash_message_success'))
+                            <div class="alert alert-success alert-block">
+                                <button type="button" class="close" data-dismiss="alert">x</button>
+                                <strong>{!! session('flash_message_success') !!}</strong>
+                            </div>
+                        @endif
                         <div class="widget-content nopadding">
                             <table class="table table-bordered data-table">
                                 <thead>
@@ -39,6 +39,7 @@
                                     <th>Price</th>
                                     <th>Image</th>
                                     <th>Stock</th>
+                                    <th>Feature Item</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
@@ -58,6 +59,7 @@
                                               @endif
                                         </td>
                                         <td>{{ $product->stock }}</td>
+                                        <td>@if($product->feature_item == 1) <span style="color: green"> Yes @else <span style="color: red"> No @endif</td>
                                         <td class="center">
                                             <a href="#myModal{{ $product->id }}" data-toggle="modal" class="btn btn-success btn-mini">View</a>
                                             <a href="{{ url('/admin/edit-product/'.$product->id) }}" class="btn btn-primary btn-mini">Edit</a>
@@ -77,6 +79,7 @@
                                             <p>Price: {{ $product->price }}</p>
                                             <p>Description: {{ $product->description }}</p>
                                             <p>Stock: {{ $product->stock }}</p>
+                                            <p>Feature: @if($product->feature_item == 1) Yes @else  No @endif</p>
                                         </div>
                                     </div>
                                 @endforeach

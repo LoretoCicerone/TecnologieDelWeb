@@ -2,15 +2,23 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use Auth;
+use phpDocumentor\Reflection\DocBlock\Tags\Formatter\AlignFormatter;
 use Prophecy\Doubler\DoubleInterface;
 use Session;
 use Image;
+use App\Country;
+use App\User;
+use App\Order;
+use App\OrdersProduct;
 use App\Category;
 use App\Product;
 use App\Coupon;
+use App\DeliveryAddress;
 use DB;
 use function mysql_xdevapi\expression;
 
@@ -35,6 +43,11 @@ class ProductsController extends Controller
             }else{
                 $product->description = '';
             }
+            if(empty($data['feature_item'])){
+                $feature_item = '0';
+            }else{
+                $feature_item = '1';
+            }
             $product->price = $data['price'];
 
             // Upload Image
@@ -57,9 +70,10 @@ class ProductsController extends Controller
             }
 
             $product->stock = $data['stock'];
+            $product->feature_item = $data['feature_item'];
             $product->save();
             //return redirect()->back()->with('flash_message_success','Product has been added successfully!');
-            return redirect('/admin/view-products')->with('flash_message_success','Product has been addedd successfully!');
+            return redirect('/admin/view-products')->with('flash_message_success','Il prodotto è stato aggiunto correttamente!');
         }
 
         //Categories drop down start
@@ -100,8 +114,13 @@ class ProductsController extends Controller
             if(empty($data['description'])){
                 $data['description']='';
             }
+            if(empty($data['feature_item'])){
+                $feature_item = '0';
+            }else{
+                $feature_item = '1';
+            }
 
-            Product::where(['id'=>$id])->update(['category_id'=>$data['category_id'],'product_name'=>$data['product_name'],'product_code'=>$data['product_code'],'product_brand'=>$data['product_brand'],'description'=>$data['description'],'price'=>$data['price'],'stock'=>$data['stock'],'image'=>$filename]);
+            Product::where(['id'=>$id])->update(['category_id'=>$data['category_id'],'product_name'=>$data['product_name'],'product_code'=>$data['product_code'],'product_brand'=>$data['product_brand'],'description'=>$data['description'],'price'=>$data['price'],'stock'=>$data['stock'],'feature_item'=>$feature_item,'image'=>$filename]);
             return redirect('/admin/view-products')->with('flash_message_success','Product has been updates successfully!');
         }
 
@@ -179,8 +198,8 @@ class ProductsController extends Controller
     public function products($url = null){
 
         //Mostra la pagina 404 se l'url della categoria non esiste
-        $countCategory = Category::where(['url'=>$url])->count();
-        if($countCategory==0){
+        $categoryCount = Category::where(['url'=>$url])->count();
+        if($categoryCount==0){
             abort(404);
         }
 
@@ -188,21 +207,33 @@ class ProductsController extends Controller
         $categories = Category::with('categories')->where(['parent_id'=>0])->get();
 
         $categoryDetails = Category::where(['url' => $url])->first();
-
         if($categoryDetails->parent_id==0){
             //If url is main category url
             $subCategories = Category::where(['parent_id'=>$categoryDetails->id])->get();
-            foreach ($subCategories as $key => $subcat){
+            $subCategories = json_decode(json_encode($subCategories));
+            foreach ($subCategories as $subcat){
                 $cat_ids[] = $subcat->id;
             }
             $productsAll = Product::whereIn('category_id', $cat_ids)->get();
-            $productsAll = json_decode(json_encode($productsAll));
         }else{
             //If url is sub category url
             $productsAll = Product::where(['category_id' => $categoryDetails->id])->get();
         }
 
-        return view('products.listing')->with(compact('countCategory','categories','categoryDetails','productsAll'));
+        return view('products.listing')->with(compact('categories','categoryDetails','productsAll'));
+    }
+
+    public function searchProducts(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            $categories = Category::with('categories')->where(['parent_id' => 0])->get();
+            $search_product = $data['product'];
+            $productsAll = Product::where('product_name', 'like', '%' . $search_product . '%')
+                ->orwhere('product_code', $search_product)->get();
+
+            return view('products.listing')->with(compact('categories', 'productsAll', 'search_product'));
+        }
     }
 
     public function product($id = null){
@@ -232,8 +263,18 @@ class ProductsController extends Controller
     public function addtocart(Request $request){
         $data = $request->all();
 
-        if(empty($data['user_email'])){
+        //Check Product Stock is available or not
+        $getProductStock = Product::where(['product_code'=>$data['product_code']])->first();
+
+
+        if($getProductStock->stock<$data['quantity']){
+            return redirect()->back()->with('flash_message_error','Quantità non disponibile!');
+        }
+
+        if(empty(Auth::user()->email)){
             $data['user_email'] ='';
+        }else{
+            $data['user_email'] = Auth::user()->email;
         }
 
         $session_id = Session::get('session_id');
@@ -242,22 +283,40 @@ class ProductsController extends Controller
             Session::put('session_id', $session_id);
         }
 
-        $countProducts =  DB::table('cart')->where(['product_id'=>$data['product_id'],'product_name'=>$data['product_name'],'product_code'=>$data['product_code'],'session_id'=>$session_id])->count();
+        if(empty(Auth::check())) {
+            $countProducts = DB::table('cart')->where(['product_id' => $data['product_id'],
+                'product_name' => $data['product_name'], 'product_code' => $data['product_code'], 'session_id' => $session_id])->count();
 
-        if($countProducts>0){
-            return redirect()->back()->with('flash_message_error','Il prodotto è già presente nel carrello STRONZO!');
-        }else{
+            if ($countProducts > 0) {
+                return redirect()->back()->with('flash_message_error', 'Il prodotto è già presente nel carrello STRONZO!');
+            }
+        } else {
+                $countProducts = DB::table('cart')->where(['product_id' => $data['product_id'],
+                    'product_name' => $data['product_name'], 'product_code' => $data['product_code'],
+                    'user_email' => $data['user_email']])->count();
 
-            DB::table('cart')->insert(['product_id'=>$data['product_id'],'product_name'=>$data['product_name'],'product_code'=>$data['product_code'],'price'=>$data['price'],'quantity'=>$data['quantity'],'user_email'=>$data['user_email'],'session_id'=>$session_id]);
-        }
+                if ($countProducts > 0) {
+                    return redirect()->back()->with('flash_message_error', 'Il prodotto è già presente nel carrello STRONZO!');
+                }
+            }
 
-        return redirect('cart')->with('flash_message_success','Product has been added in Cart!');
+                DB::table('cart')->insert(['product_id' => $data['product_id'], 'product_name' => $data['product_name'],
+                    'product_code' => $data['product_code'], 'price' => $data['price'], 'quantity' => $data['quantity'],
+                    'user_email' => $data['user_email'], 'session_id' => $session_id]);
+
+
+        return redirect('cart')->with('flash_message_success','Il prodotto è stato aggiunto al carrello!');
 
     }
 
     public function cart(){
-        $session_id = Session::get('session_id');
-        $userCart = DB::table('cart')->where(['session_id'=>$session_id])->get();
+        if(Auth::check()){
+            $user_email = Auth::user()->email;
+            $userCart = DB::table('cart')->where(['user_email'=>$user_email])->get();
+        }else{
+            $session_id = Session::get('session_id');
+            $userCart = DB::table('cart')->where(['session_id'=>$session_id])->get();
+        }
         foreach ($userCart as $key => $product) {
             $productDetails = Product::where('id',$product->product_id)->first();
             $userCart[$key]->image = $productDetails->image;
@@ -267,14 +326,14 @@ class ProductsController extends Controller
 
     public function deleteCartProduct($id = null){
         Session::forget('CouponAmount');
-        Session::forget('couponCode');
+        Session::forget('CouponCode');
         DB::table('cart')->where('id',$id)->delete();
         return redirect('cart')->with('flash_message_success','Il prodotto è stato eliminato dal carrello!');
     }
 
     public function updateCartQuantity($id=null,$quantity=null){
         Session::forget('CouponAmount');
-        Session::forget('couponCode');
+        Session::forget('CouponCode');
         $getCartDetails = DB::table('cart')->where('id',$id)->first();
         $getAttributeStock = Product::where('product_code',$getCartDetails->product_code)->first();
         echo $getAttributeStock->stock; echo "--";
@@ -290,7 +349,7 @@ class ProductsController extends Controller
     public function applyCoupon(Request $request){
 
         Session::forget('CouponAmount');
-        Session::forget('couponCode');
+        Session::forget('CouponCode');
 
         $data = $request->all();
         $couponCount = Coupon::where('coupon_code',$data['coupon_code'])->count();
@@ -307,12 +366,22 @@ class ProductsController extends Controller
             $expiry_date = $couponDetails->expiry_date;
             $current_date = date('Y-m-d');
             if($expiry_date < $current_date){
-                return redirect()->back()->with('flash_message_error', 'Coupon is Expired');
+                return redirect()->back()->with('flash_message_error', 'Il Coupon è scaduto');
             }
 
             //Get Cart Total Amount
             $session_id = Session::get('session_id');
             $userCart = DB::table('cart')->where(['session_id' => $session_id])->get();
+
+            if(Auth::check()){
+                $user_email = Auth::user()->email;
+
+            }else{
+                $session_id = Session::get('session_id');
+                $userCart = DB::table('cart')->where(['session_id'=>$session_id])->get();
+            }
+
+
             $total_amount = 0;
             foreach ($userCart as $item){
                 $total_amount = $total_amount + ($item->price * $item->quantity);
@@ -327,11 +396,224 @@ class ProductsController extends Controller
 
             //Add Coupon Code & Amount in Session
             Session::put('CouponAmount',$couponAmount);
-            Session::put('couponCode',$data['coupon_code']);
+            Session::put('CouponCode',$data['coupon_code']);
 
             return redirect()->back()->with('flash_message_success', 'Coupon code successfully applied. Tu sei un morto di fame!');
 
         }
     }
 
+    public function checkout(Request $request){
+        $user_id = Auth::user()->id;
+        $user_email = Auth::user()->email;
+        $userDetails = User::find($user_id);
+        $countries = Country::get();
+
+        //Check if Shipping address exist
+        $shippingCount = DeliveryAddress::where('user_id',$user_id)->count();
+        $shippingDetails = array();
+        if($shippingCount>0) {
+            $shippingDetails = DeliveryAddress::where('user_id', $user_id)->first();
+        }
+
+        //Update cart table with user email
+        $session_id = Session::get('session_id');
+        DB::table('cart')->where(['session_id'=>$session_id])->update(['user_email'=>$user_email]);
+
+        if($request->isMethod('post')) {
+            $data = $request->all();
+
+            //Return To Checkout Page if any of the field is empty
+            // if(empty($data['billing_name']) || empty($data['billing_address']) || empty($data['billing_city']) || empty($data['billing_state']) || empty($data['billing_country']) || empty($data['billing_pincode']) || empty($data['billing_mobile']) || empty($data['shipping_name']) || empty($data['shipping_address']) || empty($data['shipping_city']) || empty($data['shipping_state']) || empty($data['shipping_country']) || empty($data['shipping_pincode']) || empty($data['shipping_mobile'])){
+            // return redirect()->back()->with('flash_message_error','Please Affanculo a mammt!');
+            //}
+
+            //Update User Details
+            User::where('id',$user_id)->update(['name'=>$data['billing_name'],'address'=>$data['billing_address'],'city'=>$data['billing_city'],'state'=>$data['billing_state'],'pincode'=>$data['billing_pincode'],'country'=>$data['billing_country'],'mobile'=>$data['billing_mobile']]);
+
+            if($shippingCount>0){
+            //Update Shipping Address
+                DeliveryAddress::where('user_id',$user_id)->update(['name'=>$data['shipping_name'],'address'=>$data['shipping_address'],'city'=>$data['shipping_city'],'state'=>$data['shipping_state'],'pincode'=>$data['shipping_pincode'],'country'=>$data['shipping_country'],'mobile'=>$data['shipping_mobile']]);
+            }else{
+                //Add new Shipping Address
+                $shipping = new DeliveryAddress;
+                $shipping->user_id = $user_id;
+                $shipping->user_email = $user_email;
+                $shipping->name = $data['shipping_name'];
+                $shipping->address = $data['shipping_address'];
+                $shipping->city = $data['shipping_city'];
+                $shipping->state = $data['shipping_state'];
+                $shipping->pincode = $data['shipping_pincode'];
+                $shipping->country = $data['shipping_country'];
+                $shipping->mobile = $data['shipping_mobile'];
+                $shipping->save();
+            }
+            return redirect()->action('ProductsController@orderReview');
+        }
+
+        return view('products.checkout')->with(compact('countries', 'userDetails','shippingDetails'));
+    }
+
+    public function orderReview(){
+        $user_id = Auth::user()->id;
+        $user_email = Auth::user()->email;
+        $userDetails = User::where('id',$user_id)->first();
+        $shippingDetails = DeliveryAddress::where('user_id', $user_id)->first();
+        $shippingDetails = json_decode(json_encode($shippingDetails));
+        $userCart = DB::table('cart')->where(['user_email'=>$user_email])->get();
+        foreach ($userCart as $key => $product) {
+            $productDetails = Product::where('id',$product->product_id)->first();
+            $userCart[$key]->image = $productDetails->image;
+        }
+        return view('products.order_review')->with(compact('userDetails','shippingDetails','userCart'));
+    }
+
+    public function placeOrder(Request $request){
+        Session::forget('CouponAmount');
+        Session::forget('CouponCode');
+        if($request->isMethod('post')){
+            $data = $request->all();
+            $user_id = Auth::user()->id;
+            $user_email = Auth::user()->email;
+
+            //SI PRENDE L'INDIRIZZO DELL'UTENTE
+            $shippingDetails = DeliveryAddress::where(['user_email'=>$user_email])->first();
+
+            if(empty(Session::get('CouponCode'))){
+                $coupon_code = '';
+            }else{
+                $coupon_code = Session::get('CouponCode');
+            }
+
+            if(empty(Session::get('CouponAmount'))){
+                $coupon_amount = '';
+            }else{
+                $coupon_amount = Session::get('CouponAmount');
+            }
+
+            $order = new Order;
+            $order->user_id = $user_id;
+            $order->user_email = $user_email;
+            $order->name = $shippingDetails->name;
+            $order->address = $shippingDetails->address;
+            $order->city = $shippingDetails->city;
+            $order->state = $shippingDetails->state;
+            $order->pincode = $shippingDetails->pincode;
+            $order->country = $shippingDetails->country;
+            $order->mobile = $shippingDetails->mobile;
+            $order->coupon_code = $coupon_code;
+            $order->coupon_amount = $coupon_amount;
+            $order->order_status = "New";
+            $order->payment_method = $data['payment_method'];
+            $order->grand_total = $data['grand_total'];
+            $order->save();
+
+            $order_id = DB::getPdo()->lastInsertId();
+
+            $cartProducts = DB::table('cart')->where(['user_email'=>$user_email])->get();
+            foreach($cartProducts as $pro){
+                $cartPro = new OrdersProduct;
+                $cartPro->order_id = $order_id;
+                $cartPro->user_id = $user_id;
+                $cartPro->product_id = $pro->product_id;
+                $cartPro->product_code = $pro->product_code;
+                $cartPro->product_name = $pro->product_name;
+                $cartPro->product_price = $pro->price;
+                $cartPro->product_qty = $pro->quantity;
+                $cartPro->save();
+            }
+            Session::put('order_id',$order_id);
+            Session::put('grand_total',$data['grand_total']);
+
+            if($data['payment_method']=="COD"){
+
+                $productDetails = Order::with('orders')->where('id',$order_id)->first();
+                $productDetails = json_decode(json_encode($productDetails),true);
+
+
+                $userDetails = User::where('id',$user_id)->first();
+                $userDetails = json_decode(json_encode($userDetails),true);
+
+                /*Code for Order Email Start */
+                $email = $user_email;
+                $messageData = [
+                    'email' => $email,
+                    'name' => $shippingDetails->name,
+                    'order_id' => $order_id,
+                    'productDetails' => $productDetails,
+                    'userDetails' => $userDetails
+                ];
+                Mail::send('emails.order',$messageData,function($message) use($email){
+                    $message->to($email)->subject('Order Placed - E-com Website');
+                });
+                /*Code for Order Email Ends */
+
+                //COD Redirect user to thanks page after saving order
+                return redirect('/thanks');
+            }else{
+                //Paypal
+                return redirect('/paypal');
+            }
+        }
+    }
+
+    public function thanks(Request $request){
+        Session::forget('CouponAmount');
+        Session::forget('CouponCode');
+        $user_email = Auth::user()->email;
+        DB::table('cart')->where('user_email',$user_email)->delete();
+        return view('orders.thanks');
+    }
+
+    public function paypal(Request $request){
+        Session::forget('CouponAmount');
+        Session::forget('CouponCode');
+        $user_email = Auth::user()->email;
+        DB::table('cart')->where('user_email',$user_email)->delete();
+        return view('orders.paypal');
+    }
+
+    public function userOrders(){
+        $user_id = Auth::user()->id;
+        $orders = Order::with('orders')->where('user_id',$user_id)->orderBy('id','DESC')->get();
+        return view('orders.user_orders')->with(compact('orders'));
+    }
+
+    public function userOrderDetails($order_id){
+        $user_id = Auth::user()->id;
+        $orderDetails = Order::with('orders')->where('id',$order_id)->first();
+        $orderDetails = json_decode(json_encode($orderDetails));
+        return view('orders.user_order_details')->with(compact('orderDetails'));
+    }
+
+    public function viewOrders(){
+        $orders = Order::with('orders')->orderBy('id','Desc')->get();
+        $orders = json_decode(json_encode($orders));
+
+        return view('admin.orders.view_orders')->with(compact('orders'));
+    }
+
+    public function viewOrderDetails($order_id){
+        $orderDetails = Order::with('orders')->where('id',$order_id)->first();
+        $orderDetails = json_decode(json_encode($orderDetails));
+        $user_id = $orderDetails->user_id;
+        $userDetails = User::where('id',$user_id)->first();
+        return view('admin.orders.order_details')->with(compact('orderDetails','userDetails'));
+    }
+
+    public function viewOrderInvoice($order_id){
+        $orderDetails = Order::with('orders')->where('id',$order_id)->first();
+        $orderDetails = json_decode(json_encode($orderDetails));
+        $user_id = $orderDetails->user_id;
+        $userDetails = User::where('id',$user_id)->first();
+        return view('admin.orders.order_invoice')->with(compact('orderDetails','userDetails'));
+    }
+
+    public function updateOrderStatus(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+            Order::where('id',$data['order_id'])->update(['order_status'=>$data['order_status']]);
+            return redirect()->back()->with('flash_message_success','Order Status has been updated successfully!');
+        }
+    }
 }

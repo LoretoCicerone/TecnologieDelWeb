@@ -27,47 +27,18 @@
             </div>
         </div>
 
-        <!-- HELPFUL LINKS -->
-        <div class="col-md-3">
-            <h6>HELPFUL LINKS</h6>
-            <ul class="link">
-                <li><a href="#."> Products</a></li>
-                <li><a href="#."> Find a Store</a></li>
-                <li><a href="#."> Features</a></li>
-                <li><a href="#."> Privacy Policy</a></li>
-                <li><a href="#."> Blog</a></li>
-                <li><a href="#."> Press Kit </a></li>
-            </ul>
-        </div>
-
         <!-- SHOP -->
         <div class="col-md-3">
-            <h6>SHOP</h6>
+            <h6>LINK UTILI</h6>
             <ul class="link">
-                <li><a href="#."> About Us</a></li>
-                <li><a href="#."> Career</a></li>
-                <li><a href="#."> Shipping Methods</a></li>
-                <li><a href="#."> Contact</a></li>
-                <li><a href="#."> Support</a></li>
-                <li><a href="#."> Retailer</a></li>
+                <li><a href="{{url('page/termini-condizioni')}}"> Termini & Condizioni</a></li>
+                <li><a href="{{url('page/about-us')}}"> About Us</a></li>
+                <li><a href="{{url('page/privacy-policy')}}"> Privacy</a></li>
             </ul>
         </div>
-
-        <!-- MY ACCOUNT -->
-        <div class="col-md-3">
-            <h6>MY ACCOUNT</h6>
-            <ul class="link">
-                <li><a href="#."> Login</a></li>
-                <li><a href="#."> My Account</a></li>
-                <li><a href="#."> My Cart</a></li>
-                <li><a href="#."> Wishlist</a></li>
-                <li><a href="#."> Checkout</a></li>
-            </ul>
-        </div>
-
         <!-- Rights -->
         <div class="rights">
-            <p>©  2017 PAVSHOP All right reserved. </p>
+            <p>©  2020 PELISHOP Tutti diritti riservati. </p>
             <div class="scroll"> <a href="#wrap" class="go-up"><i class="lnr lnr-arrow-up"></i></a> </div>
         </div>
     </div>

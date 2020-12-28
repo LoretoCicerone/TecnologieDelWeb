@@ -6,7 +6,6 @@ $mainCategories = Controller::mainCategories();
 @extends('layouts.frontLayout.front_design')
 @section('content')
 
-
 <!-- LOADER-->
 <div id="loader">
     <div class="position-center-center">
@@ -36,8 +35,6 @@ $mainCategories = Controller::mainCategories();
 
         <!-- Content -->
         <div id="content">
-
-
             <!-- PRIMA DI CATEGORIE -->
             <section class="padding-bottom-150">
                 <div class="container">
@@ -129,14 +126,14 @@ $mainCategories = Controller::mainCategories();
             </section>   */?>
 
 
-            <!-- PRODOTTI VARI -->
+            <!-- PRODOTTI FEATURES -->
             <section class="padding-top-100 padding-bottom-100">
                 <div class="container">
 
                     <!-- Main Heading -->
                     <div class="heading text-center">
-                        <h4>Prodotti Vari</h4>
-                        <span>Mettice quello che te pare</span> </div>
+                        <h4>Prodotti Consigliati</h4>
+                        <span>Questi hanno pagato un sacco per stare qua, comprate qualcosa per favore</span> </div>
                 </div>
 
 
@@ -159,6 +156,7 @@ $mainCategories = Controller::mainCategories();
                         </div>
                     </div>
                     @endforeach
+                    <!--{{$productsAll->links()}} vedere video 107-->
                 </div>
             </section>
 

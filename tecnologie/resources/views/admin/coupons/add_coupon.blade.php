@@ -26,7 +26,9 @@
                             <h5>Add Coupon</h5>
                         </div>
                         <div class="widget-content nopadding">
-                            <form class="form-horizontal" method="post" action="{{ url('/admin/add-coupon') }}" name="add_coupon" id="add_coupon"> {{csrf_field()}}
+                            <form class="form-horizontal" method="post"
+                                  action="{{ url('/admin/add-coupon') }}" name="add_coupon" id="add_coupon">
+                                {{csrf_field()}}
 
                                 <div class="control-group">
                                     <label class="control-label">Coupon Code</label>

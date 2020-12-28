@@ -26,7 +26,9 @@
                             <h5>Add Product</h5>
                         </div>
                         <div class="widget-content nopadding">
-                            <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-product') }}" name="add_product" id="add_product" novalidate="novalidate"> {{csrf_field()}}
+                            <form enctype="multipart/form-data" class="form-horizontal" method="post"
+                                  action="{{ url('/admin/add-product') }}" name="add_product" id="add_product" novalidate="novalidate">
+                                {{csrf_field()}}
                                 <div class="control-group">
                                     <label class="control-label">Under Category</label>
                                     <div class="controls">
@@ -75,6 +77,12 @@
                                     <label class="control-label">Stock</label>
                                     <div class="controls">
                                         <input type="text" name="stock" id="stock">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Feature Item</label>
+                                    <div class="controls">
+                                        <input type="checkbox" name="feature_item" id="feature_item" value="1">
                                     </div>
                                 </div>
                                 <div class="form-actions">

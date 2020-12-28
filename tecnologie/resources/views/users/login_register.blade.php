@@ -41,7 +41,8 @@
                                         <!-- Name -->
                                         <li class="col-md-6">
                                             <label>
-                                                <input id="password" type="password" name="password" placeholder="PASSWORD" required minlength="6"/>
+                                                <input id="password" type="password"
+                                                       name="password" placeholder="PASSWORD" required minlength="6"/>
                                             </label>
                                         </li>
 
@@ -53,9 +54,9 @@
 
 
                                         <!-- FORGET PASS -->
-                                        <li class="col-md-7">
+                                        <li class="col-md-8">
                                             <div class="checkbox margin-0 margin-top-20 text-right">
-                                                <a href="#.">Forget Password</a>
+                                                <a href="{{url('forgot-password')}}" style="color: red; font-size: 15px">Password dimenticata?</a>
                                             </div>
                                         </li>
                                     </ul>

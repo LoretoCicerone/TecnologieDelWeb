@@ -124,7 +124,7 @@
                                 <input type="text" name="coupon_code"  placeholder="ENTER YOUR CODE IF YOU HAVE ONE">
                                 <button type="submit" class="btn btn-small btn-dark">APPLY CODE</button>
                             </form>
-                            <div class="coupn-btn"> <a href="{{ asset('/') }}" class="btn">continue shopping</a> <a href="#." class="btn">update cart</a> </div>
+                            <div class="coupn-btn"> <a href="{{ asset('/') }}" class="btn">continue shopping</a> <a href="{{ url('/checkout') }}" class="btn">checkout</a> </div>
                         </div>
 
                         <!-- SUB TOTAL -->

@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-        <title>Matrix Admin</title><meta charset="UTF-8" />
+        <title>Pelishop Admin</title><meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="{{ asset('css/backend_css/bootstrap.min.css') }}" />
 		<link rel="stylesheet" href="{{ asset('css/backend_css/bootstrap-responsive.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/backend_css/matrix-login.css') }}" />
-        <link href="{{ asset('fonts/backend_fonts/font-awesome/css/font-awesome.css') }}" rel="stylesheet" />
+        <link href="{{ asset('fonts/backend_fonts/css/font-awesome.css') }}" rel="stylesheet" />
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
 
     </head>
@@ -26,18 +26,22 @@
             </div>
         @endif
             <form id="loginform" role="form" class="form-vertical" method="POST" action="{{url('admin')}}">{{csrf_field()}}
-				 <div class="control-group normal_text"> <h3><img src="{{asset('images/backend_images/logo.png')}}" alt="Logo" /></h3></div>
+				 <div class="control-group normal_text">
+                     <h3>
+                         <!-- <img src="{{asset('images/backend_images/logo.png')}}" alt="Logo" /> -->
+                        Pelishop Pannello Admin
+                     </h3></div>
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
-                            <span class="add-on bg_lg"><i class="icon-user"> </i></span><input type="email" name="email" placeholder="Username" />
+                            <span class="add-on bg_lg"><i class="icon-user"> </i></span><input type="username" name="username" placeholder="Username" required=""/>
                         </div>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
-                            <span class="add-on bg_ly"><i class="icon-lock"></i></span><input type="password" name="password" placeholder="Password" />
+                            <span class="add-on bg_ly"><i class="icon-lock"></i></span><input type="password" name="password" placeholder="Password" required=""/>
                         </div>
                     </div>
                 </div>
@@ -57,7 +61,7 @@
 
                 <div class="form-actions">
                     <span class="pull-left"><a href="#" class="flip-link btn btn-success" id="to-login">&laquo; Back to login</a></span>
-                    <span class="pull-right"><a class="btn btn-info"/>Reecover </a> </span>
+                    <span class="pull-right"><a class="btn btn-info"/>Reecover</span>
                 </div>
             </form>
         </div>

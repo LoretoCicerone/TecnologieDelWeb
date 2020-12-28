@@ -19,7 +19,13 @@
             <div class="container-fluid">
                 <div class="position-center-center">
                     <!-- Header Text -->
-                    <div class="col-lg-7 col-lg-offset-5"><span class="price"><small></small>{{ $categoryDetails->name }}</span>
+                    <div class="col-lg-7 col-lg-offset-5"><span class="price"><small></small>
+                            @if(!empty($search_product))
+                                Ricerca {{ $search_product }}
+                            @else
+                                Ricerca {{ $categoryDetails->name }}
+                            @endif
+                        </span>
                     </div>
                 </div>
             </div>
@@ -37,19 +43,19 @@
                 </div>
                 <!-- New Arrival -->
                 <div class="arrival-block">
-                @foreach($productsAll as $product)
+                @foreach($productsAll as $pro)
                     <!-- Item -->
                     <div class="item">
                         <!-- Images -->
-                        <img class="img-1" src="{{ asset ('images/backend_images/products/large/'.$product->image) }}" alt=""> <img class="img-2" src="{{ asset ('images/backend_images/products/large/'.$product->image) }}" alt="">
+                        <img class="img-1" src="{{ asset ('images/backend_images/products/large/'.$pro->image) }}" alt=""> <img class="img-2" src="{{ asset ('images/backend_images/products/large/'.$pro->image) }}" alt="">
                         <!-- Overlay  -->
                         <div class="overlay">
                             <!-- Price -->
-                            <span class="price"><small>€</small>{{ $product->price }}</span>
-                            <div class="position-center-center"> <a href="{{ asset ('images/backend_images/products/large/'.$product->image) }}" data-lighter><i class="icon-magnifier"></i></a> </div>
+                            <span class="price"><small>€</small>{{ $pro->price }}</span>
+                            <div class="position-center-center"> <a href="{{ asset ('images/backend_images/products/large/'.$pro->image) }}" data-lighter><i class="icon-magnifier"></i></a> </div>
                         </div>
                         <!-- Item Name -->
-                        <div class="item-name"> <a href="{{ url('product/'.$product->id) }}">{{ $product->product_name }}</a>
+                        <div class="item-name"> <a href="{{ url('/product/'.$pro->id) }}">{{ $pro->product_name }}</a>
                             <p></p>
                         </div>
                     </div>

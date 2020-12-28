@@ -45,17 +45,17 @@
                                         </li>
                                         <li class="col-md-6">
                                             <label>
-                                                <input value="{{ $userDetails->city }}" id="city" type="city" name="city" placeholder="CITTA'" style="text-transform: capitalize" required/>
+                                                <input value="{{ $userDetails->city }}" id="city" type="city" name="city" placeholder="CITTA'" style="text-transform: capitalize" required minlength="2" onkeypress="return /[a-z]/i.test(event.key)"/>
                                             </label>
                                         </li>
                                         <li class="col-md-6">
                                             <label>
-                                                <input value="{{ $userDetails->state }}" style="text-transform: uppercase" id="state" type="state" name="state" placeholder="STATO" required/>
+                                                <input value="{{ $userDetails->state }}" style="text-transform: uppercase" id="state" type="state" name="state" placeholder="STATO" required minlength="2" onkeypress="return /[a-z]/i.test(event.key)"/>
                                             </label>
                                         </li>
                                         <li class="col-md-6">
                                             <label>
-                                                <select class="selectpicker" id="country" name="country" required>
+                                                <select class="selectpicker" id="country" name="country" required data-size="4">
                                                     <option value="">COUNTRY</option>
                                                     @foreach($countries as $country)
                                                         <option value="{{ $country->country_name }}" @if($country->country_name == $userDetails->country) selected @endif>{{$country->country_name}}</option>
@@ -70,7 +70,7 @@
                                         </li>
                                         <li class="col-md-6">
                                             <label>
-                                                <input value="{{ $userDetails->mobile }}" id="mobile" type="mobile" name="mobile" placeholder="TELEFONO" required/>
+                                                <input value="{{ $userDetails->mobile }}" id="mobile" type="mobile" name="mobile" placeholder="TELEFONO" required minlength="5" onkeypress="return /[0-9]/i.test(event.key)"/>
                                             </label>
                                         </li>
                                         <!-- LOGIN -->

@@ -64,7 +64,7 @@
                                 <ul class="row margin-top-30">
                                     <li class="col-xs-6">
                                         <div class="quinty" >
-                                            <input name="quantity" type="text"  style="border-color: #0f3e68; border-radius: 10px; margin-top: 10px; max-width: 50px; text-align: center; outline: none; font-size: 18px" value="1">
+                                            <input name="quantity" type="text"  style="border-color: #0f3e68; border-radius: 10px; margin-top: 10px; max-width: 50px; text-align: center; outline: none; font-size: 18px" value="1" required>
                                         </div>
                                     </li>
                                     @if($total_stock>0)
@@ -205,7 +205,7 @@
 
                 <!-- Main Heading -->
                 <div class="heading text-center">
-                        <h4>POTREBBERO PIACERTI</h4>
+                        <h4>PRODOTTI CORRELATI</h4>
                     <span>Qui puoi trovare dei prodotti simili!</span> </div>
 
                 <!-- Popular Item Slide -->
@@ -228,7 +228,7 @@
                         </div>
                         <!-- Item Name -->
                         <div class="item-name"> <a href="{{ url('product/'.$chunk->id) }}">{{ $chunk->product_name }}</a>
-                            <p>Lorem ipsum dolor sit amet</p>
+                           <!-- <p>Lorem ipsum dolor sit amet</p> -->
                         </div>
                         <!-- Price -->
                         <span class="price"><small>€</small>{{ $chunk->price }}</span>
