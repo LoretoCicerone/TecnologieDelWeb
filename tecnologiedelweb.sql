@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Ott 09, 2020 alle 22:08
+-- Creato il: Dic 28, 2020 alle 17:08
 -- Versione del server: 10.4.14-MariaDB
 -- Versione PHP: 7.4.10
 
@@ -24,89 +24,50 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `articolo`
+-- Struttura della tabella `admins`
 --
 
-CREATE TABLE `articolo` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `titolo` varchar(300) NOT NULL,
-  `autore` varchar(300) NOT NULL,
-  `descrizione` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+CREATE TABLE `admins` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dump dei dati per la tabella `articolo`
+-- Dump dei dati per la tabella `admins`
 --
 
-INSERT INTO `articolo` (`id`, `titolo`, `autore`, `descrizione`, `image`, `created_at`, `updated_at`) VALUES
-(1, 'Nuovo rasoio per rasatura perfetta', 'Simone', 'doc', NULL, '2020-10-07 16:14:29', '2020-10-07 16:14:29'),
-(2, 'Nuova lametta', 'Simone', 'doc', NULL, '2020-10-07 16:14:29', '2020-10-07 16:14:29');
+INSERT INTO `admins` (`id`, `username`, `password`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'admin', '5e66fe23e83e012c303bee319b943964', 1, '2020-12-18 18:41:29', '2020-12-18 17:29:07');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `articolo_has_tags`
+-- Struttura della tabella `cart`
 --
 
-CREATE TABLE `articolo_has_tags` (
+CREATE TABLE `cart` (
   `id` int(10) UNSIGNED NOT NULL,
-  `id_articolo` int(10) UNSIGNED NOT NULL,
-  `id_tag` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `carrello`
---
-
-CREATE TABLE `carrello` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `id_utente` int(10) UNSIGNED NOT NULL,
-  `id_prodotto` int(10) UNSIGNED NOT NULL,
-  `quantita` int(11) NOT NULL,
-  `id_sessione` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
+  `product_id` int(11) NOT NULL,
+  `product_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `user_email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `session_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Struttura della tabella `categoria`
+-- Dump dei dati per la tabella `cart`
 --
 
-CREATE TABLE `categoria` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `nome` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descrizione` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `immagine` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dump dei dati per la tabella `categoria`
---
-
-INSERT INTO `categoria` (`id`, `nome`, `descrizione`, `url`, `immagine`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'rasoi', 'rasoi', 'rasoi', NULL, 'token', '2020-10-07 16:14:29', NULL),
-(2, 'lamette', 'lamette', 'lamette', NULL, 'token', '2020-10-07 16:14:29', NULL),
-(3, 'forbici', 'forbici', 'forbici', NULL, 'token', '2020-10-07 16:14:29', NULL),
-(4, 'schiuma', 'schiuma', 'schiuma', NULL, 'token', '2020-10-07 16:14:29', NULL),
-(5, 'regolatori', 'regolatori', 'regolatori', NULL, 'token', '2020-10-07 16:14:29', NULL),
-(6, 'pennellino', 'pennellino', 'pennellino', NULL, 'token', '2020-10-07 16:14:29', NULL),
-(7, 'dopobarba', 'floid dopobarba', 'floid dopobarba', NULL, 'token', '2020-10-07 16:14:29', NULL),
-(8, 'bottigliette spray', 'bottigliette spray', 'bottigliette spray', NULL, 'token', '2020-10-07 16:14:29', NULL),
-(9, 'pennelli per tinta', 'pennelli per tinta', 'pennelli per tinta', NULL, 'token', '2020-10-07 16:14:29', NULL),
-(10, 'grembiuli', 'grembiuli', 'grembiuli', NULL, 'token', '2020-10-07 16:14:29', NULL);
+INSERT INTO `cart` (`id`, `product_id`, `product_name`, `product_code`, `price`, `quantity`, `user_email`, `session_id`, `created_at`, `updated_at`) VALUES
+(154, 31, 'Rasoio Series 8 Wet & Dry 8365cc.', 'RS8B', '199', 1, 'scaruso96@libero.it', 'gc8edQOPFuHF36VtlDhEW21G7sKnuvPgsvr2npVH', '2020-12-20 20:27:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -118,174 +79,377 @@ CREATE TABLE `categories` (
   `id` int(10) UNSIGNED NOT NULL,
   `parent_id` int(11) NOT NULL DEFAULT 0,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `desctiption` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT 1,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dump dei dati per la tabella `categories`
+--
+
+INSERT INTO `categories` (`id`, `parent_id`, `name`, `description`, `url`, `image`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
+(25, 0, 'Rasoi Elettrici', 'Rasoi Elettrici', 'rasoielettrici', '21880.png', 1, NULL, '2020-11-02 14:52:11', '2020-11-02 17:15:29'),
+(26, 0, 'Rasoi', 'Lamette', 'rasoi', '21499.png', 1, NULL, '2020-11-02 14:52:51', '2020-11-02 14:52:51'),
+(27, 0, 'Forbici', 'Tagliano', 'forbici', '96475.png', 1, NULL, '2020-11-02 14:53:32', '2020-11-02 14:53:32'),
+(28, 0, 'Beauty', 'Cose', 'beauty', '857.png', 1, NULL, '2020-11-02 14:59:22', '2020-11-02 14:59:22'),
+(29, 25, 'Braun', 'Rasoi elettrici Braun', 'rasoielettricibraun', '49894.png', 1, NULL, '2020-11-03 15:11:59', '2020-11-03 15:11:59'),
+(31, 26, 'Wilkinson', 'Lame potentissime', 'rasoiwilkinson', '5218.png', 1, NULL, '2020-11-06 16:48:07', '2020-11-06 16:48:07'),
+(32, 25, 'Philips', 'Meglio di braun', 'rasoielettriciphilips', '86670.png', 1, NULL, '2020-11-06 16:48:53', '2020-11-06 16:48:53'),
+(34, 28, 'Figaro', 'Figaro', 'beautyfigaro', '48170.jpg', 1, NULL, '2020-11-06 16:51:27', '2020-12-10 15:52:43');
+
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `commento`
+-- Struttura della tabella `cms_pages`
 --
 
-CREATE TABLE `commento` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `id_utente` int(10) UNSIGNED NOT NULL,
-  `id_prodotto` int(10) UNSIGNED NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `testo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `approvato` int(11) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+CREATE TABLE `cms_pages` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `url` varchar(30) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dump dei dati per la tabella `commento`
+-- Dump dei dati per la tabella `cms_pages`
 --
 
-INSERT INTO `commento` (`id`, `id_utente`, `id_prodotto`, `email`, `testo`, `approvato`, `created_at`, `updated_at`) VALUES
-(1, 2, 1, 'marcodecesaris146@gmail.com', 'grande!', 0, '2020-10-07 16:14:29', '2020-10-07 16:14:29'),
-(2, 1, 2, 'marcodecesaris146@gmail.com', 'ottimo prodotto!', 0, '2020-10-07 16:14:29', '2020-10-07 16:14:29');
+INSERT INTO `cms_pages` (`id`, `title`, `description`, `url`, `status`, `created_at`, `updated_at`) VALUES
+(5, 'About Us', 'Non lo so', 'about-us', 1, '2020-12-27 17:43:48', '2020-12-28 13:40:26'),
+(6, 'Termini & Condizioni', 'Termini', 'termini-condizioni', 1, '2020-12-27 17:48:02', '2020-12-27 16:48:02'),
+(7, 'Privacy Policy', 'privacy', 'privacy-policy', 1, '2020-12-27 17:48:24', '2020-12-27 16:48:24');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `consegna`
+-- Struttura della tabella `countries`
 --
 
-CREATE TABLE `consegna` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `id_corriere` int(10) UNSIGNED NOT NULL,
-  `id_indirizzo` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `countries` (
+  `id` int(11) NOT NULL,
+  `country_code` varchar(2) NOT NULL DEFAULT '',
+  `country_name` varchar(100) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `countries`
+--
+
+INSERT INTO `countries` (`id`, `country_code`, `country_name`) VALUES
+(1, 'AF', 'Afghanistan'),
+(2, 'AL', 'Albania'),
+(3, 'DZ', 'Algeria'),
+(4, 'DS', 'American Samoa'),
+(5, 'AD', 'Andorra'),
+(6, 'AO', 'Angola'),
+(7, 'AI', 'Anguilla'),
+(8, 'AQ', 'Antarctica'),
+(9, 'AG', 'Antigua and Barbuda'),
+(10, 'AR', 'Argentina'),
+(11, 'AM', 'Armenia'),
+(12, 'AW', 'Aruba'),
+(13, 'AU', 'Australia'),
+(14, 'AT', 'Austria'),
+(15, 'AZ', 'Azerbaijan'),
+(16, 'BS', 'Bahamas'),
+(17, 'BH', 'Bahrain'),
+(18, 'BD', 'Bangladesh'),
+(19, 'BB', 'Barbados'),
+(20, 'BY', 'Belarus'),
+(21, 'BE', 'Belgium'),
+(22, 'BZ', 'Belize'),
+(23, 'BJ', 'Benin'),
+(24, 'BM', 'Bermuda'),
+(25, 'BT', 'Bhutan'),
+(26, 'BO', 'Bolivia'),
+(27, 'BA', 'Bosnia and Herzegovina'),
+(28, 'BW', 'Botswana'),
+(29, 'BV', 'Bouvet Island'),
+(30, 'BR', 'Brazil'),
+(31, 'IO', 'British Indian Ocean Territory'),
+(32, 'BN', 'Brunei Darussalam'),
+(33, 'BG', 'Bulgaria'),
+(34, 'BF', 'Burkina Faso'),
+(35, 'BI', 'Burundi'),
+(36, 'KH', 'Cambodia'),
+(37, 'CM', 'Cameroon'),
+(38, 'CA', 'Canada'),
+(39, 'CV', 'Cape Verde'),
+(40, 'KY', 'Cayman Islands'),
+(41, 'CF', 'Central African Republic'),
+(42, 'TD', 'Chad'),
+(43, 'CL', 'Chile'),
+(44, 'CN', 'China'),
+(45, 'CX', 'Christmas Island'),
+(46, 'CC', 'Cocos (Keeling) Islands'),
+(47, 'CO', 'Colombia'),
+(48, 'KM', 'Comoros'),
+(49, 'CD', 'Democratic Republic of the Congo'),
+(50, 'CG', 'Republic of Congo'),
+(51, 'CK', 'Cook Islands'),
+(52, 'CR', 'Costa Rica'),
+(53, 'HR', 'Croatia (Hrvatska)'),
+(54, 'CU', 'Cuba'),
+(55, 'CY', 'Cyprus'),
+(56, 'CZ', 'Czech Republic'),
+(57, 'DK', 'Denmark'),
+(58, 'DJ', 'Djibouti'),
+(59, 'DM', 'Dominica'),
+(60, 'DO', 'Dominican Republic'),
+(61, 'TP', 'East Timor'),
+(62, 'EC', 'Ecuador'),
+(63, 'EG', 'Egypt'),
+(64, 'SV', 'El Salvador'),
+(65, 'GQ', 'Equatorial Guinea'),
+(66, 'ER', 'Eritrea'),
+(67, 'EE', 'Estonia'),
+(68, 'ET', 'Ethiopia'),
+(69, 'FK', 'Falkland Islands (Malvinas)'),
+(70, 'FO', 'Faroe Islands'),
+(71, 'FJ', 'Fiji'),
+(72, 'FI', 'Finland'),
+(73, 'FR', 'France'),
+(74, 'FX', 'France, Metropolitan'),
+(75, 'GF', 'French Guiana'),
+(76, 'PF', 'French Polynesia'),
+(77, 'TF', 'French Southern Territories'),
+(78, 'GA', 'Gabon'),
+(79, 'GM', 'Gambia'),
+(80, 'GE', 'Georgia'),
+(81, 'DE', 'Germany'),
+(82, 'GH', 'Ghana'),
+(83, 'GI', 'Gibraltar'),
+(84, 'GK', 'Guernsey'),
+(85, 'GR', 'Greece'),
+(86, 'GL', 'Greenland'),
+(87, 'GD', 'Grenada'),
+(88, 'GP', 'Guadeloupe'),
+(89, 'GU', 'Guam'),
+(90, 'GT', 'Guatemala'),
+(91, 'GN', 'Guinea'),
+(92, 'GW', 'Guinea-Bissau'),
+(93, 'GY', 'Guyana'),
+(94, 'HT', 'Haiti'),
+(95, 'HM', 'Heard and Mc Donald Islands'),
+(96, 'HN', 'Honduras'),
+(97, 'HK', 'Hong Kong'),
+(98, 'HU', 'Hungary'),
+(99, 'IS', 'Iceland'),
+(100, 'IN', 'India'),
+(101, 'IM', 'Isle of Man'),
+(102, 'ID', 'Indonesia'),
+(103, 'IR', 'Iran (Islamic Republic of)'),
+(104, 'IQ', 'Iraq'),
+(105, 'IE', 'Ireland'),
+(106, 'IL', 'Israel'),
+(107, 'IT', 'Italy'),
+(108, 'CI', 'Ivory Coast'),
+(109, 'JE', 'Jersey'),
+(110, 'JM', 'Jamaica'),
+(111, 'JP', 'Japan'),
+(112, 'JO', 'Jordan'),
+(113, 'KZ', 'Kazakhstan'),
+(114, 'KE', 'Kenya'),
+(115, 'KI', 'Kiribati'),
+(116, 'KP', 'Korea, Democratic People\'s Republic of'),
+(117, 'KR', 'Korea, Republic of'),
+(118, 'XK', 'Kosovo'),
+(119, 'KW', 'Kuwait'),
+(120, 'KG', 'Kyrgyzstan'),
+(121, 'LA', 'Lao People\'s Democratic Republic'),
+(122, 'LV', 'Latvia'),
+(123, 'LB', 'Lebanon'),
+(124, 'LS', 'Lesotho'),
+(125, 'LR', 'Liberia'),
+(126, 'LY', 'Libyan Arab Jamahiriya'),
+(127, 'LI', 'Liechtenstein'),
+(128, 'LT', 'Lithuania'),
+(129, 'LU', 'Luxembourg'),
+(130, 'MO', 'Macau'),
+(131, 'MK', 'North Macedonia'),
+(132, 'MG', 'Madagascar'),
+(133, 'MW', 'Malawi'),
+(134, 'MY', 'Malaysia'),
+(135, 'MV', 'Maldives'),
+(136, 'ML', 'Mali'),
+(137, 'MT', 'Malta'),
+(138, 'MH', 'Marshall Islands'),
+(139, 'MQ', 'Martinique'),
+(140, 'MR', 'Mauritania'),
+(141, 'MU', 'Mauritius'),
+(142, 'TY', 'Mayotte'),
+(143, 'MX', 'Mexico'),
+(144, 'FM', 'Micronesia, Federated States of'),
+(145, 'MD', 'Moldova, Republic of'),
+(146, 'MC', 'Monaco'),
+(147, 'MN', 'Mongolia'),
+(148, 'ME', 'Montenegro'),
+(149, 'MS', 'Montserrat'),
+(150, 'MA', 'Morocco'),
+(151, 'MZ', 'Mozambique'),
+(152, 'MM', 'Myanmar'),
+(153, 'NA', 'Namibia'),
+(154, 'NR', 'Nauru'),
+(155, 'NP', 'Nepal'),
+(156, 'NL', 'Netherlands'),
+(157, 'AN', 'Netherlands Antilles'),
+(158, 'NC', 'New Caledonia'),
+(159, 'NZ', 'New Zealand'),
+(160, 'NI', 'Nicaragua'),
+(161, 'NE', 'Niger'),
+(162, 'NG', 'Nigeria'),
+(163, 'NU', 'Niue'),
+(164, 'NF', 'Norfolk Island'),
+(165, 'MP', 'Northern Mariana Islands'),
+(166, 'NO', 'Norway'),
+(167, 'OM', 'Oman'),
+(168, 'PK', 'Pakistan'),
+(169, 'PW', 'Palau'),
+(170, 'PS', 'Palestine'),
+(171, 'PA', 'Panama'),
+(172, 'PG', 'Papua New Guinea'),
+(173, 'PY', 'Paraguay'),
+(174, 'PE', 'Peru'),
+(175, 'PH', 'Philippines'),
+(176, 'PN', 'Pitcairn'),
+(177, 'PL', 'Poland'),
+(178, 'PT', 'Portugal'),
+(179, 'PR', 'Puerto Rico'),
+(180, 'QA', 'Qatar'),
+(181, 'RE', 'Reunion'),
+(182, 'RO', 'Romania'),
+(183, 'RU', 'Russian Federation'),
+(184, 'RW', 'Rwanda'),
+(185, 'KN', 'Saint Kitts and Nevis'),
+(186, 'LC', 'Saint Lucia'),
+(187, 'VC', 'Saint Vincent and the Grenadines'),
+(188, 'WS', 'Samoa'),
+(189, 'SM', 'San Marino'),
+(190, 'ST', 'Sao Tome and Principe'),
+(191, 'SA', 'Saudi Arabia'),
+(192, 'SN', 'Senegal'),
+(193, 'RS', 'Serbia'),
+(194, 'SC', 'Seychelles'),
+(195, 'SL', 'Sierra Leone'),
+(196, 'SG', 'Singapore'),
+(197, 'SK', 'Slovakia'),
+(198, 'SI', 'Slovenia'),
+(199, 'SB', 'Solomon Islands'),
+(200, 'SO', 'Somalia'),
+(201, 'ZA', 'South Africa'),
+(202, 'GS', 'South Georgia South Sandwich Islands'),
+(203, 'SS', 'South Sudan'),
+(204, 'ES', 'Spain'),
+(205, 'LK', 'Sri Lanka'),
+(206, 'SH', 'St. Helena'),
+(207, 'PM', 'St. Pierre and Miquelon'),
+(208, 'SD', 'Sudan'),
+(209, 'SR', 'Suriname'),
+(210, 'SJ', 'Svalbard and Jan Mayen Islands'),
+(211, 'SZ', 'Swaziland'),
+(212, 'SE', 'Sweden'),
+(213, 'CH', 'Switzerland'),
+(214, 'SY', 'Syrian Arab Republic'),
+(215, 'TW', 'Taiwan'),
+(216, 'TJ', 'Tajikistan'),
+(217, 'TZ', 'Tanzania, United Republic of'),
+(218, 'TH', 'Thailand'),
+(219, 'TG', 'Togo'),
+(220, 'TK', 'Tokelau'),
+(221, 'TO', 'Tonga'),
+(222, 'TT', 'Trinidad and Tobago'),
+(223, 'TN', 'Tunisia'),
+(224, 'TR', 'Turkey'),
+(225, 'TM', 'Turkmenistan'),
+(226, 'TC', 'Turks and Caicos Islands'),
+(227, 'TV', 'Tuvalu'),
+(228, 'UG', 'Uganda'),
+(229, 'UA', 'Ukraine'),
+(230, 'AE', 'United Arab Emirates'),
+(231, 'GB', 'United Kingdom'),
+(232, 'US', 'United States'),
+(233, 'UM', 'United States minor outlying islands'),
+(234, 'UY', 'Uruguay'),
+(235, 'UZ', 'Uzbekistan'),
+(236, 'VU', 'Vanuatu'),
+(237, 'VA', 'Vatican City State'),
+(238, 'VE', 'Venezuela'),
+(239, 'VN', 'Vietnam'),
+(240, 'VG', 'Virgin Islands (British)'),
+(241, 'VI', 'Virgin Islands (U.S.)'),
+(242, 'WF', 'Wallis and Futuna Islands'),
+(243, 'EH', 'Western Sahara'),
+(244, 'YE', 'Yemen'),
+(245, 'ZM', 'Zambia'),
+(246, 'ZW', 'Zimbabwe');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `contenuto`
+-- Struttura della tabella `coupons`
 --
 
-CREATE TABLE `contenuto` (
+CREATE TABLE `coupons` (
   `id` int(10) UNSIGNED NOT NULL,
-  `id_prodotto` int(10) UNSIGNED NOT NULL,
-  `id_categoria` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `corriere`
---
-
-CREATE TABLE `corriere` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `nome` varchar(200) NOT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dump dei dati per la tabella `corriere`
---
-
-INSERT INTO `corriere` (`id`, `nome`, `created_at`, `updated_at`) VALUES
-(1, 'Bartolini', '2020-10-07 16:14:29', NULL);
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `coupon`
---
-
-CREATE TABLE `coupon` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `codice` varchar(100) NOT NULL,
-  `percentuale` varchar(5) NOT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dump dei dati per la tabella `coupon`
---
-
-INSERT INTO `coupon` (`id`, `codice`, `percentuale`, `created_at`, `updated_at`) VALUES
-(1, 'barbershop_25', '25%', '2020-10-07 16:14:29', NULL),
-(2, 'barbershop_30', '30%', '2020-10-07 16:14:29', NULL),
-(3, 'barbershop_10', '10%', '2020-10-07 16:14:29', NULL);
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `group_has_service`
---
-
-CREATE TABLE `group_has_service` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `id_gruppo` int(10) UNSIGNED NOT NULL,
-  `id_servizio` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `gruppo`
---
-
-CREATE TABLE `gruppo` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `nome` varchar(300) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `immagine`
---
-
-CREATE TABLE `immagine` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `nome` varchar(300) NOT NULL,
-  `id_prodotto` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `indirizzo`
---
-
-CREATE TABLE `indirizzo` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `nome_utente` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nome_indirizzo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `citta` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cap` int(11) NOT NULL,
-  `paese` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_utente` int(10) UNSIGNED NOT NULL,
-  `telefono` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `coupon_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amount` int(11) NOT NULL,
+  `amount_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiry_date` date NOT NULL,
+  `status` tinyint(4) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dump dei dati per la tabella `coupons`
+--
+
+INSERT INTO `coupons` (`id`, `coupon_code`, `amount`, `amount_type`, `expiry_date`, `status`, `created_at`, `updated_at`) VALUES
+(14, '12345', 1, 'Percentage', '2020-12-31', 1, '2020-11-21 08:35:39', '2020-12-05 15:14:44'),
+(15, '121212', 1, 'Fixed', '2020-12-31', 1, '2020-11-21 08:35:57', '2020-12-05 15:14:51');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `delivery_addresses`
+--
+
+CREATE TABLE `delivery_addresses` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `user_email` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `pincode` varchar(255) NOT NULL,
+  `mobile` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dump dei dati per la tabella `indirizzo`
+-- Dump dei dati per la tabella `delivery_addresses`
 --
 
-INSERT INTO `indirizzo` (`id`, `nome_utente`, `nome_indirizzo`, `citta`, `cap`, `paese`, `id_utente`, `telefono`, `created_at`, `updated_at`) VALUES
-(1, 'Loreto Cicerone', 'Via Umberto 1', 'Pagliara', 2021, 'Italia', 1, '3890233514', '2020-10-07 16:14:29', NULL),
-(2, 'Marco De Cesaris', 'Via dei salici', 'Borgorose', 2021, 'Italia', 2, '3920607183', '2020-10-07 16:14:29', NULL),
-(3, 'Simone Caruso', 'Via Sandonato', 'Pescara', 65129, 'Italia', 3, '3881046378', '2020-10-07 16:14:29', NULL);
+INSERT INTO `delivery_addresses` (`id`, `user_id`, `user_email`, `name`, `address`, `city`, `state`, `country`, `pincode`, `mobile`, `created_at`, `updated_at`) VALUES
+(1, 1, 'scaruso96@gmail.com', 'simone caruso', 'san donato 35', 'pescara', 'pe', 'Italy', '65129', '3881046378', '2020-12-16 15:37:33', '2020-12-16 14:37:33'),
+(2, 20, 'Giannni@gianni.com', 'Gianni', 'Via Fiume 45', 'Foggia', 'FG', 'Italy', '60100', '3881046378', '2020-12-04 18:54:33', '2020-12-04 18:54:33'),
+(4, 23, 'cosa@cosa.com', 'Cazio', 'san donato 35', 'pescara', 'pe', 'Italy', '65129', '3881046378', '2020-12-05 15:52:57', '2020-12-05 15:52:57'),
+(5, 25, 'cosa@cosa.com', 'Cosa', 'san donato 35', 'pescara', 'pe', 'Italy', '65129', '3881046378', '2020-12-05 16:11:52', '2020-12-05 16:11:52'),
+(6, 26, 'cosa@cosa.com', 'Cazio', 'san donato 35', 'pescara', 'pe', 'Afghanistan', '65129', '3881046378', '2020-12-16 15:50:52', '2020-12-16 14:50:52'),
+(7, 46, 'scaruso96@libero.it', 'Gianni', 'san donato 35', 'Foggia', 'FG', 'Italy', '60100', '3881046378', '2020-12-20 16:37:11', '2020-12-20 15:37:11'),
+(8, 30, 'scaruso96@gmail.com', 'simone caruso', 'san donato 35', 'pescara', 'pe', 'Italy', '65129', '3881046378', '2020-12-28 15:22:16', '2020-12-28 14:22:16'),
+(9, 47, 'scaruso96@libero.it', 'Cazio', 'san donato 35', 'pescara', 'pe', 'Italy', '65129', '3881046378', '2020-12-20 19:05:56', '2020-12-20 19:05:56');
 
 -- --------------------------------------------------------
 
@@ -295,9 +459,9 @@ INSERT INTO `indirizzo` (`id`, `nome_utente`, `nome_indirizzo`, `citta`, `cap`, 
 
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dump dei dati per la tabella `migrations`
@@ -306,43 +470,55 @@ CREATE TABLE `migrations` (
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '2014_10_12_000000_create_users_table', 1),
 (2, '2014_10_12_100000_create_password_resets_table', 1),
-(3, '2020_10_09_144814_create_category_table', 2),
-(4, '2020_10_09_192547_create_category_table', 3),
-(5, '2020_10_09_193229_create_categories_table', 4),
-(6, '2020_10_09_193506_create_category_table', 5);
+(3, '2020_10_09_201906_create_category_table', 1),
+(4, '2020_10_13_095518_create_products_table', 1),
+(5, '2020_11_16_152818_create_cart_table', 2),
+(6, '2020_11_19_183838_create_coupons_table', 3);
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `ordine`
+-- Struttura della tabella `orders`
 --
 
-CREATE TABLE `ordine` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `id_utente` int(10) UNSIGNED NOT NULL,
-  `id_indirizzo` int(10) UNSIGNED NOT NULL,
-  `nome` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email_utente` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stato` int(11) NOT NULL,
-  `metodo_pagamento` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `totale` double(8,2) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `user_email` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `pincode` varchar(255) NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `mobile` varchar(255) NOT NULL,
+  `shipping_charges` float NOT NULL,
+  `coupon_code` varchar(255) NOT NULL,
+  `coupon_amount` float NOT NULL,
+  `order_status` varchar(255) NOT NULL,
+  `payment_method` varchar(255) NOT NULL,
+  `grand_total` float NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `ordine_prodotto`
+-- Struttura della tabella `orders_products`
 --
 
-CREATE TABLE `ordine_prodotto` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `id_ordine` int(10) UNSIGNED NOT NULL,
-  `id_prodotto` int(10) UNSIGNED NOT NULL,
-  `quantità` int(11) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+CREATE TABLE `orders_products` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_code` varchar(255) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `product_price` float NOT NULL,
+  `product_qty` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -357,147 +533,44 @@ CREATE TABLE `password_resets` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
 --
--- Struttura della tabella `preferiti`
+-- Dump dei dati per la tabella `password_resets`
 --
 
-CREATE TABLE `preferiti` (
-  `id_utente` int(10) UNSIGNED NOT NULL,
-  `id_prodotto` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
+('scaruso96@gmail.com', '$2y$10$QPUZKTPwVtBs8S0ChdG9VuLOgBfuCFIPGdGyP5EJ5q9TG.yI/J3QO', '2020-12-04 10:01:24');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `prodotto`
+-- Struttura della tabella `products`
 --
 
-CREATE TABLE `prodotto` (
+CREATE TABLE `products` (
   `id` int(10) UNSIGNED NOT NULL,
-  `id_categoria` int(10) UNSIGNED NOT NULL,
-  `nome` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `codice` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `brand` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descrizione` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `prezzo` double(8,2) NOT NULL,
-  `immagine` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category_id` int(11) NOT NULL,
+  `product_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_brand` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` double(8,2) NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `feature_item` tinyint(4) NOT NULL DEFAULT 0,
   `stock` int(11) NOT NULL,
-  `raccomandato` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dump dei dati per la tabella `prodotto`
---
-
-INSERT INTO `prodotto` (`id`, `id_categoria`, `nome`, `codice`, `brand`, `descrizione`, `prezzo`, `immagine`, `stock`, `raccomandato`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Braun Series 9', 'braun1', 'Braun', 'Leva completamente regolabile. Elimina la necessita di utilizzare più lame.', 85.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
-(2, 1, 'Philips Aquatouch', 'philips2', 'Philips', 'Completamente in alluminio leggero e infrangibile, molto affidabile.', 50.00, NULL, 15, 1, '2020-10-07 16:14:29', NULL),
-(3, 1, 'Philips Multigroom Series', 'philips3', 'Philips', 'Fornito di leva regolabile per una rasatura completa.', 21.00, NULL, 30, 1, '2020-10-07 16:14:29', NULL),
-(4, 2, 'Eberbart rasoio', 'eberbart1', 'Eberbart', 'Rasoio barbiere in legno di rose e acciaio inossidabile, per rasatura e rifinitura di barba e capelli.', 15.00, NULL, 10, 0, '2020-10-07 16:14:29', NULL),
-(5, 2, 'Morocutti magic rasoio', 'morocutti1', 'Morocutti', 'Comodo sistema di montaggio della lama con binario scorrevole, in acciaio inossidabile che consente un limitato contatto con la lametta.', 27.00, NULL, 40, 1, '2020-10-07 16:14:29', NULL),
-(6, 2, 'Wilkinson Sword', 'wilkinson1', 'Wilkinson', 'Ideale per una rasatura precisa con una finitura perfetta, è il must-have tipico dei dei barbershop per rifinire i bordi della barba in modo impeccabile.', 50.00, NULL, 30, 1, '2020-10-07 16:14:29', NULL),
-(7, 3, 'Giubra Mastr sfloty', 'giubra2', 'Giubra', 'Forbici per sfoltitura capelli.', 15.00, NULL, 30, 1, '2020-10-07 16:14:29', NULL),
-(8, 3, 'Sharaonds Pharaoh.', 'sharaonds2', 'Sharaonds', 'Forbici eleganti per sfoltitura capelli.', 50.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
-(9, 3, 'BeautyTime International', 'beauty1', 'BeautyTime International SRL', 'Forbici per sfoltitura capelli.', 60.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
-(10, 4, 'Schiuma da barba gillette.', 'gillette2', 'Gillette', 'Schiuma da barba.', 10.00, NULL, 40, 1, '2020-10-07 16:14:29', NULL),
-(11, 4, 'Palmolive schiuma da barba.', 'palmolive2', 'Palmolive', 'Schiuma da barba.', 10.00, NULL, 40, 1, '2020-10-07 16:14:29', NULL),
-(12, 4, 'Avene schiuma da barba', 'avene1', 'Avene', 'Schiuma da barba.', 10.00, NULL, 30, 1, '2020-10-07 16:14:29', NULL),
-(13, 5, 'Braun pettine regolabile', 'pettine1', 'Braun', 'Pettine regolabile per rasoi.', 5.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
-(14, 5, 'Braun pettine regolabile', 'pettine2', 'Braun', 'Pettine regolabile per rasoi.', 6.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
-(15, 5, 'Philips pettine regolabile', 'pettine3', 'Philips', 'Pettine regolabile per rasoi.', 6.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
-(16, 6, 'UEB pennello spargitalco', 'pennello1', 'UEB', 'Pennello spargitalco.', 10.00, NULL, 10, 1, '2020-10-07 16:14:29', NULL),
-(17, 6, 'Teriam pennello spargitalco', 'pennello2', 'Teriam', 'Pennello spargitalco.', 10.00, NULL, 15, 1, '2020-10-07 16:14:29', NULL),
-(18, 6, 'Wahl pennello spargitalco', 'pennello3', 'Wahl', 'Pennello spargitalco.', 10.00, NULL, 15, 1, '2020-10-07 16:14:29', NULL),
-(19, 7, 'CubaGold dopobarba', 'dopobarba1', 'CubaGold', 'Dopobarba', 21.00, NULL, 15, 1, '2020-10-07 16:14:29', NULL),
-(20, 7, 'Hipsteria after shave', 'dopobarba2', 'Hipesteria', 'Dopobarba', 21.00, NULL, 30, 1, '2020-10-07 16:14:29', NULL),
-(21, 7, 'Denim after shave', 'dopobarba3', 'Denim', 'Dopobarba', 21.00, NULL, 24, 1, '2020-10-07 16:14:29', NULL),
-(22, 8, 'Bakaji vaporizzatore', 'bottigliette1', 'Bakaji', 'Bottigliette spray', 7.00, NULL, 60, 1, '2020-10-07 16:14:29', NULL),
-(23, 9, 'Goldwell - color brush', 'pennelli1', 'Goldwell', 'Pennello per tinta capelli.', 10.00, NULL, 70, 1, '2020-10-07 16:14:29', NULL),
-(24, 10, 'grembiule', 'grembiule1', 'Sconosciuto', 'Grembiule da indossare durante acconciatura.', 10.00, NULL, 40, 1, '2020-10-07 16:14:29', NULL);
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `prodotto_has_tags`
---
-
-CREATE TABLE `prodotto_has_tags` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `id_prodotto` int(10) UNSIGNED NOT NULL,
-  `id_tag` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Struttura della tabella `recensione`
+-- Dump dei dati per la tabella `products`
 --
 
-CREATE TABLE `recensione` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `id_prodotto` int(10) UNSIGNED NOT NULL,
-  `id_utente` int(10) UNSIGNED NOT NULL,
-  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `commento` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `approvato` int(11) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dump dei dati per la tabella `recensione`
---
-
-INSERT INTO `recensione` (`id`, `id_prodotto`, `id_utente`, `user_name`, `commento`, `approvato`, `created_at`, `updated_at`) VALUES
-(1, 15, 3, 'Simone Caruso', 'Ottimo prodotto.', 1, '2020-10-07 16:14:29', '2020-10-07 16:14:29'),
-(2, 12, 3, 'Simone Caruso', 'Ottimo', 1, '2020-10-07 16:14:29', '2020-10-07 16:14:29'),
-(3, 21, 3, 'Simone Caruso', 'Bel prodotto.', 1, '2020-10-07 16:14:29', '2020-10-07 16:14:29');
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `servizio`
---
-
-CREATE TABLE `servizio` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `nome` varchar(300) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `tag`
---
-
-CREATE TABLE `tag` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `nome_tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dump dei dati per la tabella `tag`
---
-
-INSERT INTO `tag` (`id`, `nome_tag`, `created_at`, `updated_at`) VALUES
-(1, 'rasoi', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
-(2, 'lamette', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
-(3, 'dopobarba', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
-(4, 'forbici', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
-(5, 'pettine', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
-(6, 'schiuma', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
-(7, 'pennello', '2020-10-08 08:15:51', '2020-10-08 08:15:51'),
-(8, 'grembiule', '2020-10-08 08:15:51', '2020-10-08 08:15:51');
+INSERT INTO `products` (`id`, `category_id`, `product_name`, `product_code`, `product_brand`, `description`, `price`, `image`, `feature_item`, `stock`, `created_at`, `updated_at`) VALUES
+(29, 29, 'Rasoio Series 9 Wet & Dry 9325s.', 'RBS9', 'Braun', 'Rasoio Series 9 Wet & Dry 9325s con base di ricarica, grafite.<br                                                     \r\nSeries 9 di Braun è il rasoio da barba elettrico più efficiente al mondo. I 5 elementi di rasatura catturano più peli in una sola passata per una rasatura impeccabile. Questo rasoio da barba elettrico a lamina offre una rasatura profonda e delicata allo stesso tempo, senza compromessi. Il rasoio da barba elettrico scorre sulla pelle ed è adatto per la rasatura a secco o sotto l’acqua. L’utilizzo senza fili dura più a lungo (60 min), con il 20% in più di batteria rispetto al precedente rasoio da barba elettrico Series 9. Ogni rasoio da barba elettrico Series 9 è prodotto in Germania con maestria artigianale di qualità.', 120.00, '64973.jpg', 0, 120, '2020-11-13 17:06:49', '2020-12-28 14:05:05'),
+(31, 29, 'Rasoio Series 8 Wet & Dry 8365cc.', 'RS8B', 'Braun', 'Rasoio Series 8 Wet & Dry 8365cc con stazione di pulizia Clean & Charge e custodia da viaggio, nero/blu.\r\n\r\nIl rasoio da barba elettrico Braun Series 8 offre una rasatura profonda e precisa e comfort sulla pelle. La testina di precisione del rasoio da barba elettrico cattura i peli anche nelle zone più complicate, per ottenere risultati impeccabili. La Tecnologia Sonica genera micro vibrazioni che fanno in modo che la testina del rasoio da barba elettrico possa scorrere sulla pelle durante la rasatura. Questo rasoio da barba elettrico a lamina è adatto per la rasatura a secco o sotto l’acqua. Ora con il 20% in più di batteria rispetto al Series 7. Ogni rasoio da barba elettrico Series 8 è realizzato in Germania e progettato per durare fino a 7 anni.', 199.00, '82478.jpg', 1, 3, '2020-11-14 15:15:34', '2020-12-27 15:57:00'),
+(32, 31, 'Xtreme 3', 'X3W', 'Wilkinson', 'Formato convenienza con\r\nun manico + 5 ricariche\r\ncon 3 lame flessibili', 5.00, '6448.png', 1, 200, '2020-11-14 16:31:28', '2020-12-27 14:35:30'),
+(33, 32, 'Philips Ciao', 'PHIC', 'Philips', 'Cazzono', 321.00, '3633.png', 1, 12, '2020-12-24 16:18:48', '2020-12-27 15:49:32'),
+(34, 32, 'asfafqf', 'wqw', 'Philips', 'Cosa vuoi', 41.00, '64393.png', 1, 24, '2020-12-24 16:45:21', '2020-12-27 15:47:05');
 
 -- --------------------------------------------------------
 
@@ -508,11 +581,19 @@ INSERT INTO `tag` (`id`, `nome_tag`, `created_at`, `updated_at`) VALUES
 CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `state` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pincode` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mobile` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `admin` tinyint(1) DEFAULT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
+  `admin` tinyint(1) DEFAULT 0,
+  `status` tinyint(4) NOT NULL DEFAULT 0,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -520,90 +601,24 @@ CREATE TABLE `users` (
 -- Dump dei dati per la tabella `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `admin`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Simone', 'scaruso96@gmail.com', '$2y$10$ioN618jqyMmoYxdVFQDYqO54Cm.S9wT26nDDERoLzgKDof3H/0Fim', 1, 'tBxEqnwYUPpmJcDJ13GIM7GKUuj30jl7QPvMx3jhfAtp496cALuXxHTCf4F9', '2020-10-08 06:16:38', '2020-10-09 11:46:24');
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `user_has_coupon`
---
-
-CREATE TABLE `user_has_coupon` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `id_utente` int(10) UNSIGNED NOT NULL,
-  `id_coupon` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `user_has_groups`
---
-
-CREATE TABLE `user_has_groups` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `id_gruppo` int(10) UNSIGNED NOT NULL,
-  `id_utente` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `utente`
---
-
-CREATE TABLE `utente` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_name` varchar(200) NOT NULL,
-  `email` varchar(200) NOT NULL,
-  `pass_word` varchar(200) NOT NULL,
-  `remember_token` varchar(200) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dump dei dati per la tabella `utente`
---
-
-INSERT INTO `utente` (`id`, `user_name`, `email`, `pass_word`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Loreto Cicerone', 'loretocicerone1@gmail.com', 'pass', 'token', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'Marco De Cesaris', 'marcodecesaris146@gmail.com', 'pass', 'token', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'Simone Caruso', 'scaruso96@gmail.com', 'pass', 'token', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+INSERT INTO `users` (`id`, `name`, `address`, `city`, `state`, `country`, `pincode`, `mobile`, `email`, `email_verified_at`, `password`, `admin`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
+(30, 'simone caruso', 'san donato 35', 'pescara', 'pe', 'Italy', '65129', '3881046378', 'scaruso96@gmail.com', '2020-12-28 15:22:16', '$2y$10$W1a8/5hY.RXS98kOiRq/vOeeb4Hq.8O/x8n0QZGNfcJc0HB2agbn2', 1, 1, 'S7XMtf1G6hOpfZhIuakhSMRALgq5ZkTJeg3hMSNy75co3iEbwHXSFL55hLdS', '2020-12-19 10:22:55', '2020-12-28 14:22:16'),
+(48, 'Cosa', '', '', '', '', '', '', 'scaruso96@libero.it', '2020-12-28 15:05:59', '$2y$10$Un4tN.Ogkg7SdVqPbXKt9.ohanpeVSsTnMeE0j6jV/ZZyXp.g0FIa', 0, 1, 'Z5BpgWriHKQxsWNZSRXcKEPlIlSFXntAbHVYDytCCWTmmXihUuJYOU8gySpz', '2020-12-28 14:02:19', '2020-12-28 14:04:41');
 
 --
 -- Indici per le tabelle scaricate
 --
 
 --
--- Indici per le tabelle `articolo`
+-- Indici per le tabelle `admins`
 --
-ALTER TABLE `articolo`
+ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `articolo_has_tags`
+-- Indici per le tabelle `cart`
 --
-ALTER TABLE `articolo_has_tags`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `articolo_tag` (`id_articolo`),
-  ADD KEY `tag_articolo` (`id_tag`);
-
---
--- Indici per le tabelle `carrello`
---
-ALTER TABLE `carrello`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `carrello_prodotto` (`id_prodotto`),
-  ADD KEY `carrello_utente` (`id_utente`);
-
---
--- Indici per le tabelle `categoria`
---
-ALTER TABLE `categoria`
+ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -613,68 +628,28 @@ ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `commento`
+-- Indici per le tabelle `cms_pages`
 --
-ALTER TABLE `commento`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `commento_prodotto` (`id_prodotto`),
-  ADD KEY `commento_utente` (`id_utente`);
-
---
--- Indici per le tabelle `consegna`
---
-ALTER TABLE `consegna`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `consegna_corriere` (`id_corriere`),
-  ADD KEY `consegna_indirizzo` (`id_indirizzo`);
-
---
--- Indici per le tabelle `contenuto`
---
-ALTER TABLE `contenuto`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `categoria_prodotto` (`id_prodotto`),
-  ADD KEY `prodotto_categoria` (`id_categoria`);
-
---
--- Indici per le tabelle `corriere`
---
-ALTER TABLE `corriere`
+ALTER TABLE `cms_pages`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `coupon`
+-- Indici per le tabelle `countries`
 --
-ALTER TABLE `coupon`
+ALTER TABLE `countries`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `group_has_service`
+-- Indici per le tabelle `coupons`
 --
-ALTER TABLE `group_has_service`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `servizio_gruppo` (`id_gruppo`),
-  ADD KEY `gruppo_servizio` (`id_servizio`);
-
---
--- Indici per le tabelle `gruppo`
---
-ALTER TABLE `gruppo`
+ALTER TABLE `coupons`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `immagine`
+-- Indici per le tabelle `delivery_addresses`
 --
-ALTER TABLE `immagine`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `immagine_prodotto` (`id_prodotto`);
-
---
--- Indici per le tabelle `indirizzo`
---
-ALTER TABLE `indirizzo`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `indirizzo_utente` (`id_utente`);
+ALTER TABLE `delivery_addresses`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indici per le tabelle `migrations`
@@ -683,20 +658,16 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `ordine`
+-- Indici per le tabelle `orders`
 --
-ALTER TABLE `ordine`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `ordine_utente` (`id_utente`),
-  ADD KEY `ordine_indirizzo` (`id_indirizzo`);
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `ordine_prodotto`
+-- Indici per le tabelle `orders_products`
 --
-ALTER TABLE `ordine_prodotto`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `ordine_pr` (`id_ordine`),
-  ADD KEY `pr_ordine` (`id_prodotto`);
+ALTER TABLE `orders_products`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indici per le tabelle `password_resets`
@@ -705,44 +676,9 @@ ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
 
 --
--- Indici per le tabelle `preferiti`
+-- Indici per le tabelle `products`
 --
-ALTER TABLE `preferiti`
-  ADD PRIMARY KEY (`id_utente`,`id_prodotto`),
-  ADD KEY `preferiti_prodotto` (`id_prodotto`);
-
---
--- Indici per le tabelle `prodotto`
---
-ALTER TABLE `prodotto`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indici per le tabelle `prodotto_has_tags`
---
-ALTER TABLE `prodotto_has_tags`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tag_prodotto` (`id_prodotto`),
-  ADD KEY `prodotto_tag` (`id_tag`);
-
---
--- Indici per le tabelle `recensione`
---
-ALTER TABLE `recensione`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `recensione_utente` (`id_utente`),
-  ADD KEY `recensione_prodotto` (`id_prodotto`);
-
---
--- Indici per le tabelle `servizio`
---
-ALTER TABLE `servizio`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indici per le tabelle `tag`
---
-ALTER TABLE `tag`
+ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -753,114 +689,50 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
--- Indici per le tabelle `user_has_coupon`
---
-ALTER TABLE `user_has_coupon`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `coupon_utente` (`id_utente`),
-  ADD KEY `utente_coupon` (`id_coupon`);
-
---
--- Indici per le tabelle `user_has_groups`
---
-ALTER TABLE `user_has_groups`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `utente_gruppo` (`id_gruppo`),
-  ADD KEY `gruppo_utente` (`id_utente`);
-
---
--- Indici per le tabelle `utente`
---
-ALTER TABLE `utente`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT per le tabelle scaricate
 --
 
 --
--- AUTO_INCREMENT per la tabella `articolo`
+-- AUTO_INCREMENT per la tabella `admins`
 --
-ALTER TABLE `articolo`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `admins`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT per la tabella `articolo_has_tags`
+-- AUTO_INCREMENT per la tabella `cart`
 --
-ALTER TABLE `articolo_has_tags`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT per la tabella `carrello`
---
-ALTER TABLE `carrello`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT per la tabella `categoria`
---
-ALTER TABLE `categoria`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+ALTER TABLE `cart`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
 
 --
 -- AUTO_INCREMENT per la tabella `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
--- AUTO_INCREMENT per la tabella `commento`
+-- AUTO_INCREMENT per la tabella `cms_pages`
 --
-ALTER TABLE `commento`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `cms_pages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT per la tabella `consegna`
+-- AUTO_INCREMENT per la tabella `countries`
 --
-ALTER TABLE `consegna`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `countries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
 
 --
--- AUTO_INCREMENT per la tabella `contenuto`
+-- AUTO_INCREMENT per la tabella `coupons`
 --
-ALTER TABLE `contenuto`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `coupons`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT per la tabella `corriere`
+-- AUTO_INCREMENT per la tabella `delivery_addresses`
 --
-ALTER TABLE `corriere`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT per la tabella `coupon`
---
-ALTER TABLE `coupon`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT per la tabella `group_has_service`
---
-ALTER TABLE `group_has_service`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT per la tabella `gruppo`
---
-ALTER TABLE `gruppo`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT per la tabella `immagine`
---
-ALTER TABLE `immagine`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT per la tabella `indirizzo`
---
-ALTER TABLE `indirizzo`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `delivery_addresses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT per la tabella `migrations`
@@ -869,177 +741,28 @@ ALTER TABLE `migrations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT per la tabella `ordine`
+-- AUTO_INCREMENT per la tabella `orders`
 --
-ALTER TABLE `ordine`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
--- AUTO_INCREMENT per la tabella `ordine_prodotto`
+-- AUTO_INCREMENT per la tabella `orders_products`
 --
-ALTER TABLE `ordine_prodotto`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `orders_products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
--- AUTO_INCREMENT per la tabella `prodotto`
+-- AUTO_INCREMENT per la tabella `products`
 --
-ALTER TABLE `prodotto`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
-
---
--- AUTO_INCREMENT per la tabella `prodotto_has_tags`
---
-ALTER TABLE `prodotto_has_tags`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT per la tabella `recensione`
---
-ALTER TABLE `recensione`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT per la tabella `servizio`
---
-ALTER TABLE `servizio`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT per la tabella `tag`
---
-ALTER TABLE `tag`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+ALTER TABLE `products`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT per la tabella `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT per la tabella `user_has_coupon`
---
-ALTER TABLE `user_has_coupon`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT per la tabella `user_has_groups`
---
-ALTER TABLE `user_has_groups`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT per la tabella `utente`
---
-ALTER TABLE `utente`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- Limiti per le tabelle scaricate
---
-
---
--- Limiti per la tabella `articolo_has_tags`
---
-ALTER TABLE `articolo_has_tags`
-  ADD CONSTRAINT `articolo_tag` FOREIGN KEY (`id_articolo`) REFERENCES `articolo` (`id`),
-  ADD CONSTRAINT `tag_articolo` FOREIGN KEY (`id_tag`) REFERENCES `tag` (`id`);
-
---
--- Limiti per la tabella `carrello`
---
-ALTER TABLE `carrello`
-  ADD CONSTRAINT `carrello_prodotto` FOREIGN KEY (`id_prodotto`) REFERENCES `prodotto` (`id`),
-  ADD CONSTRAINT `carrello_utente` FOREIGN KEY (`id_utente`) REFERENCES `utente` (`id`);
-
---
--- Limiti per la tabella `commento`
---
-ALTER TABLE `commento`
-  ADD CONSTRAINT `commento_prodotto` FOREIGN KEY (`id_prodotto`) REFERENCES `prodotto` (`id`),
-  ADD CONSTRAINT `commento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utente` (`id`);
-
---
--- Limiti per la tabella `consegna`
---
-ALTER TABLE `consegna`
-  ADD CONSTRAINT `consegna_corriere` FOREIGN KEY (`id_corriere`) REFERENCES `corriere` (`id`),
-  ADD CONSTRAINT `consegna_indirizzo` FOREIGN KEY (`id_indirizzo`) REFERENCES `indirizzo` (`id`);
-
---
--- Limiti per la tabella `contenuto`
---
-ALTER TABLE `contenuto`
-  ADD CONSTRAINT `categoria_prodotto` FOREIGN KEY (`id_prodotto`) REFERENCES `prodotto` (`id`),
-  ADD CONSTRAINT `prodotto_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`);
-
---
--- Limiti per la tabella `group_has_service`
---
-ALTER TABLE `group_has_service`
-  ADD CONSTRAINT `gruppo_servizio` FOREIGN KEY (`id_servizio`) REFERENCES `servizio` (`id`),
-  ADD CONSTRAINT `servizio_gruppo` FOREIGN KEY (`id_gruppo`) REFERENCES `gruppo` (`id`);
-
---
--- Limiti per la tabella `immagine`
---
-ALTER TABLE `immagine`
-  ADD CONSTRAINT `immagine_prodotto` FOREIGN KEY (`id_prodotto`) REFERENCES `prodotto` (`id`);
-
---
--- Limiti per la tabella `indirizzo`
---
-ALTER TABLE `indirizzo`
-  ADD CONSTRAINT `indirizzo_utente` FOREIGN KEY (`id_utente`) REFERENCES `utente` (`id`);
-
---
--- Limiti per la tabella `ordine`
---
-ALTER TABLE `ordine`
-  ADD CONSTRAINT `ordine_indirizzo` FOREIGN KEY (`id_indirizzo`) REFERENCES `indirizzo` (`id`),
-  ADD CONSTRAINT `ordine_utente` FOREIGN KEY (`id_utente`) REFERENCES `utente` (`id`);
-
---
--- Limiti per la tabella `ordine_prodotto`
---
-ALTER TABLE `ordine_prodotto`
-  ADD CONSTRAINT `ordine_pr` FOREIGN KEY (`id_ordine`) REFERENCES `ordine` (`id`),
-  ADD CONSTRAINT `pr_ordine` FOREIGN KEY (`id_prodotto`) REFERENCES `prodotto` (`id`);
-
---
--- Limiti per la tabella `preferiti`
---
-ALTER TABLE `preferiti`
-  ADD CONSTRAINT `preferiti_prodotto` FOREIGN KEY (`id_prodotto`) REFERENCES `prodotto` (`id`),
-  ADD CONSTRAINT `preferiti_utente` FOREIGN KEY (`id_utente`) REFERENCES `utente` (`id`);
-
---
--- Limiti per la tabella `prodotto_has_tags`
---
-ALTER TABLE `prodotto_has_tags`
-  ADD CONSTRAINT `prodotto_tag` FOREIGN KEY (`id_tag`) REFERENCES `tag` (`id`),
-  ADD CONSTRAINT `tag_prodotto` FOREIGN KEY (`id_prodotto`) REFERENCES `prodotto` (`id`);
-
---
--- Limiti per la tabella `recensione`
---
-ALTER TABLE `recensione`
-  ADD CONSTRAINT `recensione_prodotto` FOREIGN KEY (`id_prodotto`) REFERENCES `prodotto` (`id`),
-  ADD CONSTRAINT `recensione_utente` FOREIGN KEY (`id_utente`) REFERENCES `utente` (`id`);
-
---
--- Limiti per la tabella `user_has_coupon`
---
-ALTER TABLE `user_has_coupon`
-  ADD CONSTRAINT `coupon_utente` FOREIGN KEY (`id_utente`) REFERENCES `utente` (`id`),
-  ADD CONSTRAINT `utente_coupon` FOREIGN KEY (`id_coupon`) REFERENCES `coupon` (`id`);
-
---
--- Limiti per la tabella `user_has_groups`
---
-ALTER TABLE `user_has_groups`
-  ADD CONSTRAINT `gruppo_utente` FOREIGN KEY (`id_utente`) REFERENCES `utente` (`id`),
-  ADD CONSTRAINT `utente_gruppo` FOREIGN KEY (`id_gruppo`) REFERENCES `gruppo` (`id`);
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
