@@ -35,7 +35,25 @@
                                 <div class="control-group">
                                     <label class="control-label">Description</label>
                                     <div class="controls">
-                                        <textarea name="description" id="description">{{ $categoryDetails->name }}</textarea>
+                                        <textarea class="textarea_editor" name="description" id="description">{{ $categoryDetails->name }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Meta Title</label>
+                                    <div class="controls">
+                                        <textarea name="meta_title" id="meta_title">{{$categoryDetails->meta_title}}</textarea>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Meta Description</label>
+                                    <div class="controls">
+                                        <textarea name="meta_description" id="meta_description">{{$categoryDetails->meta_description}}</textarea>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Meta Keywords</label>
+                                    <div class="controls">
+                                        <textarea name="meta_keywords" id="meta_keywords">{{$categoryDetails->meta_keywords}}</textarea>
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -44,7 +62,8 @@
                                         <input type="file" name="image" id="image">
                                         <input type="hidden" name="current_image" value="{{ $categoryDetails->image }}">
                                         @if(!empty($categoryDetails->image))
-                                            <img style="width: 50px;" src="{{ asset('/images/backend_images/categories/small/'.$categoryDetails->image) }}"> | <a href="{{url('/admin/delete-category-image/'.$categoryDetails->id)}}">Delete</a>
+                                            <img style="width: 50px;" src="{{ asset('/images/backend_images/categories/small/'.$categoryDetails->image) }}"> |
+                                            <a href="{{url('/admin/delete-category-image/'.$categoryDetails->id)}}">Delete</a>
                                         @endif
                                     </div>
                                 </div>

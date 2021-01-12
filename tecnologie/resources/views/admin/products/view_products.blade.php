@@ -5,6 +5,9 @@
         <div id="content-header">
             <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Products</a> <a href="#" class="current">View Products</a> </div>
             <h1>Products</h1>
+            <div style="margin-left: 170px">
+                <a href="{{url('/admin/export-products')}}" class="btn btn-primary btn-mini">Esporta</a>
+            </div>
         </div>
         <div class="container-fluid">
             <hr>
@@ -76,7 +79,7 @@
                                             <p>Category ID: {{ $product->category_id }}</p>
                                             <p>Product Code: {{ $product->product_code }}</p>
                                             <p>Product Brand: {{ $product->product_brand }}</p>
-                                            <p>Price: {{ $product->price }}</p>
+                                            <p>Price: {{ $product->price }} €</p>
                                             <p>Description: {{ $product->description }}</p>
                                             <p>Stock: {{ $product->stock }}</p>
                                             <p>Feature: @if($product->feature_item == 1) Yes @else  No @endif</p>

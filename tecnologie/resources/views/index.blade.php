@@ -143,12 +143,14 @@ $mainCategories = Controller::mainCategories();
                     <!-- Item -->
                     <div class="item">
                         <!-- Images -->
-                        <img class="img-1" src="{{ asset ('images/backend_images/products/large/'.$product->image) }}" alt=""> <img class="img-2" src="{{ asset ('images/backend_images/products/large/'.$product->image) }}" alt="">
+                        <img class="img-1" src="{{ asset ('images/backend_images/products/large/'.$product->image) }}" alt="">
+                        <img class="img-2" src="{{ asset ('images/backend_images/products/large/'.$product->image) }}" alt="">
                         <!-- Overlay  -->
                         <div class="overlay">
                             <!-- Price -->
                             <span class="price"><small>€</small>{{ $product->price }}</span>
-                            <div class="position-center-center"> <a href="{{ asset ('images/backend_images/products/large/'.$product->image) }}" data-lighter><i class="icon-magnifier"></i></a> </div>
+                            <div class="position-center-center"> <a href="{{ asset ('images/backend_images/products/large/'.$product->image) }}"
+                                                                    data-lighter><i class="icon-magnifier"></i></a> </div>
                         </div>
                         <!-- Item Name -->
                         <div class="item-name"> <a href="{{ url('product/'.$product->id) }}">{{ $product->product_name }}</a>
@@ -156,7 +158,10 @@ $mainCategories = Controller::mainCategories();
                         </div>
                     </div>
                     @endforeach
+                    @if(empty($search_product))
                     <!--{{$productsAll->links()}} vedere video 107-->
+                    @endif
+
                 </div>
             </section>
 

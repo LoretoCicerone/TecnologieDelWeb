@@ -17,6 +17,9 @@
                 </div>
             @endif
             <h1>Users</h1>
+            <div style="margin-left: 170px">
+                <a href="{{url('/admin/export-users')}}" class="btn btn-primary btn-mini">Esporta</a>
+            </div>
         </div>
         <div class="container-fluid">
             <hr>

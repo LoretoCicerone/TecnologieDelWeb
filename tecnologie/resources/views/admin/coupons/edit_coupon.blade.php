@@ -23,7 +23,7 @@
                 <div class="span12">
                     <div class="widget-box">
                         <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
-                            <h5>Add Coupon</h5>
+                            <h5>Edit Coupon</h5>
                         </div>
                         <div class="widget-content nopadding">
                             <form class="form-horizontal" method="post" action="{{ url('/admin/edit-coupon/'.$couponDetails->id) }}" name="add_coupon" id="add_coupon"> {{csrf_field()}}
@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                                 <div class="form-actions">
-                                    <input type="submit" value="Add Coupon" class="btn btn-success">
+                                    <input type="submit" value="Edit Coupon" class="btn btn-success">
                                 </div>
                             </form>
                         </div>

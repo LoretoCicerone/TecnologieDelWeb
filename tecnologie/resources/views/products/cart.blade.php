@@ -1,5 +1,6 @@
 @extends('layouts.frontLayout.front_design')
 @section('content')
+    <?php use App\Product;?>
 
     <!-- LOADER-->
     <div id="loader">
@@ -65,7 +66,11 @@
                         <li class="col-sm-6">
                             <div class="media">
                                 <!-- Media Image -->
-                                <div class="media-left media-middle"> <a class="item-img"> <img class="img-responsive" src="{{asset('images/backend_images/products/large/'.$cart->image)}}" alt=""> </a> </div>
+                                <div class="media-left media-middle">
+                                    <a class="item-img">
+                                        <img class="img-responsive" src="{{asset('images/backend_images/products/large/'.$cart->image)}}" alt="">
+                                    </a>
+                                </div>
 
                                 <!-- Item Name -->
                                 <div class="media-body">
@@ -124,7 +129,8 @@
                                 <input type="text" name="coupon_code"  placeholder="ENTER YOUR CODE IF YOU HAVE ONE">
                                 <button type="submit" class="btn btn-small btn-dark">APPLY CODE</button>
                             </form>
-                            <div class="coupn-btn"> <a href="{{ asset('/') }}" class="btn">continue shopping</a> <a href="{{ url('/checkout') }}" class="btn">checkout</a> </div>
+                            <div class="coupn-btn"> <a href="{{ asset('/') }}" class="btn">continue shopping</a>
+                                <a href="{{ url('/checkout') }}" class="btn">checkout</a> </div>
                         </div>
 
                         <!-- SUB TOTAL -->
@@ -133,15 +139,28 @@
                             <div class="grand-total">
                                 @foreach($userCart as $cart)
                                 <div class="order-detail">
-                                    <p>{{$cart->product_name}} <span>€{{$cart->price*$cart->quantity}} </span></p>
+                                    <p>{{$cart->product_name}} <span>{{$cart->price*$cart->quantity}} €</span></p>
                                 @endforeach
                                     <!-- SUB TOTAL -->
                                     @if(!empty(Session::get('CouponAmount')))
-                                        <p class="all-total">SUB TOTAL<span>€ <?php echo $total_amount; ?> </span></p>
-                                        <p class="all-total">COUPON<span>€ <?php echo Session::get('CouponAmount'); ?> </span></p>
-                                        <p class="all-total">GRAND TOTAL <span>€ <?php echo $total_amount - Session::get('CouponAmount'); ?></span></p>
+                                        <p class="all-total">SUB TOTAL<span><?php echo $total_amount; ?> € </span></p>
+                                        <p class="all-total">COUPON<span><?php echo Session::get('CouponAmount'); ?> € </span></p>
+                                        <?php
+                                        $total_amount = $total_amount - Session::get('CouponAmount');
+                                        $getCurrencyRates = Product::getCurrencyRates($total_amount);?>
+                                        <p class="all-total">GRAND TOTAL
+                                            <span data-toggle="tooltip" data-html="true" title="
+                                                {{$getCurrencyRates['USD_Rate']}} $<br>
+                                                {{$getCurrencyRates['GBP_Rate']}} £<br>">
+                                                <?php echo $total_amount; ?>€
+                                            </span></p>
                                     @else
-                                        <p class="all-total">SUB TOTAL<span>€ <?php echo $total_amount; ?> </span></p>
+                                        <?php $getCurrencyRates = Product::getCurrencyRates($total_amount);?>
+                                        <p class="all-total" >GRAND TOTAL
+                                            <span data-toggle="tooltip" data-html="true" title="
+                                                {{$getCurrencyRates['USD_Rate']}} $<br>
+                                                {{$getCurrencyRates['GBP_Rate']}} £<br>">
+                                                <?php echo $total_amount; ?> €</span></p>
                                     @endif
                                 </div>
 

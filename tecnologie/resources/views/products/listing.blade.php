@@ -21,10 +21,11 @@
                     <!-- Header Text -->
                     <div class="col-lg-7 col-lg-offset-5"><span class="price"><small></small>
                             @if(!empty($search_product))
-                                Ricerca {{ $search_product }}
+                                {{ $search_product }}
                             @else
-                                Ricerca {{ $categoryDetails->name }}
+                                {{ $categoryDetails->name }}
                             @endif
+                                    ({{count($productsAll)}})
                         </span>
                     </div>
                 </div>

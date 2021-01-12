@@ -1,5 +1,6 @@
 @extends('layouts.frontLayout.front_design')
 @section('content')
+    <?php use App\Product;?>
 
     <!-- Content -->
     <div id="content">
@@ -13,7 +14,12 @@
                         <!-- SHOPPING INFORMATION -->
                         <div class="cart-ship-info">
                             <div class="row">
-
+                                @if(Session::has('flash_message_error'))
+                                    <div class="alert alert-error alert-block" style="background-color: red">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        <strong style="color: white">{!! session('flash_message_error') !!}</strong>
+                                    </div>
+                                @endif
                                 <!-- ESTIMATE SHIPPING & TAX -->
                                 <div class="col-sm-7">
                                     <h6>DETTAGLI FATTURAZIONE</h6>
@@ -107,17 +113,27 @@
                                         <?php $total_amount = 0; ?>
                                         @foreach($userCart as $cart)
                                         <div class="order-detail">
-                                            <p>{{$cart->product_name}} <span>€{{$cart->price*$cart->quantity}} </span></p>
+                                            <p>{{$cart->product_name}}
+                                                <span>€{{$cart->price*$cart->quantity}}</span>
+                                            </p>
                                         <?php $total_amount = $total_amount + ($cart->price*$cart->quantity); ?>
                                         @endforeach
                                         <!-- SUB TOTAL -->
                                             @if(!empty(Session::get('CouponAmount')))
-                                                <p class="all-total">COUPON<span>€ <?php echo Session::get('CouponAmount'); ?> </span></p>
+                                                <p class="all-total">COUPON<span><?php echo Session::get('CouponAmount'); ?> €</span></p>
                                             @else
-                                                <p class="all-total">SUB TOTAL<span>€ <?php echo $total_amount; ?> </span></p>
+                                                <p class="all-total">SUB TOTAL<span><?php echo $total_amount; ?> €</span></p>
                                             @endif
-                                                <p class="all-total">GRAND TOTAL <span>€
-                                                        {{$grand_total = $total_amount - Session::get('CouponAmount')}}</span></p>
+                                                <p class="all-total">SPEDIZIONE<span> {{ $shippingCharges }}€</span></p>
+                                                <p class="all-total">GRAND TOTAL
+                                                    <?php
+                                                    $grand_total = $total_amount - Session::get('CouponAmount') + $shippingCharges;
+                                                    $getCurrencyRates = Product::getCurrencyRates($total_amount);?>
+                                                    <span data-toggle="tooltip" data-html="true" title="
+                                                    {{$getCurrencyRates['USD_Rate']}} $<br>
+                                                    {{$getCurrencyRates['GBP_Rate']}} £<br>">
+                                                    <?php echo $grand_total; ?> €
+                                                    </span></p>
                                         </div>
                                         <form name="paymentForm" id="paymentForm" action="{{url('/place-order')}}" method="post">{{csrf_field()}}
                                             <input type="hidden" name="grand_total" value="{{ $grand_total }}">
@@ -127,18 +143,22 @@
                                                     <label><strong>SELEZIONA METODO DI PAGAMENTO:</strong></label>
                                                     <li>
                                                 </li>
+                                                @if($codpincodeCount>0)
                                                 <li>
                                                     <div class="radio">
                                                         <input type="radio" name="payment_method" id="COD" value="COD" checked>
                                                         <label for="COD"> CARTA DI CREDITO </label>
                                                     </div>
                                                 </li>
+                                                @endif
+                                                @if($prepaidpincodeCount>0)
                                                 <li>
                                                     <div class="radio">
                                                         <input type="radio" name="payment_method" id="Paypal" value="Paypal">
                                                         <label for="Paypal"> PAYPAL </label>
                                                     </div>
                                                 </li>
+                                                @endif
                                             </ul>
                                             <button class="btn  btn-dark pull-right margin-top-30" type="submit"
                                                onclick=" return selectPaymentMethod(); " >PLACE ORDER</button> </div>

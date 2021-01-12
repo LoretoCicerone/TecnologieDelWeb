@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 
+use App\Exports\productsExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Auth;
+use Dompdf\Dompdf;
 use phpDocumentor\Reflection\DocBlock\Tags\Formatter\AlignFormatter;
 use Prophecy\Doubler\DoubleInterface;
 use Session;
@@ -20,13 +23,16 @@ use App\Product;
 use App\Coupon;
 use App\DeliveryAddress;
 use DB;
+use Carbon\Carbon;
+use function foo\func;
 use function mysql_xdevapi\expression;
-
 
 class ProductsController extends Controller
 {
     public function addProduct(Request $request){
-
+        if(Session::get('adminDetails')['products_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         if($request->isMethod('post')){
             $data = $request->all();
             //echo "<pre>"; print_r($data);die;
@@ -52,7 +58,7 @@ class ProductsController extends Controller
 
             // Upload Image
             if($request->hasFile('image')){
-                $image_tmp = Input::file('image');
+                $image_tmp = $request->file('image');
                 if($image_tmp->isValid()){
                     $extension = $image_tmp->getClientOriginalExtension();
                     $filename = rand(111,99999).'.'.$extension;
@@ -91,12 +97,14 @@ class ProductsController extends Controller
     }
 
     public function editProduct(Request $request, $id = null){
-
+        if(Session::get('adminDetails')['products_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         if($request->isMethod('post')){
             $data = $request->all();
 
             if($request->hasFile('image')){
-                $image_tmp = Input::file('image');
+                $image_tmp = $request->file('image');
                 if($image_tmp->isValid()){
                     $extension = $image_tmp->getClientOriginalExtension();
                     $filename = rand(111,99999).'.'.$extension;
@@ -151,6 +159,9 @@ class ProductsController extends Controller
     }
 
     public function viewProducts(Request $request,$id=null){
+        if(Session::get('adminDetails')['products_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         $products = Product::orderby('id')->get();
         $products = json_decode(json_encode($products));
         foreach ($products as $key => $val){
@@ -162,11 +173,17 @@ class ProductsController extends Controller
     }
 
     public function deleteProduct(Request $request,$id=null){
+        if(Session::get('adminDetails')['products_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         Product::where(['id'=>$id])->delete();
         return redirect()->back()->with('flash_message_success','Product has been deleted successfully!');
     }
 
     public function deleteProductImage(Request $request,$id = null){
+        if(Session::get('adminDetails')['products_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
 
         //Prende il nome dell'immagine del prodotto
         $productImage = Product::where(['id'=>$id])->first();
@@ -219,8 +236,11 @@ class ProductsController extends Controller
             //If url is sub category url
             $productsAll = Product::where(['category_id' => $categoryDetails->id])->get();
         }
-
-        return view('products.listing')->with(compact('categories','categoryDetails','productsAll'));
+        $meta_title = $categoryDetails->meta_title;
+        $meta_description = $categoryDetails->meta_description;
+        $meta_keywords = $categoryDetails->meta_keywords;
+        return view('products.listing')->with(compact('categories','categoryDetails','productsAll','meta_title',
+            'meta_description','meta_keywords'));
     }
 
     public function searchProducts(Request $request)
@@ -229,8 +249,17 @@ class ProductsController extends Controller
             $data = $request->all();
             $categories = Category::with('categories')->where(['parent_id' => 0])->get();
             $search_product = $data['product'];
-            $productsAll = Product::where('product_name', 'like', '%' . $search_product . '%')
-                ->orwhere('product_code', $search_product)->get();
+            /*$productsAll = Product::where('product_name', 'like', '%' . $search_product . '%')
+                ->orwhere('product_code', $search_product)->get(); */
+
+            $productsAll = Product::where(function ($query) use($search_product){
+                $query->where('product_name','like','%'.$search_product.'%')->
+                orWhere('product_code','like','%'.$search_product.'%')->
+                orWhere('product_brand','like','%'.$search_product.'%')->
+                orWhere('description','like','%'.$search_product.'%');
+            })->get();
+
+
 
             return view('products.listing')->with(compact('categories', 'productsAll', 'search_product'));
         }
@@ -242,55 +271,91 @@ class ProductsController extends Controller
         $productDetails = json_decode(json_encode($productDetails));
 
         $relatedProducts = Product::where('id','!=',$id)->where(['category_id'=>$productDetails->category_id])->get();
-        /* $relatedProducts = json_decode(json_encode($relatedProducts));  */
-
-       /* foreach ($relatedProducts->chunk(3) as $chunk){
-            foreach ($chunk as $item){
-                echo $item; echo "<br>";
-            }
-            echo "<br><br><br>";
-        }
-        die;   */
 
         //Get all categories and subcategories
         $categories = Category::with('categories')->where(['parent_id'=>0])->get();
-
         $total_stock = Product::where('id',$id)->sum('stock');
+        $meta_title = $productDetails->product_name;
+        $meta_description = $productDetails->description;
+        $meta_keywords = $productDetails->product_name;
 
-        return view('products.detail')->with(compact('productDetails','categories','total_stock','relatedProducts'));
+        return view('products.detail')->with(compact('productDetails','categories','total_stock','relatedProducts',
+            'meta_title','meta_description','meta_keywords'));
     }
 
     public function addtocart(Request $request){
+
+        Session::forget('CouponAmount');
+        Session::forget('CouponCode');
+
         $data = $request->all();
 
-        //Check Product Stock is available or not
-        $getProductStock = Product::where(['product_code'=>$data['product_code']])->first();
-
-
-        if($getProductStock->stock<$data['quantity']){
-            return redirect()->back()->with('flash_message_error','Quantità non disponibile!');
-        }
-
-        if(empty(Auth::user()->email)){
-            $data['user_email'] ='';
-        }else{
-            $data['user_email'] = Auth::user()->email;
-        }
-
-        $session_id = Session::get('session_id');
-        if(empty($session_id)) {
-            $session_id = str_random(40);
-            Session::put('session_id', $session_id);
-        }
-
-        if(empty(Auth::check())) {
-            $countProducts = DB::table('cart')->where(['product_id' => $data['product_id'],
-                'product_name' => $data['product_name'], 'product_code' => $data['product_code'], 'session_id' => $session_id])->count();
-
-            if ($countProducts > 0) {
-                return redirect()->back()->with('flash_message_error', 'Il prodotto è già presente nel carrello STRONZO!');
+        if(!empty($data['wishListButton']) && $data['wishListButton']=="Wish List") {
+            //Check User is login or not
+            if (!Auth::check()) {
+                return redirect()->back()->with('flash_message_error', 'Per favore effettua il login per aggiungere un oggetto alla tua lista desideri!');
             }
-        } else {
+
+            //Get product price
+            $proPrice = Product::where(['product_code' => $data['product_code']])->first();
+            $product_price = $proPrice->price;
+
+            //Get user email
+            $user_email = Auth::user()->email;
+
+            //Set quantity as 1
+            $quantity = 1;
+
+            //Get current date
+            $created_at = Carbon::now();
+
+            $wishListCount = DB::table('wish_list')->where(['user_email'=>$user_email,'product_id'=>$data['product_id'],
+                'product_code' => $data['product_code']])->count();
+
+            if($wishListCount>0){
+                return redirect()->back()->with('flash_message_error','Il prodotto è già nella lista desideri!');
+            }else {
+
+                //Insert product in wish list
+                DB::table('wish_list')->insert(['product_id' => $data['product_id'], 'product_name' => $data['product_name'],
+                    'product_code' => $data['product_code'], 'price' => $product_price, 'quantity' => $quantity, 'user_email' => $user_email,
+                    'created_at' => $created_at]);
+                return redirect()->back()->with('flash_message_success', 'Il prodotto è stato aggiunto alla lista deisideri!');
+            }
+
+        }else{
+
+            //If product addedd from wish list
+            if(!empty($data['cartButton']) && $data['cartButton']=="Add to Cart") {
+                $data['quantity']=1;
+            }
+            //Check Product Stock is available or not
+            $getProductStock = Product::where(['product_code' => $data['product_code']])->first();
+
+            if ($getProductStock->stock < $data['quantity']) {
+                return redirect()->back()->with('flash_message_error', 'Quantità non disponibile!');
+            }
+
+            if (empty(Auth::user()->email)) {
+                $data['user_email'] = '';
+            } else {
+                $data['user_email'] = Auth::user()->email;
+            }
+
+            $session_id = Session::get('session_id');
+            if (empty($session_id)) {
+                $session_id = str_random(40);
+                Session::put('session_id', $session_id);
+            }
+
+            if (empty(Auth::check())) {
+                $countProducts = DB::table('cart')->where(['product_id' => $data['product_id'],
+                    'product_name' => $data['product_name'], 'product_code' => $data['product_code'], 'session_id' => $session_id])->count();
+
+                if ($countProducts > 0) {
+                    return redirect()->back()->with('flash_message_error', 'Il prodotto è già presente nel carrello STRONZO!');
+                }
+            } else {
                 $countProducts = DB::table('cart')->where(['product_id' => $data['product_id'],
                     'product_name' => $data['product_name'], 'product_code' => $data['product_code'],
                     'user_email' => $data['user_email']])->count();
@@ -300,12 +365,13 @@ class ProductsController extends Controller
                 }
             }
 
-                DB::table('cart')->insert(['product_id' => $data['product_id'], 'product_name' => $data['product_name'],
-                    'product_code' => $data['product_code'], 'price' => $data['price'], 'quantity' => $data['quantity'],
-                    'user_email' => $data['user_email'], 'session_id' => $session_id]);
+            DB::table('cart')->insert(['product_id' => $data['product_id'], 'product_name' => $data['product_name'],
+                'product_code' => $data['product_code'], 'price' => $data['price'], 'quantity' => $data['quantity'],
+                'user_email' => $data['user_email'], 'session_id' => $session_id]);
 
 
-        return redirect('cart')->with('flash_message_success','Il prodotto è stato aggiunto al carrello!');
+            return redirect('cart')->with('flash_message_success', 'Il prodotto è stato aggiunto al carrello!');
+        }
 
     }
 
@@ -321,7 +387,27 @@ class ProductsController extends Controller
             $productDetails = Product::where('id',$product->product_id)->first();
             $userCart[$key]->image = $productDetails->image;
         }
-        return view('products.cart')->with(compact('userCart'));
+        $meta_title = "Carrello | Pelishop";
+        $meta_description = "Guarda Carrello | Pelishop";
+        $meta_keywords = "carrello, ecommerce, pelishop";
+        return view('products.cart')->with(compact('userCart','meta_title','meta_description','meta_keywords'));
+    }
+
+    public function wishList(){
+        if(Auth::check()) {
+            $user_email = Auth::user()->email;
+            $userWishlist = DB::table('wish_list')->where('user_email', $user_email)->get();
+            foreach ($userWishlist as $key => $product) {
+                $productDetails = Product::where('id', $product->product_id)->first();
+                $userWishlist[$key]->image = $productDetails->image;
+            }
+        }else{
+            $userWishlist = array();
+        }
+        $meta_title = "Lista Desideri | Pelishop";
+        $meta_description = "Guarda La Tua Lista Desideri | Pelishop";
+        $meta_keywords = "wish list, ecommerce, pelishop";
+        return view('products.wish_list')->with(compact('userWishlist','meta_title','meta_description','meta_keywords'));
     }
 
     public function deleteCartProduct($id = null){
@@ -424,16 +510,22 @@ class ProductsController extends Controller
             $data = $request->all();
 
             //Return To Checkout Page if any of the field is empty
-            // if(empty($data['billing_name']) || empty($data['billing_address']) || empty($data['billing_city']) || empty($data['billing_state']) || empty($data['billing_country']) || empty($data['billing_pincode']) || empty($data['billing_mobile']) || empty($data['shipping_name']) || empty($data['shipping_address']) || empty($data['shipping_city']) || empty($data['shipping_state']) || empty($data['shipping_country']) || empty($data['shipping_pincode']) || empty($data['shipping_mobile'])){
-            // return redirect()->back()->with('flash_message_error','Please Affanculo a mammt!');
-            //}
+            if(empty($data['billing_name']) || empty($data['billing_address']) || empty($data['billing_city']) || empty($data['billing_state']) ||
+                empty($data['billing_country']) || empty($data['billing_pincode']) || empty($data['billing_mobile']) || empty($data['shipping_name']) ||
+                empty($data['shipping_address']) || empty($data['shipping_city']) || empty($data['shipping_state']) || empty($data['shipping_country']) ||
+                empty($data['shipping_pincode']) || empty($data['shipping_mobile'])){
+            return redirect()->back()->with('flash_message_error','Riempi tutti i campi!');
+            }
 
             //Update User Details
-            User::where('id',$user_id)->update(['name'=>$data['billing_name'],'address'=>$data['billing_address'],'city'=>$data['billing_city'],'state'=>$data['billing_state'],'pincode'=>$data['billing_pincode'],'country'=>$data['billing_country'],'mobile'=>$data['billing_mobile']]);
+            User::where('id',$user_id)->update(['name'=>$data['billing_name'],'address'=>$data['billing_address'],'city'=>$data['billing_city'],
+                'state'=>$data['billing_state'],'pincode'=>$data['billing_pincode'],'country'=>$data['billing_country'],'mobile'=>$data['billing_mobile']]);
 
             if($shippingCount>0){
             //Update Shipping Address
-                DeliveryAddress::where('user_id',$user_id)->update(['name'=>$data['shipping_name'],'address'=>$data['shipping_address'],'city'=>$data['shipping_city'],'state'=>$data['shipping_state'],'pincode'=>$data['shipping_pincode'],'country'=>$data['shipping_country'],'mobile'=>$data['shipping_mobile']]);
+                DeliveryAddress::where('user_id',$user_id)->update(['name'=>$data['shipping_name'],'address'=>$data['shipping_address'],
+                    'city'=>$data['shipping_city'],'state'=>$data['shipping_state'],'pincode'=>$data['shipping_pincode'],
+                    'country'=>$data['shipping_country'],'mobile'=>$data['shipping_mobile']]);
             }else{
                 //Add new Shipping Address
                 $shipping = new DeliveryAddress;
@@ -448,10 +540,16 @@ class ProductsController extends Controller
                 $shipping->mobile = $data['shipping_mobile'];
                 $shipping->save();
             }
+
+            $pincodeCount = DB::table('pincodes')->where('pincode',$data['shipping_pincode'])->count();
+            if($pincodeCount==0){
+                return redirect()->back()->with('flash_message_error','La tua posizione non è disponibile per la spedizione!');
+            }
+
             return redirect()->action('ProductsController@orderReview');
         }
-
-        return view('products.checkout')->with(compact('countries', 'userDetails','shippingDetails'));
+        $meta_title = "Checkout | Pelishop";
+        return view('products.checkout')->with(compact('countries', 'userDetails','shippingDetails','meta_title'));
     }
 
     public function orderReview(){
@@ -465,19 +563,45 @@ class ProductsController extends Controller
             $productDetails = Product::where('id',$product->product_id)->first();
             $userCart[$key]->image = $productDetails->image;
         }
-        return view('products.order_review')->with(compact('userDetails','shippingDetails','userCart'));
+        $codpincodeCount = DB::table('cod_pincodes')->where('pincode',$shippingDetails->pincode)->count();
+        $prepaidpincodeCount = DB::table('prepaid_pincodes')->where('pincode',$shippingDetails->pincode)->count();
+
+        //Shipping Charges
+        $shippingCharges = Product::getShippingCharges($shippingDetails->country);
+        Session::put('ShippingCharges',$shippingCharges);
+
+        $meta_title = "Riepilogo Ordine | Pelishop";
+        return view('products.order_review')->with(compact('userDetails','shippingDetails','userCart','meta_title',
+            'codpincodeCount','prepaidpincodeCount','shippingCharges'));
     }
 
     public function placeOrder(Request $request){
-        Session::forget('CouponAmount');
-        Session::forget('CouponCode');
+
         if($request->isMethod('post')){
             $data = $request->all();
             $user_id = Auth::user()->id;
             $user_email = Auth::user()->email;
 
+            //Prevenire Out of Stock
+            $userCart = DB::table('cart')->where('user_email',$user_email)->get();
+            foreach ($userCart as $cart){
+                $product_stock = Product::getProductStock($cart->product_code);
+                if($product_stock==0){
+                    Product::deleteCartProduct($cart->product_id,$user_email);
+                    return redirect('/cart')->with('flash_message_error','Uno dei prodotti nel carrello è terminato, lo abbiamo rimosso per te!');
+                }
+                if($cart->quantity>$product_stock){
+                    return redirect('/cart')->with('flash_message_error','Riduci la quantità di uno dei prodotti e prova di nuovo!');
+                }
+            }
+
             //SI PRENDE L'INDIRIZZO DELL'UTENTE
             $shippingDetails = DeliveryAddress::where(['user_email'=>$user_email])->first();
+
+            $pincodeCount = DB::table('pincodes')->where('pincode',$shippingDetails->pincode)->count();
+            if($pincodeCount==0){
+                return redirect()->back()->with('flash_message_error','La tua posizione non è disponibile per la spedizione!');
+            }
 
             if(empty(Session::get('CouponCode'))){
                 $coupon_code = '';
@@ -490,6 +614,9 @@ class ProductsController extends Controller
             }else{
                 $coupon_amount = Session::get('CouponAmount');
             }
+
+
+            $grand_total = Product::getGrandTotal();
 
             $order = new Order;
             $order->user_id = $user_id;
@@ -505,7 +632,8 @@ class ProductsController extends Controller
             $order->coupon_amount = $coupon_amount;
             $order->order_status = "New";
             $order->payment_method = $data['payment_method'];
-            $order->grand_total = $data['grand_total'];
+            $order->shipping_charges = Session::get('ShippingCharges');
+            $order->grand_total = $grand_total;
             $order->save();
 
             $order_id = DB::getPdo()->lastInsertId();
@@ -521,9 +649,18 @@ class ProductsController extends Controller
                 $cartPro->product_price = $pro->price;
                 $cartPro->product_qty = $pro->quantity;
                 $cartPro->save();
+
+                //Reduce Stock Script
+                $getProductStock = Product::where('product_code',$pro->product_code)->first();
+                $newStock = $getProductStock->stock - $pro->quantity;
+                if($newStock<0){
+                    $newStock = 0;
+                }
+                Product::where('product_code',$pro->product_code)->update(['stock'=>$newStock]);
+                //Fine
             }
             Session::put('order_id',$order_id);
-            Session::put('grand_total',$data['grand_total']);
+            Session::put('grand_total',$grand_total);
 
             if($data['payment_method']=="COD"){
 
@@ -547,10 +684,13 @@ class ProductsController extends Controller
                     $message->to($email)->subject('Order Placed - E-com Website');
                 });
                 /*Code for Order Email Ends */
-
+                Session::forget('CouponAmount');
+                Session::forget('CouponCode');
                 //COD Redirect user to thanks page after saving order
                 return redirect('/thanks');
             }else{
+                Session::forget('CouponAmount');
+                Session::forget('CouponCode');
                 //Paypal
                 return redirect('/paypal');
             }
@@ -587,6 +727,9 @@ class ProductsController extends Controller
     }
 
     public function viewOrders(){
+        if(Session::get('adminDetails')['orders_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         $orders = Order::with('orders')->orderBy('id','Desc')->get();
         $orders = json_decode(json_encode($orders));
 
@@ -594,6 +737,9 @@ class ProductsController extends Controller
     }
 
     public function viewOrderDetails($order_id){
+        if(Session::get('adminDetails')['orders_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         $orderDetails = Order::with('orders')->where('id',$order_id)->first();
         $orderDetails = json_decode(json_encode($orderDetails));
         $user_id = $orderDetails->user_id;
@@ -602,6 +748,9 @@ class ProductsController extends Controller
     }
 
     public function viewOrderInvoice($order_id){
+        if(Session::get('adminDetails')['orders_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         $orderDetails = Order::with('orders')->where('id',$order_id)->first();
         $orderDetails = json_decode(json_encode($orderDetails));
         $user_id = $orderDetails->user_id;
@@ -609,11 +758,267 @@ class ProductsController extends Controller
         return view('admin.orders.order_invoice')->with(compact('orderDetails','userDetails'));
     }
 
+    public function viewPDFInvoice($order_id){
+        if(Session::get('adminDetails')['orders_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
+        $orderDetails = Order::with('orders')->where('id',$order_id)->first();
+        $orderDetails = json_decode(json_encode($orderDetails));
+        $user_id = $orderDetails->user_id;
+        $userDetails = User::where('id',$user_id)->first();
+        $output =  '<!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <title>Example 1</title>
+            <style>
+            .clearfix:after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+
+        a {
+          color: #5D6975;
+          text-decoration: underline;
+        }
+
+        body {
+          position: relative;
+          width: 21cm;
+          height: 29.7cm;
+          margin: 0 auto;
+          color: #001028;
+          background: #FFFFFF;
+          font-family: Arial, sans-serif;
+          font-size: 12px;
+          font-family: Arial;
+        }
+
+        header {
+          padding: 10px 0;
+          margin-bottom: 30px;
+        }
+
+        #logo {
+          text-align: center;
+          margin-bottom: 10px;
+        }
+
+        #logo img {
+          width: 90px;
+        }
+
+        h1 {
+          border-top: 1px solid  #5D6975;
+          border-bottom: 1px solid  #5D6975;
+          color: #5D6975;
+          font-size: 2.4em;
+          line-height: 1.4em;
+          font-weight: normal;
+          text-align: center;
+          margin: 0 0 20px 0;
+          background: url(/public/images/backend_images/dimension.png);
+        }
+
+        #project {
+          float: left;
+        }
+
+        #project span {
+          color: #5D6975;
+          text-align: right;
+          width: 52px;
+          margin-right: 10px;
+          display: inline-block;
+          font-size: 0.8em;
+        }
+
+        #company {
+          float: right;
+          text-align: right;
+        }
+
+        #project div,
+        #company div {
+          white-space: nowrap;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border-spacing: 0;
+          margin-bottom: 20px;
+        }
+
+        table tr:nth-child(2n-1) td {
+          background: #F5F5F5;
+        }
+
+        table th,
+        table td {
+          text-align: center;
+        }
+
+        table th {
+          padding: 5px 20px;
+          color: #5D6975;
+          border-bottom: 1px solid #C1CED9;
+          white-space: nowrap;
+          font-weight: normal;
+        }
+
+        table .service,
+        table .desc {
+          text-align: left;
+        }
+
+        table td {
+          padding: 20px;
+          text-align: right;
+        }
+
+        table td.service,
+        table td.desc {
+          vertical-align: top;
+        }
+
+        table td.unit,
+        table td.qty,
+        table td.total {
+          font-size: 1.2em;
+        }
+
+        table td.grand {
+          border-top: 1px solid #5D6975;;
+        }
+
+        #notices .notice {
+          color: #5D6975;
+          font-size: 1.2em;
+        }
+
+        footer {
+          color: #5D6975;
+          width: 100%;
+          height: 30px;
+          position: absolute;
+          bottom: 0;
+          border-top: 1px solid #C1CED9;
+          padding: 8px 0;
+          text-align: center;
+        }
+            </style>
+          </head>
+          <body>
+            <header class="clearfix">
+              <div id="logo">
+                <img src="images/backend_images/logo.png">
+              </div>
+              <h1>Ordine Numero: '.$orderDetails->id.'</h1>
+              <div id="project" class="clearfix">
+              <div><span>ID Ordine: </span> '.$orderDetails->id.'</div>
+                <div><span>Data Ordine: </span> '.$orderDetails->created_at.'</div>
+                <div><span>Ammontare Ordine: </span> '.$orderDetails->grand_total.'</div>
+                <div><span>Stato Ordine: </span> '.$orderDetails->order_status.'</div>
+                <div><span>Metodo di Pagamento: </span> '.$orderDetails->payment_method.'</div>
+              </div>
+              <div id="project" style="float:right;">
+                <div><strong>Indirizzo di Spedizione</strong></div>
+                <div>Nome: </span> '.$orderDetails->name.'</div>
+                <div>Indirizzo: </span> '.$orderDetails->address.'</div>
+                <div>Città: </span> '.$orderDetails->city.', '.$orderDetails->state.'</div>
+                <div>CAP: </span> '.$orderDetails->pincode.'</div>
+                <div>Stato: </span> '.$orderDetails->country.'</div>
+                <div>Telefono: </span> '.$orderDetails->mobile.'</div>
+              </div>
+            </header>
+            <main>
+              <table>
+                <thead>
+                 <tr>
+                    <td><strong>Codice Prodotto</strong></td>
+                    <td class="text-center"><strong>Nome</strong></td>
+                    <td class="text-center"><strong>Prezzo</strong></td>
+                    <td class="text-right"><strong>Quantità</strong></td>
+                    <td class="text-right"><strong>Totale</strong></td>
+                </tr>
+                </thead>
+                <tbody>';
+                $Subtotal = 0;
+                foreach($orderDetails->orders as $pro){
+                            $output .= '<tr>
+                                <td class="text-left">'.$pro->product_code.'</td>
+                                <td class="text-center">'.$pro->product_name.'</td>
+                                <td class="text-center">'.$pro->product_price.' €</td>
+                                <td class="text-right">'.$pro->product_qty.'</td>
+                                <td class="text-right">'.$pro->product_price * $pro->product_qty.' €</td>
+                            </tr>';
+                $Subtotal = $Subtotal + ($pro->product_price * $pro->product_qty);}
+                    $output .= '<tr>
+                    <td colspan="4">Totale Parziale</td>
+                    <td class="total">'.$Subtotal.' €</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4">Spese di Spedizione</td>
+                    <td class="total">'.$orderDetails->shipping_charges.' €</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="grand total">Sconto Coupon</td>
+                    <td class="grand total">'.$orderDetails->coupon_amount.' €</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="grand total">Totale Finale</td>
+                    <td class="grand total">'.$orderDetails->grand_total.' €</td>
+                  </tr>
+                </tbody>
+              </table>
+            </main>
+            <footer>
+                Invoice was created on a computer and is valid without the signature and seal.
+            </footer>
+          </body>
+        </html>';
+
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($output);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream();
+
+    }
+
     public function updateOrderStatus(Request $request){
+        if(Session::get('adminDetails')['orders_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         if($request->isMethod('post')){
             $data = $request->all();
             Order::where('id',$data['order_id'])->update(['order_status'=>$data['order_status']]);
             return redirect()->back()->with('flash_message_success','Order Status has been updated successfully!');
         }
+    }
+
+    public function checkPincode(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+            echo $pincodeCount = DB::table('pincodes')->where('pincode',$data['pincode'])->count();
+        }
+    }
+
+    public function exportProducts(){
+        return Excel::download(new productsExport,'products.xlsx');
+    }
+
+    public function deleteWishlistProduct($id){
+        DB::table('wish_list')->where('id',$id)->delete();
+        return redirect()->back()->with('flash_message_success','Prodotto rimosso dalla lista desideri!');
     }
 }

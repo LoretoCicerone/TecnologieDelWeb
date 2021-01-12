@@ -1,6 +1,6 @@
 @extends('layouts.frontLayout.front_design')
 @section('content')
-
+<?php use App\Product; ?>
 
     <!-- LOADER-->
     <div id="loader">
@@ -8,23 +8,24 @@
             <div class="ldr"></div>
         </div>
     </div>
-
-
-
     <!-- Content -->
     <div id="content">
-
-
         <!-- Popular Products -->
         <section class="padding-top-100 padding-bottom-100">
             <div class="container">
 
+                @if(Session::has('flash_message_success'))
+                    <div class="alert alert-success alert-block" style="background-color: green">
+                        <button type="button" class="close" data-dismiss="alert">x</button>
+                        <strong style="color: white">{!! session('flash_message_success') !!}</strong>
+                    </div>
+                @endif
                 @if(Session::has('flash_message_error'))
                     <div class="alert alert-error alert-block" style="background-color: red">
                         <button type="button" class="close" data-dismiss="alert">x</button>
                         <strong style="color: #0e0e0e">{!! session('flash_message_error') !!}</strong>
                     </div>
-            @endif
+                @endif
 
                 <!-- SHOP DETAIL -->
                 <div class="shop-detail">
@@ -35,7 +36,9 @@
 
                             <!-- Place somewhere in the <body> of your page -->
                             <div id="slider-shop" class="flexslider">
-                                    <li> <img class="img-responsive" src="{{ asset ('images/backend_images/products/large/'.$productDetails->image) }}" alt=""> </li>
+                                    <li>
+                                        <img class="img-responsive" src="{{ asset ('images/backend_images/products/large/'.$productDetails->image) }}" alt="">
+                                    </li>
                             </div>
                         </div>
 
@@ -52,12 +55,19 @@
                                 <input type="hidden" name="price" value="{{ $productDetails->price }}">
 
                                 <h4>{{ $productDetails->product_name }}</h4>
-                                <span> {{ $productDetails->product_brand }}</span>
-                                <span class="price"><small>€</small>{{ $productDetails->price }}</span>
+                                <span> {{ $productDetails->product_brand }} &nbsp; {{$productDetails->product_code}}</span>
+                                <span class="price">
+                                    <?php $getCurrencyRates = Product::getCurrencyRates($productDetails->price);?>
+                                    <h3>{{ $productDetails->price }} €</h3>
+
+                                        {{$getCurrencyRates['USD_Rate']}} $<br>
+                                        {{$getCurrencyRates['GBP_Rate']}} £<br>
+
+                                </span>
 
                             &nbsp;
                                 <!-- Item Detail -->
-                                <p>{{ $productDetails->description }}</p>
+                                <p><?php echo nl2br($productDetails->description);?></p>
                                 <!-- Short By -->
 
                             <div class="some-info">
@@ -69,11 +79,32 @@
                                     </li>
                                     @if($total_stock>0)
                                         <!-- ADD TO CART -->
-                                            <li class="col-xs-6"> <button type="submit" class="btn" style="border-radius: 20px; outline: transparent" >ADD TO CART</button> </li>
+                                            <li class="col-xs-6">
+                                                <button type="submit" class="btn" id="cartButton" name="cartButton" value="Shopping Cart"
+                                                        style="border-radius: 20px; outline: transparent" >
+                                                    Nel Carrello
+                                                </button>
+                                            </li>
                                     @endif
                                     <!-- STOCK -->
-                                    <li class="col-xs-6"> <a href="#." class="text"> Disponibilità:</a> @if($total_stock>0) <b style="color: green"> In Stock </b> @else <b style="color: red">Out Of Stock</b> @endif</li>
+                                    <li class="col-xs-6"> <b> Disponibilità:</b>
+                                        @if($total_stock>0) <b style="color: green"> In Stock </b> @else <b style="color: red">Out Of Stock</b> @endif
+                                    <li class="col-xs-2">
+                                        <button type="submit" class="btn" id="wishListButton" name="wishListButton" style="border-radius: 20px;
+                                         outline: transparent" value="Wish List" ><i class="fa fa-heart"></i>
+                                        </button>
+                                    </li>
                                 </ul>
+
+                                <b>Cap Check:</b>
+                                <input type="text" name="pincode" id="chkPincode" placeholder="Check CAP">
+                                <button type="button" onclick="return checkPincode();"
+                                        style="border-radius: 20px;background:#2d3a4b;color: white;border:none;font-size: 18px;width: 28px
+                                        ;outline: none">✓</button>
+                                <p></p>
+                                <b id="pincodeResponse"></b>
+                                <p></p>
+
                                 <!-- INFOMATION -->
                                 <div class="inner-info">
                                     <h6>SHARE THIS PRODUCT</h6>
@@ -138,7 +169,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <!--  Image -->
-                                    <div class="avatar"> <a href="#"> <img class="media-object" src="images/avatar-1.jpg" alt=""> </a> </div>
+                                    <div class="avatar"> <a href="#"> <img class="media-object" src="{{asset('images/frontend_images/avatar-1.jpg')}}" alt=""> </a> </div>
                                 </div>
                                 <!--  Details -->
                                 <div class="media-body">
@@ -152,7 +183,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <!--  Image -->
-                                    <div class="avatar"> <a href="#"> <img class="media-object" src="images/avatar-2.jpg" alt=""> </a> </div>
+                                    <div class="avatar"> <a href="#"> <img class="media-object" src="{{asset('images/frontend_images/avatar-2.jpg')}}" alt=""> </a> </div>
                                 </div>
                                 <!--  Details -->
                                 <div class="media-body">

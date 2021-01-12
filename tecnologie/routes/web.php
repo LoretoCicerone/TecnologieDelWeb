@@ -66,6 +66,18 @@ Route::get('confirm/{code}','UsersController@confirmAccount');
 //Search Products
 Route::post('/search-products','ProductsController@searchProducts');
 
+//Check If User already exists
+Route::match(['GET','POST'],'/check-email','UsersController@checkEmail');
+
+//Check CAP
+Route::post('/check-pincode','ProductsController@checkPincode');
+
+//Check Subscriber Email
+Route::post('/check-subscriber-email','NewsletterController@checkSubscriber');
+
+//Add Subscriber Email
+Route::post('/add-subscriber-email','NewsletterController@addSubscriber');
+
 //All Routes after login
 Route::group(['middleware'=>['frontlogin']],function (){
     //User Account Page
@@ -88,11 +100,11 @@ Route::group(['middleware'=>['frontlogin']],function (){
     Route::get('/orders','ProductsController@userOrders');
     //User Ordered Products Page
     Route::get('/orders/{id}','ProductsController@userOrderDetails');
+    //Wish list page
+    Route::match(['get','post'],'wish-list','ProductsController@wishList');
+    // Delete product from wish list
+    Route::get('/wish-list/delete-product/{id}','ProductsController@deleteWishlistProduct');
 });
-
-//Check If User already exists
-Route::match(['GET','POST'],'/check-email','UsersController@checkEmail');
-
 
 Route::group(['middleware'=>['adminlogin']],function () {
     Route::get('/admin/dashboard', 'AdminController@dashboard');
@@ -111,6 +123,7 @@ Route::group(['middleware'=>['adminlogin']],function () {
     Route::match(['get','post'],'/admin/add-product','ProductsController@addProduct');
     Route::match(['get','post'],'/admin/edit-product/{id}','ProductsController@editProduct');
     Route::get('/admin/view-products','ProductsController@viewProducts');
+    Route::get('/admin/export-products','ProductsController@exportProducts');
     Route::get('/admin/delete-product/{id}','ProductsController@deleteProduct');
     Route::get('/admin/delete-product-image/{id}','ProductsController@deleteProductImage');
 
@@ -129,11 +142,26 @@ Route::group(['middleware'=>['adminlogin']],function () {
     //Order Invoice
     Route::get('/admin/view-order-invoice/{id}','ProductsController@viewOrderInvoice');
 
+    //PDF Invoice
+    Route::get('/admin/view-pdf-invoice/{id}','ProductsController@viewPDFInvoice');
+
     //Update Order Status
     Route::post('/admin/update-order-status','ProductsController@updateOrderStatus');
 
     //Admin User Route
     Route::get('/admin/view-users','UsersController@viewUsers');
+
+    //Export Users Route
+    Route::get('/admin/export-users','UsersController@exportUsers');
+
+    //Admins/Sub-Admins View
+    Route::get('/admin/view-admins','AdminController@viewAdmins');
+
+    //Add Admins/Sub-Admins View
+    Route::match(['get','post'],'/admin/add-admin','AdminController@addAdmin');
+
+    //Edit Admins/Sub-Admins View
+    Route::match(['get','post'],'/admin/edit-admin/{id}','AdminController@editAdmin');
 
     //Add CMS Route
     Route::match(['get','post'],'/admin/add-cms-page','CmsController@addCmsPage');
@@ -146,6 +174,37 @@ Route::group(['middleware'=>['adminlogin']],function () {
 
     //Delete CMS Route
     Route::get('/admin/delete-cms-page/{id}','CmsController@deleteCmsPage');
+
+    //Currencies Routes
+    //Add Currency Route
+    Route::match(['get','post'],'admin/add-currency','CurrencyController@addCurrency');
+
+    //Edit Currency Route
+    Route::match(['get','post'],'/admin/edit-currency/{id}','CurrencyController@editCurrency');
+
+    //View Currencies Pages Route
+    Route::get('/admin/view-currencies','CurrencyController@viewCurrencies');
+
+    //Delete Currency Route
+    Route::get('/admin/delete-currency/{id}','CurrencyController@deleteCurrency');
+
+    //View Shipping Charges
+    Route::get('/admin/view-shipping','ShippingController@viewShipping');
+
+    //Update Shipping Charges
+    Route::match(['get','post'],'/admin/edit-shipping/{id}','ShippingController@editShipping');
+
+    //View Newsletter Subscribers
+    Route::get('admin/view-newsletter-subscribers','NewsletterController@viewNewsletterSubscribers');
+
+    //Update Newsletter Status
+    Route::get('admin/update-newsletter-status/{id}/{status}','NewsletterController@updateNewsletterStatus');
+
+    //Delete Newsletter
+    Route::get('admin/delete-newsletter-email/{id}','NewsletterController@deleteNewsletterEmail');
+
+    //Export Newsletter Emails
+    Route::get('/admin/export-newsletter-emails','NewsletterController@exportNewsletterEmails');
 });
 
 

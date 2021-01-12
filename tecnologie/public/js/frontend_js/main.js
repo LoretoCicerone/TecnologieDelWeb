@@ -344,3 +344,27 @@ function selectPaymentMethod(){
     }
 }
 
+function checkPincode(){
+   var pincode = $("#chkPincode").val();
+   if(pincode=="") {
+       alert("Perfavore inserisci un CAP valido");
+       return false;
+   }
+   $.ajax({
+       type:'post',
+       data:{pincode:pincode},
+       url:'/check-pincode',
+       success:function(resp){
+           if(resp>0){
+               $("#pincodeResponse").html("<font color='green'>Spediamo nella tua città!</font>");
+           }else{
+               $("#pincodeResponse").html("<font color='red'>Ci dispiace ma non possiamo ancora spedire nella tua città!</font>");
+           }
+       },error:function (){
+           alert("Error");
+       }
+   });
+}
+
+
+

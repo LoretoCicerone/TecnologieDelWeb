@@ -14,16 +14,32 @@ use function mysql_xdevapi\expression;
 class CategoryController extends Controller
 {
     public function addCategory(Request $request){
+        if(Session::get('adminDetails')['categories_full_access']==0){
+            return redirect()->back()->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         if($request->isMethod('post')){
             $data = $request->all();
+            if(empty($data['meta_title'])){
+                $data['meta_title'] = "";
+            }
+            if(empty($data['meta_description'])){
+                $data['meta_description'] = "";
+            }
+            if(empty($data['meta_keywords'])){
+                $data['meta_keywords'] = "";
+            }
             $category = new Category;
             $category->name = $data['category_name'];
             $category->parent_id = $data['parent_id'];
             $category->description = $data['description'];
+            $category->url = $data['url'];
+            $category->meta_title = $data['meta_title'];
+            $category->meta_description = $data['meta_description'];
+            $category->meta_keywords = $data['meta_keywords'];
 
             // Upload Image
             if($request->hasFile('image')){
-                $image_tmp = Input::file('image');
+                $image_tmp = $request->file('image');
                 if($image_tmp->isValid()){
                     $extension = $image_tmp->getClientOriginalExtension();
                     $filename = rand(111,99999).'.'.$extension;
@@ -50,12 +66,23 @@ class CategoryController extends Controller
     }
 
     public function editCategory(Request $request, $id = null){
-
+        if(Session::get('adminDetails')['categories_edit_access']==0){
+            return redirect()->back()->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         if($request->isMethod('post')){
             $data = $request->all();
 
             if($request->hasFile('image')){
-                $image_tmp = Input::file('image');
+                if(empty($data['meta_title'])){
+                    $data['meta_title'] = "";
+                }
+                if(empty($data['meta_description'])){
+                    $data['meta_description'] = "";
+                }
+                if(empty($data['meta_keywords'])){
+                    $data['meta_keywords'] = "";
+                }
+                $image_tmp = $request->file('image');
                 if($image_tmp->isValid()){
                     $extension = $image_tmp->getClientOriginalExtension();
                     $filename = rand(111,99999).'.'.$extension;
@@ -74,7 +101,9 @@ class CategoryController extends Controller
                 $data['description']='';
             }
 
-            Category::where(['id'=>$id])->update(['name'=>$data['category_name'], 'description'=>$data['description'],'url'=>$data['url'],'image'=>$filename]);
+            Category::where(['id'=>$id])->update(['name'=>$data['category_name'],
+                'description'=>$data['description'],'url'=>$data['url'], 'meta_title'=>$data['meta_title'],'meta_description'=>$data['meta_description'],
+                'meta_keywords'=>$data['meta_keywords'],'image'=>$filename]);
             return redirect('/admin/view-categories')->with('flash_message_success','Category updated Successfully!');
         }
         $categoryDetails = Category::where(['id'=>$id])->first();
@@ -83,13 +112,18 @@ class CategoryController extends Controller
     }
 
     public function viewCategories(Request $request, $id = null){
-
+        if(Session::get('adminDetails')['categories_view_access']==0){
+            return redirect()->back()->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         $categories = Category::get();
         $categories = json_decode(json_encode($categories));
         return view('admin.categories.view_categories')->with(compact('categories'));
     }
 
     public function deleteCategory(Request $request, $id = null){
+        if(Session::get('adminDetails')['categories_full_access']==0){
+            return redirect()->back()->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         if(!empty($id)){
             Category::where(['id'=>$id])->delete();
             return redirect()->back()->with('flash_message_success','Category deleted Successfully!');
@@ -97,6 +131,9 @@ class CategoryController extends Controller
     }
 
     public function deleteCategoryImage(Request $request,$id = null){
+        if(Session::get('adminDetails')['categories_full_access']==0){
+            return redirect()->back()->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         Category::where(['id'=>$id])->update(['image'=>'']);
         return redirect()->back()->with('flash_message_success','Category Image has been deleted successfully!');
     }

@@ -4,11 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Pelissimi</title>
-
+    <title>@if(!empty($meta_title)){{$meta_title}} @else Pelishop @endif</title>
+    @if(!empty($meta_description))<meta name="description" content="{{$meta_description}}">@endif
+    @if(!empty($meta_keywords))<meta name="keywords" content="{{$meta_keywords}}">@endif
     <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
     <link rel="stylesheet" type="text/css" href="{{ asset ('rs-plugin/css/settings.css') }}" media="screen" />
 
@@ -59,5 +58,11 @@
     <script type="text/javascript" src="{{ asset ('rs-plugin/js/jquery.tp.t.min.js')}}"></script>
     <script type="text/javascript" src="{{ asset ('rs-plugin/js/jquery.tp.min.js')}}"></script>
     <script src="{{ asset ('js/frontend_js/main.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 </body>
 </html>

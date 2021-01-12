@@ -126,13 +126,15 @@
                                                             @if($orderDetails->order_status == "Shipped") selected @endif>Shipped</option>
                                                     <option value="Delivered"
                                                             @if($orderDetails->order_status == "Delivered") selected @endif>Delivered</option>
+                                                    <option value="Delivered"
+                                                            @if($orderDetails->order_status == "Paid") selected @endif>Paid</option>
                                          </select>
                                             </td>
                                         <td>
                                             <input type="submit" value="Update Status">
                                         </td>
                                         </tr>
-                                    </table
+                                    </table>
                                     </form>
                                 </div>
                             </div>

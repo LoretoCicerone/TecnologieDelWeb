@@ -64,11 +64,11 @@
                         <table class="table table-condensed">
                             <thead>
                             <tr>
-                                <td><strong>Product Code</strong></td>
-                                <td class="text-center"><strong>Name</strong></td>
-                                <td class="text-center"><strong>Price</strong></td>
-                                <td class="text-right"><strong>Qty</strong></td>
-                                <td class="text-right"><strong>Totals</strong></td>
+                                <td><strong>Codice Prodotto</strong></td>
+                                <td class="text-center"><strong>Nome</strong></td>
+                                <td class="text-center"><strong>Prezzo</strong></td>
+                                <td class="text-right"><strong>Quantità</strong></td>
+                                <td class="text-right"><strong>Totale</strong></td>
                             </tr>
                             </thead>
                             <tbody>
@@ -88,15 +88,15 @@
                                 <td class="thick-line"></td>
                                 <td class="thick-line"></td>
                                 <td class="thick-line"></td>
-                                <td class="thick-line text-right"><strong>Subtotal</strong></td>
+                                <td class="thick-line text-right"><strong>Totale Parziale</strong></td>
                                 <td class="thick-line text-right">{{$Subtotal}} €</td>
                             </tr>
                             <tr>
                                 <td class="no-line"></td>
                                 <td class="no-line"></td>
                                 <td class="no-line"></td>
-                                <td class="no-line text-right"><strong>Shipping</strong></td>
-                                <td class="no-line text-right">0 €</td>
+                                <td class="no-line text-right"><strong>Spedizione</strong></td>
+                                <td class="no-line text-right">{{$orderDetails->shipping_charges}} €</td>
                             </tr>
                             <tr>
                                 <td class="no-line"></td>
@@ -109,7 +109,7 @@
                                 <td class="no-line"></td>
                                 <td class="no-line"></td>
                                 <td class="no-line"></td>
-                                <td class="no-line text-right"><strong>Grand Total</strong></td>
+                                <td class="no-line text-right"><strong>Totale Finale</strong></td>
                                 <td class="no-line text-right">{{$orderDetails->grand_total}} €</td>
                             </tr>
                             </tbody>

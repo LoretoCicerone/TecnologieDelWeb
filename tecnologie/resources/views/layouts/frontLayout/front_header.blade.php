@@ -32,7 +32,9 @@
 
 <?php
 use App\Http\Controllers\Controller;
+use App\Product;
 $categories = Controller::categories();
+$cartCount = Product::cartCount();
 ?>
 
 
@@ -49,44 +51,18 @@ $categories = Controller::categories();
 
                 <div class="collapse navbar-collapse" id="nav-open-btn">
                     <ul class="nav">
-                        <li> <a href="{{ asset('/') }}" >Home</a>
-                        </li>
+                        <li> <a href="{{ asset('/') }}" >Home</a></li>
                         <li class="dropdown"> <a href="#." class="dropdown-toggle" data-toggle="dropdown">Marchi</a>
                             <ul class="dropdown-menu">
                                 @foreach($categories as $cat)
                                     @foreach($cat->categories as $subcat)
-                                <li> <a href="{{ asset('products/'.$subcat->url) }}">{{ $subcat->name }}</a>
+                                        <?php $productCount = Product::productCount($subcat->id);?>
+                                <li> <a href="{{ asset('products/'.$subcat->url) }}">{{ $subcat->name }} ({{$productCount}})
+                                    </a>
                                 </li>
                                     @endforeach
                                 @endforeach
                             </ul>
-                        </li>
-                        <!-- Two Link Option -->
-                        <li class="dropdown"> <a href="#." class="dropdown-toggle" data-toggle="dropdown">Designer</a>
-                            <div class="dropdown-menu two-option">
-                                <div class="row">
-                                    <ul class="col-sm-6">
-                                        <li> <a href="shop_01.html">summer store</a></li>
-                                        <li> <a href="shop_01.html"> sarees</a></li>
-                                        <li> <a href="shop_01.html"> kurtas</a></li>
-                                        <li> <a href="shop_01.html"> shorts & tshirts</a></li>
-                                        <li> <a href="shop_01.html"> winter wear</a></li>
-                                        <li> <a href="shop_01.html"> jeans</a></li>
-                                        <li> <a href="shop_01.html"> bra</a></li>
-                                        <li> <a href="shop_01.html"> babydools</a> </li>
-                                    </ul>
-                                    <ul class="col-sm-6">
-                                        <li> <a href="shop_01.html">deodornts</a></li>
-                                        <li> <a href="shop_01.html"> skin care</a></li>
-                                        <li> <a href="shop_01.html"> make up</a></li>
-                                        <li> <a href="shop_01.html"> watch</a></li>
-                                        <li> <a href="shop_01.html"> siting bags</a></li>
-                                        <li> <a href="shop_01.html"> totes</a></li>
-                                        <li> <a href="shop_01.html"> gold rings</a></li>
-                                        <li> <a href="shop_01.html"> jewellery</a> </li>
-                                    </ul>
-                                </div>
-                            </div>
                         </li>
 
                         <!-- MEGA MENU -->
@@ -109,16 +85,34 @@ $categories = Controller::categories();
                         <li class="dropdown user-acc"> <a href="{{ url('/account') }}" class="dropdown-toggle" role="button" ><i class="icon-user"></i> </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <h6>HELLO! Jhon Smith</h6>
+                                    <h6></h6>
                                 </li>
-                                <li><a href="#">MY CART</a></li>
+                                <li><a href="#"></a></li>
                                 <li><a href="{{ url('/account') }}">ACCOUNT INFO</a></li>
-                                <li><a href="#">LOG OUT</a></li>
+                                <li><a href="#"></a></li>
+                            </ul>
+                        </li>
+
+                        <!--Wish List-->
+                        <li class="dropdown user-acc"> <a href="{{ url('/wish-list') }}" class="dropdown-toggle" role="button" >
+                                <i class="fa fa-heart-o"></i> </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <h6></h6>
+                                </li>
+                                <li><a href="#"></a></li>
+                                <li><a href="{{ url('/wish-list') }}"></a></li>
+                                <li><a href="#"></a></li>
                             </ul>
                         </li>
 
                         <!-- USER BASKET -->
-                        <li class="dropdown user-basket"> <a href="{{ url('/cart') }}" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="true"><i class="icon-basket-loaded"></i> </a>
+                        <li class="dropdown user-basket">
+                            <a href="{{ url('/cart') }}" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="true">
+                                <i class="icon-basket-loaded">
+                                    ({{$cartCount}})
+                                </i>
+                            </a>
 
                         </li>
 

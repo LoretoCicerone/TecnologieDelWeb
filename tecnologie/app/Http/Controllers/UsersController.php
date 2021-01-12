@@ -10,11 +10,14 @@ use Session;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Exports\usersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UsersController extends Controller
 {
     public function userLoginRegister(){
-        return view('users.login_register');
+        $meta_title = "Utente Login/Registrazione | Pelishop";
+        return view('users.login_register')->with(compact('meta_title'));
     }
 
     public function account(Request $request){
@@ -40,6 +43,8 @@ class UsersController extends Controller
     }
 
     public function login(Request $request){
+        Session::forget('CouponAmount');
+        Session::forget('CouponCode');
         if($request->isMethod('post')){
             $data = $request->all();
             if(Auth::attempt(['email'=>$data['email'],'password'=>$data['password']])){
@@ -72,6 +77,9 @@ class UsersController extends Controller
                 $user->name = $data['name'];
                 $user->email = $data['email'];
                 $user->password = bcrypt($data['password']);
+                date_default_timezone_set('Europe/Rome');
+                $user->created_at = date("Y-m-d H:i:s");
+                $user->updated_at = date("Y-m-d H:i:s");
                 $user->save();
 
                 // Send Register Email
@@ -210,7 +218,14 @@ class UsersController extends Controller
     }
 
     public function viewUsers(){
+        if(Session::get('adminDetails')['users_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','Non hai i permessi per accedere a questa sezione');
+        }
         $users = User::get();
         return view ('admin.users.view_users')->with(compact('users'));
+    }
+
+    public function exportUsers(){
+        return Excel::download(new usersExport,'users.xlsx');
     }
 }
