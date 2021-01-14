@@ -90,6 +90,7 @@ class AdminController extends Controller
                     $admin->username = $data['username'];
                     $admin->password = md5($data['password']);
                     $admin->status = $data['status'];
+                    $admin->categories_view_access = 1;
                     $admin->save();
                     return redirect('/admin/view-admins')->with('flash_message_success', 'Admin addedd successfully!');
                 }else if($data['type']=="Sub Admin"){

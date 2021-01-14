@@ -136,6 +136,9 @@ Route::group(['middleware'=>['adminlogin']],function () {
     //Admin Orders Routes
     Route::get('/admin/view-orders','ProductsController@viewOrders');
 
+    //Admin Orders Charts Route
+    Route::get('/admin/view-orders-charts','ProductsController@viewOrdersCharts');
+
     //Admin Order Details Route
     Route::get('/admin/view-order/{id}','ProductsController@viewOrderDetails');
 
@@ -150,6 +153,12 @@ Route::group(['middleware'=>['adminlogin']],function () {
 
     //Admin User Route
     Route::get('/admin/view-users','UsersController@viewUsers');
+
+    //Admin User Charts Route
+    Route::get('/admin/view-users-charts','UsersController@viewUsersCharts');
+
+    //Admin User Countries Charts Route
+    Route::get('/admin/view-users-countries-charts','UsersController@viewUsersCountriesCharts');
 
     //Export Users Route
     Route::get('/admin/export-users','UsersController@exportUsers');

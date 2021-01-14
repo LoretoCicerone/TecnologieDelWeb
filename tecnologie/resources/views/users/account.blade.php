@@ -100,7 +100,8 @@
                                         </li>
                                         <li class="col-md-7">
                                             <label>
-                                                <input id="confirm_pwd" type="password" name="confirm_pwd" placeholder="CONFIRM PASSWORD" required minlength="4"/>
+                                                <input id="confirm_pwd" type="password" name="confirm_pwd" placeholder="CONFIRM PASSWORD"
+                                                       required minlength="6"/>
                                             </label>
                                         </li>
                                         <!-- PHONE -->

@@ -8,6 +8,7 @@ use App\User;
 use Auth;
 use Session;
 use DB;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Exports\usersExport;
@@ -227,5 +228,19 @@ class UsersController extends Controller
 
     public function exportUsers(){
         return Excel::download(new usersExport,'users.xlsx');
+    }
+
+    public function viewUsersCharts(){
+        $current_month_users = User::whereYear('created_at',Carbon::now()->year)->whereMonth('created_at',Carbon::now()->month)->count();
+        $last_month_users = User::whereYear('created_at',Carbon::now()->subYear(1))->whereMonth('created_at',Carbon::now()->subMonth(1))->count();
+        $last_to_last_month_users = User::whereYear('created_at',Carbon::now()->subYear(1))->whereMonth('created_at',Carbon::now()->subMonth(2))->count();
+        return view('admin.users.view_users_charts')->with(compact('current_month_users','last_month_users',
+            'last_to_last_month_users'));
+    }
+
+    public function viewUsersCountriesCharts(){
+        $getUserCountries = User::select('country',DB::raw('count(country) as count'))->groupBy('country')->get();
+
+        return view('admin.users.view_users_countries_charts')->with(compact('getUserCountries'));
     }
 }

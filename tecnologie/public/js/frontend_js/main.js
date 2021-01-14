@@ -306,7 +306,7 @@ jQuery(document).ready(function($){
 
     // Password Strength script
     $('#myPassword').passtrength({
-        minChars: 4,
+        minChars: 6,
         passwordToggle: true,
         tooltip: true,
         eyeImg: "/images/frontend_images/eye.svg",
