@@ -26,7 +26,7 @@
         <div class="quick-actions_homepage">
             <ul class="quick-actions">
                 <li class="bg_lb"> <a href="{{url ('admin/dashboard')}}"> <i class="icon-dashboard"></i>Dashboard </a> </li>
-                @if(Session::get('adminDetails')['categories_view_access']==1)
+                @if(Session::get('adminDetails')['categories_view_access']==1 || Session::get('adminDetails')['categories_edit_access']==1 || Session::get('adminDetails')['categories_full_access']==1)
                 <li class="bg_ly"> <a href="{{url ('admin/view-categories')}}"> <i class="icon-inbox"></i>Categories </a></li>
                 @endif
                 @if(Session::get('adminDetails')['products_access']==1)

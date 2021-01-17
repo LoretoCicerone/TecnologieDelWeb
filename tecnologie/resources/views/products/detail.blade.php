@@ -90,6 +90,7 @@
                                     <li class="col-xs-6"> <b> Disponibilità:</b>
                                         @if($total_stock>0) <b style="color: green"> In Stock </b> @else <b style="color: red">Out Of Stock</b> @endif
                                     <li class="col-xs-2">
+                                        <!-- wishlist -->
                                         <button type="submit" class="btn" id="wishListButton" name="wishListButton" style="border-radius: 20px;
                                          outline: transparent" value="Wish List" ><i class="fa fa-heart"></i>
                                         </button>

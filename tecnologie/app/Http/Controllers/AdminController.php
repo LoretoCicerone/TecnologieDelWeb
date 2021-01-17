@@ -26,11 +26,7 @@ class AdminController extends Controller
     }
 
     public function dashboard(){
-        /*if(Session::has('adminSession')){
-            //Perform all dashboard tasks
-        }else{
-            return redirect('/admin')->with('flash_message_error','Please login to access');
-        }*/
+
         return view('admin.dashboard');
     }
 
@@ -79,7 +75,7 @@ class AdminController extends Controller
             $data = $request->all();
             $adminCount = Admin::where('username',$data['username'])->count();
             if($adminCount>0){
-                return redirect()->back()->with('flash_message_error','Admin Username already exists!');
+                return redirect()->back()->with('flash_message_error','Nome Admin già in uso!!');
             }else{
                 if(empty($data['status'])){
                     $data['status'] = 0;
@@ -91,8 +87,9 @@ class AdminController extends Controller
                     $admin->password = md5($data['password']);
                     $admin->status = $data['status'];
                     $admin->categories_view_access = 1;
+                    $admin->categories_edit_access = 1;
                     $admin->save();
-                    return redirect('/admin/view-admins')->with('flash_message_success', 'Admin addedd successfully!');
+                    return redirect('/admin/view-admins')->with('flash_message_success', 'Admin aggiunto correttamente!');
                 }else if($data['type']=="Sub Admin"){
                     if(empty($data['categories_view_access'])){
                         $data['categories_view_access'] = 0;
@@ -102,6 +99,11 @@ class AdminController extends Controller
                     }
                     if(empty($data['categories_full_access'])){
                         $data['categories_full_access'] = 0;
+                    }else{
+                        if($data['categories_full_access']==1){
+                            $data['categories_view_access'] = 1;
+                            $data['categories_edit_access'] = 1;
+                        }
                     }
                     if(empty($data['products_access'])){
                         $data['products_access'] = 0;
@@ -124,7 +126,7 @@ class AdminController extends Controller
                     $admin->orders_access = $data['orders_access'];
                     $admin->users_access = $data['users_access'];
                     $admin->save();
-                    return redirect('/admin/view-admins')->with('flash_message_success', 'Sub Admin addedd successfully!');
+                    return redirect('/admin/view-admins')->with('flash_message_success', 'Sub Admin aggiunto correttamente!');
                 }
             }
         }

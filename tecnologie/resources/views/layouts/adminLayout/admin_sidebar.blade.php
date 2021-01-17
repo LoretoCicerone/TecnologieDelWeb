@@ -5,26 +5,21 @@
         <li <?php if (preg_match("/dashboard/i", $url)){ ?> class="active" <?php } ?>>
             <a href="{{ url('/admin/dashboard') }}"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
 
-        @if(Session::get('adminDetails')['categories_full_access']==1)
+        @if(Session::get('adminDetails')['categories_full_access']==1 ||
+            Session::get('adminDetails')['categories_edit_access']==1 ||
+            Session::get('adminDetails')['categories_view_access']==1)
             <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i><span>Categories</span> <span class="label label-important"></span></a>
                 <ul <?php if (preg_match("/category/i", $url)){ ?> style="display: block;" <?php } ?>>
+                    @if(Session::get('adminDetails')['categories_edit_access']==1 || Session::get('adminDetails')['categories_full_access']==1)
                 <li <?php if (preg_match("/add-category/i", $url)){ ?> class="active" <?php } ?>>
                     <a href="{{ url('/admin/add-category') }}">Add Category</a></li>
+                    @endif
+                        @if(Session::get('adminDetails')['categories_full_access']==1 ||
+                Session::get('adminDetails')['categories_edit_access']==1 ||
+                Session::get('adminDetails')['categories_view_access']==1)
                 <li <?php if (preg_match("/view_categories/i", $url)){ ?> class="active" <?php } ?>>
                     <a href="{{ url('/admin/view-categories') }}">View Categories</a></li>
-                </ul>
-            </li>
-        @else
-            <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i><span>Categories</span> <span class="label label-important"></span></a>
-                <ul <?php if (preg_match("/category/i", $url)){ ?> style="display: block;" <?php } ?>>
-                    @if(Session::get('adminDetails')['categories_edit_access']==1)
-                    <li <?php if (preg_match("/add-category/i", $url)){ ?> class="active" <?php } ?>>
-                        <a href="{{ url('/admin/add-category') }}">Add Category</a></li>
-                    @endif
-                    @if(Session::get('adminDetails')['categories_view_access']==1)
-                    <li <?php if (preg_match("/view_categories/i", $url)){ ?> class="active" <?php } ?>>
-                        <a href="{{ url('/admin/view-categories') }}">View Categories</a></li>
-                    @endif
+                        @endif
                 </ul>
             </li>
         @endif
