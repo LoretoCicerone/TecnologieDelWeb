@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class UsersController extends Controller
 {
     public function userLoginRegister(){
-        $meta_title = "Utente Login/Registrazione | Pelishop";
+        $meta_title = "Utente Login/Registrazione | Razorshop";
         return view('users.login_register')->with(compact('meta_title'));
     }
 
@@ -141,7 +141,7 @@ class UsersController extends Controller
                 'password'=>$random_password
             ];
             Mail::send('emails.forgotpassword',$messageData,function ($message)use($email){
-                $message->to($email)->subject('Nuova Password - Pelishop');
+                $message->to($email)->subject('Nuova Password - Razorshop');
             });
 
             return redirect('login-register')->with('flash_message_success', 'La tua password è stata aggiornata, ti è stata mandata per email!');

@@ -9,6 +9,7 @@ use App\User;
 use App\Admin;
 use Illuminate\Support\Facades\Hash;
 
+
 class AdminController extends Controller
 {
     public function login(Request $request){

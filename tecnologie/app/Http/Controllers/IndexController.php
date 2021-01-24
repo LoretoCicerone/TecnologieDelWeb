@@ -13,7 +13,7 @@ class IndexController extends Controller
         $categories = Category::with('categories')->where(['parent_id'=>0])->get();
 
         //Meta Tags
-        $meta_title = "Pelishop";
+        $meta_title = "Razorshop";
         $meta_description = "Negozio online articoli da parrucchiere per uomini";
         $meta_keywords = "eshop website, online shopping, men, barber, barbershop";
 

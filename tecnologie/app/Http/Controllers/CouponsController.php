@@ -15,7 +15,9 @@ class CouponsController extends Controller
             $coupon->amount = $data['amount'];
             $coupon->amount_type = $data['amount_type'];
             $coupon->expiry_date = $data['expiry_date'];
-            $coupon->status = $data['status'];
+            if(empty($data['status'])){
+                $data['status'] = 0;
+            }
             $coupon->save();
             return redirect()->action('CouponsController@viewCoupons')->with('flash_message_success','Coupon has been added successfully');
         }

@@ -353,7 +353,7 @@ class ProductsController extends Controller
                     'product_name' => $data['product_name'], 'product_code' => $data['product_code'], 'session_id' => $session_id])->count();
 
                 if ($countProducts > 0) {
-                    return redirect()->back()->with('flash_message_error', 'Il prodotto è già presente nel carrello STRONZO!');
+                    return redirect()->back()->with('flash_message_error', 'Il prodotto è già presente nel carrello!');
                 }
             } else {
                 $countProducts = DB::table('cart')->where(['product_id' => $data['product_id'],
@@ -361,7 +361,7 @@ class ProductsController extends Controller
                     'user_email' => $data['user_email']])->count();
 
                 if ($countProducts > 0) {
-                    return redirect()->back()->with('flash_message_error', 'Il prodotto è già presente nel carrello STRONZO!');
+                    return redirect()->back()->with('flash_message_error', 'Il prodotto è già presente nel carrello!');
                 }
             }
 
@@ -387,9 +387,9 @@ class ProductsController extends Controller
             $productDetails = Product::where('id',$product->product_id)->first();
             $userCart[$key]->image = $productDetails->image;
         }
-        $meta_title = "Carrello | Pelishop";
-        $meta_description = "Guarda Carrello | Pelishop";
-        $meta_keywords = "carrello, ecommerce, pelishop";
+        $meta_title = "Carrello | Razorshop";
+        $meta_description = "Guarda Carrello | Razorshop";
+        $meta_keywords = "carrello, ecommerce, Razorshop";
         return view('products.cart')->with(compact('userCart','meta_title','meta_description','meta_keywords'));
     }
 
@@ -404,9 +404,9 @@ class ProductsController extends Controller
         }else{
             $userWishlist = array();
         }
-        $meta_title = "Lista Desideri | Pelishop";
-        $meta_description = "Guarda La Tua Lista Desideri | Pelishop";
-        $meta_keywords = "wish list, ecommerce, pelishop";
+        $meta_title = "Lista Desideri | Razorshop";
+        $meta_description = "Guarda La Tua Lista Desideri | Razorshop";
+        $meta_keywords = "wish list, ecommerce, Razorshop";
         return view('products.wish_list')->with(compact('userWishlist','meta_title','meta_description','meta_keywords'));
     }
 
@@ -484,7 +484,7 @@ class ProductsController extends Controller
             Session::put('CouponAmount',$couponAmount);
             Session::put('CouponCode',$data['coupon_code']);
 
-            return redirect()->back()->with('flash_message_success', 'Coupon code successfully applied. Tu sei un morto di fame!');
+            return redirect()->back()->with('flash_message_success', 'Coupon applicato con successo!');
 
         }
     }
@@ -548,7 +548,7 @@ class ProductsController extends Controller
 
             return redirect()->action('ProductsController@orderReview');
         }
-        $meta_title = "Checkout | Pelishop";
+        $meta_title = "Checkout | Razorshop";
         return view('products.checkout')->with(compact('countries', 'userDetails','shippingDetails','meta_title'));
     }
 
@@ -570,7 +570,7 @@ class ProductsController extends Controller
         $shippingCharges = Product::getShippingCharges($shippingDetails->country);
         Session::put('ShippingCharges',$shippingCharges);
 
-        $meta_title = "Riepilogo Ordine | Pelishop";
+        $meta_title = "Riepilogo Ordine | Razorshop";
         return view('products.order_review')->with(compact('userDetails','shippingDetails','userCart','meta_title',
             'codpincodeCount','prepaidpincodeCount','shippingCharges'));
     }

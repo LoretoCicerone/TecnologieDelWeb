@@ -121,13 +121,13 @@ class CmsController extends Controller
                 'comment'=>$data['message']
             ];
             Mail::send('emails.enquiry',$messageData,function($message)use($email){
-                $message->to($email)->subject('Richiesta per Pelishop');
+                $message->to($email)->subject('Richiesta per Razorshop');
             });
             return redirect()->back()->with('flash_message_success','La tua richiesta è stata inoltrata con successo. <br>
                                 Risponderemo al più presto. ');
         }
         //Meta Tags
-        $meta_title = "Contattaci - Pelishop";
+        $meta_title = "Contattaci - Razorshop";
         $meta_description = "Contattaci per ogni problema col nostro sito o con i nostri prodotti!";
         $meta_keywords = "contact us, queries";
 
