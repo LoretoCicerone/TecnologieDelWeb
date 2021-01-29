@@ -1,20 +1,20 @@
 <html>
 <head>
-    <title>Register Email</title>
+    <title>Email di Registrazione</title>
 </head>
 <body>
     <table>
-        <tr><td>Dear {{$name}}!</td></tr>
+        <tr><td>Caro {{$name}}!</td></tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>Your account has been successfully created.<br>
-            Your account information is as below:</td></tr>
+        <tr><td>Il tuo account è stato creato con successo.<br>
+            Le informazioni del tuo account sono le seguenti:</td></tr>
         <tr><td>&nbsp;</td></tr>
         <tr><td>Email: {{$email}}</td></tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>Password: ****** (as chosen by you)</td></tr>
+        <tr><td>Password: ****** (scelta da te)</td></tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>Thanks & Regards,</td></tr>
-        <tr><td>Pelishop.</td></tr>
+        <tr><td>Grazie,</td></tr>
+        <tr><td>Razorshop.</td></tr>
     </table>
 </body>
 </html>

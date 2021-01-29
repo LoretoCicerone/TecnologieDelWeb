@@ -17,8 +17,8 @@
                 <li style="text-align: center; margin-top: 100px">
                     <h3>Grazie</h3>
                     <h3>Il tuo ordine è andato a buon fine</h3>
-                    <p style="margin-top: 20px">Ti confermiamo l'ordine con ID:{{Session::get('order_id')}} per un prezzo totale di
-                        {{Session::get('grand_total')}}€</p>
+                    <p style="margin-top: 20px">Ti confermiamo l'ordine con <b>ID:{{Session::get('order_id')}}</b> per un prezzo totale di
+                        <b>{{Session::get('grand_total')}}€ </b></p>
                 </li>
             </div>
         </section>

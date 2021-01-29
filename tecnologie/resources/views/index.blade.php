@@ -19,12 +19,18 @@ $mainCategories = Controller::mainCategories();
             <!-- Container Fluid -->
             <div class="container-fluid">
                 <div class="position-center-center">
-
+<br>
+<br>
                     <!-- Header Text -->
                     <div class="col-lg-7 col-lg-offset-5"><span class="price"><small></small>Benvenuti</span>
-                        <h4>Vi Presentiamo PELISHOP</h4>
-                        <h1 class="extra-huge-text">dacci un taglio alla tua vita di merda</h1>
-                        <div class="text-center"> <a href="https://www.youtube.com/watch?v=Zjef6uzfVwQ" class="btn btn-round margin-top-40">accedi</a> </div>
+                        <h4>Vi Presentiamo RAZORSHOP</h4>
+                        <h1 class="extra-huge-text">il tuo barbiere di fiducia</h1>
+                        <!-- <div class="text-center"> <a href="https://www.youtube.com/watch?v=Zjef6uzfVwQ" class="btn btn-round margin-top-40">accedi</a> </div> -->
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -33,6 +39,10 @@ $mainCategories = Controller::mainCategories();
 
 <!--   EVENTUALE BANNER, DECIDERE SE METTERLO, NEL CASO DA VIDEO 54 A 57    -->
 
+<br>
+<br>
+<br>
+<br>
         <!-- Content -->
         <div id="content">
             <!-- PRIMA DI CATEGORIE -->
@@ -133,9 +143,8 @@ $mainCategories = Controller::mainCategories();
                     <!-- Main Heading -->
                     <div class="heading text-center">
                         <h4>Prodotti Consigliati</h4>
-                        <span>Questi hanno pagato un sacco per stare qua, comprate qualcosa per favore</span> </div>
+                        <span>Qui trovi i migliori prodotti sul mercato</span> </div>
                 </div>
-
 
                 <!-- New Arrival -->
                 <div class="arrival-block">
@@ -149,8 +158,12 @@ $mainCategories = Controller::mainCategories();
                         <div class="overlay">
                             <!-- Price -->
                             <span class="price"><small>€</small>{{ $product->price }}</span>
-                            <div class="position-center-center"> <a href="{{ asset ('images/backend_images/products/large/'.$product->image) }}"
-                                                                    data-lighter><i class="icon-magnifier"></i></a> </div>
+                            <div class="position-center-center">
+                                <a href="{{ asset ('images/backend_images/products/large/'.$product->image) }}" data-lighter>
+                                    <i class="icon-eye"></i></a>
+                                <a href="{{ url('product/'.$product->id) }}">
+                                    <i class="icon-magnifier"></i></a>
+</div>
                         </div>
                         <!-- Item Name -->
                         <div class="item-name"> <a href="{{ url('product/'.$product->id) }}">{{ $product->product_name }}</a>
@@ -163,6 +176,7 @@ $mainCategories = Controller::mainCategories();
                     @endif
 
                 </div>
+
             </section>
 
 

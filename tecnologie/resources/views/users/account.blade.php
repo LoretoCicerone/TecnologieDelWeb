@@ -24,7 +24,7 @@
             <!-- Payments Steps -->
                 <div class="shopping-cart">
                     <!-- SHOPPING INFORMATION -->
-                    <div class="cart-ship-info">
+                    <div class="cart-ship-info register">
                         <div class="row">
                             <!-- ESTIMATE SHIPPING & TAX -->
                             <div class="col-sm-12">
@@ -35,7 +35,7 @@
                                                 <!-- EMAIL ADDRESS -->
                                         <li class="col-md-6">
                                             <label>
-                                                <input value="{{ $userDetails->name }}" id="name" type="text" name="name" style="text-transform: capitalize" placeholder="NAME" required minlength="2" onkeypress="return /[a-z]/i.test(event.key)"/>
+                                                <input value="{{ $userDetails->name }}" id="name" type="text" name="name" style="text-transform: capitalize" placeholder="NOME" required minlength="2" onkeypress="return /[a-z]/i.test(event.key)"/>
                                             </label>
                                         </li>
                                         <li class="col-md-6">
@@ -50,13 +50,12 @@
                                         </li>
                                         <li class="col-md-6">
                                             <label>
-                                                <input value="{{ $userDetails->state }}" style="text-transform: uppercase" id="state" type="state" name="state" placeholder="STATO" required minlength="2" onkeypress="return /[a-z]/i.test(event.key)"/>
+                                                <input value="{{ $userDetails->state }}" style="text-transform: uppercase" id="state" type="state" name="state" placeholder="PROVINCIA" required minlength="2" onkeypress="return /[a-z]/i.test(event.key)"/>
                                             </label>
                                         </li>
                                         <li class="col-md-6">
                                             <label>
-                                                <select class="selectpicker" id="country" name="country" required data-size="4">
-                                                    <option value="">COUNTRY</option>
+                                                <select class="selectpicker" id="country" name="country" required data-size="4" title="STATO">
                                                     @foreach($countries as $country)
                                                         <option value="{{ $country->country_name }}" @if($country->country_name == $userDetails->country) selected @endif>{{$country->country_name}}</option>
                                                     @endforeach
@@ -89,18 +88,18 @@
                                     <ul class="row">
                                         <li class="col-md-7">
                                             <label>
-                                                <input id="current_pwd" type="password" name="current_pwd" placeholder="CURRENT PASSWORD" required/>
+                                                <input id="current_pwd" type="password" name="current_pwd" placeholder="PASSWORD ATTUALE" required/>
                                                 <span id="chkPwd"></span>
                                             </label>
                                         </li>
                                         <li class="col-md-7">
                                             <label>
-                                                <input id="new_pwd" type="password" name="new_pwd" placeholder="NEW PASSWORD" required minlength="6"/>
+                                                <input id="new_pwd" type="password" name="new_pwd" placeholder="NUOVA PASSWORD" required minlength="6"/>
                                             </label>
                                         </li>
                                         <li class="col-md-7">
                                             <label>
-                                                <input id="confirm_pwd" type="password" name="confirm_pwd" placeholder="CONFIRM PASSWORD"
+                                                <input id="confirm_pwd" type="password" name="confirm_pwd" placeholder="CONFERMA PASSWORD"
                                                        required minlength="6"/>
                                             </label>
                                         </li>

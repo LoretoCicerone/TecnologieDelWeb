@@ -19,9 +19,9 @@ $(document).ready(function(){
             success:function(resp){
                 //alert(resp);
                 if(resp=="false"){
-                    $("#chkPwd").html("<font color='red'>Current Password is Incorrect</font>");
+                    $("#chkPwd").html("<font color='red'>La Password Inserita Non è Corretta</font>");
                 }else if(resp=="true"){
-                    $("#chkPwd").html("<font color='green'>Current Password is Correct</font>");
+                    $("#chkPwd").html("<font color='green'>La Password è Corretta</font>");
                 }
             },error:function (){
                 alert("Error");

@@ -66,7 +66,7 @@
 
                             <!-- SUB TOTAL -->
                             <div class="col-sm-6" style="margin-left: 90px">
-                                <h6>REGISTER</h6>
+                                <h6>REGISTRAZIONE</h6>
                                 <form name="registerForm" action="{{ url('/user-register') }}" method="POST">
                                     {{csrf_field()}}
                                     <ul class="row">
@@ -93,7 +93,7 @@
                                         </li>
                                         <!-- PHONE -->
                                         <li class="col-md-6" style="margin-top: 9.5px">
-                                            <button type="submit" class="btn">REGISTER NOW</button>
+                                            <button type="submit" class="btn">REGISTRATI</button>
                                         </li>
                                     </ul>
                                 </form>

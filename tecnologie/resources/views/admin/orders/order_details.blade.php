@@ -6,18 +6,18 @@
         <div id="content-header">
             <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">Orders</a> </div>
             <h1>Order #{{$orderDetails->id}}</h1>
-            @if(Session::has('flash_message_success'))
-                <div class="alert alert-success alert-block">
-                    <button type="button" class="close" data-dismiss="alert">x</button>
-                    <strong>{!! session('flash_message_success') !!}</strong>
-                </div>
-            @endif
         </div>
         <div class="container-fluid">
             <hr>
             <div class="row-fluid">
                 <div class="span6">
                     <div class="widget-box">
+                        @if(Session::has('flash_message_success'))
+                            <div class="alert alert-success alert-block">
+                                <button type="button" class="close" data-dismiss="alert">x</button>
+                                <strong>{!! session('flash_message_success') !!}</strong>
+                            </div>
+                        @endif
                         <div class="widget-title">
                             <h5>Order Details</h5>
                         </div>
@@ -140,6 +140,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="accordion" id="collapse-group">
                         <div class="accordion-group widget-box">
                             <div class="accordion-heading">

@@ -3,7 +3,7 @@
 
     <div id="content">
         <div id="content-header">
-            <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Users</a> <a href="#" class="current">View Users</a> </div>
+            <div id="breadcrumb"> <a href="{{url ('admin/dashboard')}}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="">Users</a> <a href="" class="current">View Users</a> </div>
             @if(Session::has('flash_message_error'))
                 <div class="alert alert-error alert-block">
                     <button type="button" class="close" data-dismiss="alert">x</button>

@@ -12,7 +12,7 @@
     <tr><td>Password: {{$password}}</td></tr>
     <tr><td>&nbsp;</td></tr>
     <tr><td>Cordiali Saluti,</td></tr>
-    <tr><td>Pelishop.</td></tr>
+    <tr><td>Razorshop.</td></tr>
 </table>
 </body>
 </html>

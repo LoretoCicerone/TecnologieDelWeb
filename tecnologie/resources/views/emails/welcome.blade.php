@@ -15,7 +15,7 @@
         <tr><td>Password: ****** (as chosen by you)</td></tr>
         <tr><td>&nbsp;</td></tr>
         <tr><td>Thanks & Regards,</td></tr>
-        <tr><td>Pelishop.</td></tr>
+        <tr><td>Razorshop.</td></tr>
     </table>
 </body>
 </html>

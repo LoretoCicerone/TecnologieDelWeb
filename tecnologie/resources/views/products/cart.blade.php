@@ -35,24 +35,24 @@
                         <ul class="row">
                             <!-- PRODUCTS -->
                             <li class="col-sm-2 text-left">
-                                <h6>PRODUCTS</h6>
+                                <h6>PRODOTTI</h6>
                             </li>
                             <!-- NAME -->
                             <li class="col-sm-4 text-left">
-                                <h6>NAME</h6>
+                                <h6>NOME</h6>
                             </li>
                             <!-- PRICE -->
                             <li class="col-sm-2">
-                                <h6>PRICE</h6>
+                                <h6>PREZZO</h6>
                             </li>
                             <!-- QTY -->
                             <li class="col-sm-1">
-                                <h6>QNTY</h6>
+                                <h6>QNTI</h6>
                             </li>
 
                             <!-- TOTAL PRICE -->
                             <li class="col-sm-2">
-                                <h6>TOTAL</h6>
+                                <h6>TOTALE</h6>
                             </li>
                             <li class="col-sm-1"> </li>
                         </ul>
@@ -127,15 +127,15 @@
                             <h6>COUPON</h6>
                             <form action="{{ url('cart/apply-coupon') }}" method="post">{{ csrf_field() }}
                                 <input type="text" name="coupon_code"  placeholder="ENTER YOUR CODE IF YOU HAVE ONE">
-                                <button type="submit" class="btn btn-small btn-dark">APPLY CODE</button>
+                                <button type="submit" class="btn btn-small btn-dark">CHECK</button>
                             </form>
-                            <div class="coupn-btn"> <a href="{{ asset('/') }}" class="btn">continue shopping</a>
+                            <div class="coupn-btn"> <a href="{{ asset('/') }}" class="btn">continua a comprare</a>
                                 <a href="{{ url('/checkout') }}" class="btn">checkout</a> </div>
                         </div>
 
                         <!-- SUB TOTAL -->
                         <div class="col-sm-5">
-                            <h6>grand total</h6>
+                            <h6>SCONTRINO</h6>
                             <div class="grand-total">
                                 @foreach($userCart as $cart)
                                 <div class="order-detail">
@@ -143,12 +143,12 @@
                                 @endforeach
                                     <!-- SUB TOTAL -->
                                     @if(!empty(Session::get('CouponAmount')))
-                                        <p class="all-total">SUB TOTAL<span><?php echo $total_amount; ?> € </span></p>
+                                        <p class="all-total">TOTALE PARZIALE<span><?php echo $total_amount; ?> € </span></p>
                                         <p class="all-total">COUPON<span><?php echo Session::get('CouponAmount'); ?> € </span></p>
                                         <?php
                                         $total_amount = $total_amount - Session::get('CouponAmount');
                                         $getCurrencyRates = Product::getCurrencyRates($total_amount);?>
-                                        <p class="all-total">GRAND TOTAL
+                                        <p class="all-total">TOTALE FINALE
                                             <span data-toggle="tooltip" data-html="true" title="
                                                 {{$getCurrencyRates['USD_Rate']}} $<br>
                                                 {{$getCurrencyRates['GBP_Rate']}} £<br>">
@@ -156,7 +156,7 @@
                                             </span></p>
                                     @else
                                         <?php $getCurrencyRates = Product::getCurrencyRates($total_amount);?>
-                                        <p class="all-total" >GRAND TOTAL
+                                        <p class="all-total" >TOTALE FINALE
                                             <span data-toggle="tooltip" data-html="true" title="
                                                 {{$getCurrencyRates['USD_Rate']}} $<br>
                                                 {{$getCurrencyRates['GBP_Rate']}} £<br>">

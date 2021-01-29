@@ -4,11 +4,15 @@
 <body>
     <table width="700px">
         <tr><td>&nbsp</td></tr>
-        <tr><td><img src="{{ asset('images/frontend_images/logo.png') }}"></td></tr>
+        <tr><td><img src="{{ asset('images/frontend_images/logo2.png') }}"></td></tr>
         <tr><td>&nbsp</td></tr>
-        <tr><td>Hello {{$name}},</td></tr>
+        <tr><td>Ciao {{$name}},</td></tr>
         <tr><td>&nbsp</td></tr>
-        <tr><td>Grazie per aver comprato dal nostro Store Online, i dettagli del tuo ordine sono i seguenti:</td></tr>
+        <tr><td>Grazie per aver ordinato dal nostro Store Online, i dettagli del tuo ordine sono i seguenti:</td></tr>
+        <tr><td>&nbsp</td></tr>
+        <tr><td>Per confermare il tuo ordine devi fare un bonifico all'iban IT123456789101112 inserendo come causale l'ID dell'ordine.</td></tr>
+        <tr><td>&nbsp</td></tr>
+        <tr><td>I dettagli del tuo ordine sono i seguenti:</td></tr>
         <tr><td>&nbsp</td></tr>
         <tr><td>ID Ordine: {{$order_id}}</td></tr>
         <tr><td>&nbsp</td></tr>
@@ -19,6 +23,7 @@
                     <td>Codice Prodotto</td>
                     <td>Quantità</td>
                     <td>Prezzo Unità</td>
+                    <td>Prezzo</td>
                 </tr>
                 @foreach($productDetails['orders'] as $product)
                     <tr>
@@ -29,15 +34,15 @@
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="5" align="left">Costo Spedizione: </td>
+                    <td colspan="4" align="left">Costo Spedizione: </td>
                     <td>{{$productDetails['shipping_charges']}} €</td>
                 </tr>
                 <tr>
-                    <td colspan="5" align="left">Coupon: </td>
+                    <td colspan="4" align="left">Coupon: </td>
                     <td>{{$productDetails['coupon_amount']}} €</td>
                 </tr>
                 <tr>
-                    <td colspan="5" align="left">Totale: </td>
+                    <td colspan="4" align="left">Totale: </td>
                     <td>{{$productDetails['grand_total']}} €</td>
                 </tr>
             </table>
@@ -109,7 +114,7 @@
                 <a href="mailto:info@ecom-website.com">info@ecom-website.com</a>
         </td></tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>Grazie,<br>Team Pelazzi.</td></tr>
+        <tr><td>Grazie,<br>Team Razorshop.</td></tr>
         <tr><td>&nbsp;</td></tr>
     </table>
 </body>

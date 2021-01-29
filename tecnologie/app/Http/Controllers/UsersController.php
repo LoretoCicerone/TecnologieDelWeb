@@ -162,7 +162,7 @@ class UsersController extends Controller
                 //Welcome Email
                 $messageData = ['email' => $email,'name'=>$userDetails->name];
                 Mail::send('emails.welcome',$messageData, function ($message) use($email){
-                    $message->to($email)->subject('Benvenuto in Pelissimi!');
+                    $message->to($email)->subject('Benvenuto in Razorshop!');
                 });
 
 

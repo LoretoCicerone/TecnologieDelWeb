@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@if(!empty($meta_title)){{$meta_title}} @else Pelishop @endif</title>
+    <title>@if(!empty($meta_title)){{$meta_title}} @else Razorshop @endif</title>
     @if(!empty($meta_description))<meta name="description" content="{{$meta_description}}">@endif
     @if(!empty($meta_keywords))<meta name="keywords" content="{{$meta_keywords}}">@endif
     <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->

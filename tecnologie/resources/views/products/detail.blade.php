@@ -55,7 +55,9 @@
                                 <input type="hidden" name="price" value="{{ $productDetails->price }}">
 
                                 <h4>{{ $productDetails->product_name }}</h4>
-                                <span> {{ $productDetails->product_brand }} &nbsp; {{$productDetails->product_code}}</span>
+                                <span><i>Brand Prodotto:</i> <b>{{ $productDetails->product_brand }}</b></span>
+                                <br>
+                                <span><i>Codice Prodotto:</i> <b>{{$productDetails->product_code}}</b></span>
                                 <span class="price">
                                     <?php $getCurrencyRates = Product::getCurrencyRates($productDetails->price);?>
                                     <h3>{{ $productDetails->price }} €</h3>
@@ -79,6 +81,7 @@
                                     </li>
                                     @if($total_stock>0)
                                         <!-- ADD TO CART -->
+
                                             <li class="col-xs-6">
                                                 <button type="submit" class="btn" id="cartButton" name="cartButton" value="Shopping Cart"
                                                         style="border-radius: 20px; outline: transparent" >
@@ -86,17 +89,25 @@
                                                 </button>
                                             </li>
                                     @endif
+                                    <br>
+                                    <br>
+                                    <br>
+
                                     <!-- STOCK -->
                                     <li class="col-xs-6"> <b> Disponibilità:</b>
-                                        @if($total_stock>0) <b style="color: green"> In Stock </b> @else <b style="color: red">Out Of Stock</b> @endif
+                                        @if($total_stock>0) <b style="color: green"> In Stock </b> @else <b style="color: red">Sould Out</b> @endif
+                                    </li>
+                                    <br>
+                                    <br>
+                                    <br>
                                     <li class="col-xs-2">
                                         <!-- wishlist -->
                                         <button type="submit" class="btn" id="wishListButton" name="wishListButton" style="border-radius: 20px;
-                                         outline: transparent" value="Wish List" ><i class="fa fa-heart"></i>
+                                         outline: transparent" value="Wish List" ><i class="fa fa-heart" style="color: red"></i>
                                         </button>
                                     </li>
                                 </ul>
-
+<br>
                                 <b>Cap Check:</b>
                                 <input type="text" name="pincode" id="chkPincode" placeholder="Check CAP">
                                 <button type="button" onclick="return checkPincode();"
@@ -105,127 +116,23 @@
                                 <p></p>
                                 <b id="pincodeResponse"></b>
                                 <p></p>
-
+<br>
+<br>
+<br>
                                 <!-- INFOMATION -->
                                 <div class="inner-info">
-                                    <h6>SHARE THIS PRODUCT</h6>
+                                    <h6>CONDIVIDI QUESTO PRODOTTO</h6>
                                     <!-- Social Icons -->
                                     <ul class="social_icons">
-                                        <li><a href="#."><i class="icon-social-facebook"></i></a></li>
-                                        <li><a href="#."><i class="icon-social-twitter"></i></a></li>
-                                        <li><a href="#."><i class="icon-social-tumblr"></i></a></li>
-                                        <li><a href="#."><i class="icon-social-youtube"></i></a></li>
+                                        <li><a href="https://www.facebook.com/"><i class="icon-social-facebook"></i></a></li>
+                                        <li><a href="https://twitter.com/login?lang=it"><i class="icon-social-twitter"></i></a></li>
+                                        <li><a href="https://www.tumblr.com/"><i class="icon-social-tumblr"></i></a></li>
+                                        <li><a href="https://www.youtube.com/watch?v=Zjef6uzfVwQ"><i class="icon-social-youtube"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
                             </form>
                         </div>
-                    </div>
-                </div>
-
-                <!--======= PRODUCT DESCRIPTION =========-->
-                <div class="item-decribe">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs animate fadeInUp" data-wow-delay="0.4s" role="tablist">
-                        <li role="presentation" class="active"><a href="#descr" role="tab" data-toggle="tab">DESCRIPTION</a></li>
-                        <li role="presentation"><a href="#review" role="tab" data-toggle="tab">REVIEW (03)</a></li>
-                        <li role="presentation"><a href="#tags" role="tab" data-toggle="tab">INFORMATION</a></li>
-                    </ul>
-
-                    <!-- Tab panes -->
-                    <div class="tab-content animate fadeInUp" data-wow-delay="0.4s">
-                        <!-- DESCRIPTION -->
-                        <div role="tabpanel" class="tab-pane fade in active" id="descr">
-                            <p>{{ $productDetails->description }}<br>
-                            </p>
-
-                            <h6>THE SIMPLE GAY</h6>
-                            <ul>
-                                <li>
-                                    <p>Praesent faucibus, leo vitae maximus dictum,</p>
-                                </li>
-                                <li>
-                                    <p> Donec porta ut lectus </p>
-                                </li>
-                                <li>
-                                    <p> Phasellus maximus velit id nisl</p>
-                                </li>
-                                <li>
-                                    <p> Quisque a tellus et sapien aliquam sus</p>
-                                </li>
-                                <li>
-                                    <p> Donec porta ut lectus </p>
-                                </li>
-                                <li>
-                                    <p> Phasellus maximus velit id nisl</p>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- REVIEW -->
-                        <div role="tabpanel" class="tab-pane fade" id="review">
-                            <h6>3 REVIEWS FOR SHIP YOUR IDEA</h6>
-
-                            <!-- REVIEW PEOPLE 1 -->
-                            <div class="media">
-                                <div class="media-left">
-                                    <!--  Image -->
-                                    <div class="avatar"> <a href="#"> <img class="media-object" src="{{asset('images/frontend_images/avatar-1.jpg')}}" alt=""> </a> </div>
-                                </div>
-                                <!--  Details -->
-                                <div class="media-body">
-                                    <p class="font-playfair">“Sono troppo basso e non arrivo a mettere in carica il raosio, però penso sia ottimo!”</p>
-                                    <h6>TYRION LANNISTER <span class="pull-right">MAY 10, 2016</span> </h6>
-                                </div>
-                            </div>
-
-                            <!-- REVIEW PEOPLE 1 -->
-
-                            <div class="media">
-                                <div class="media-left">
-                                    <!--  Image -->
-                                    <div class="avatar"> <a href="#"> <img class="media-object" src="{{asset('images/frontend_images/avatar-2.jpg')}}" alt=""> </a> </div>
-                                </div>
-                                <!--  Details -->
-                                <div class="media-body">
-                                    <p class="font-playfair">“Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                                        labore et dolore magna aliqua.”</p>
-                                    <h6>TYRION LANNISTER <span class="pull-right">MAY 10, 2016</span> </h6>
-                                </div>
-                            </div>
-
-                            <!-- ADD REVIEW -->
-                            <h6 class="margin-t-40">ADD REVIEW</h6>
-                            <form>
-                                <ul class="row">
-                                    <li class="col-sm-6">
-                                        <label> *NAME
-                                            <input type="text" value="" placeholder="">
-                                        </label>
-                                    </li>
-                                    <li class="col-sm-6">
-                                        <label> *EMAIL
-                                            <input type="email" value="" placeholder="">
-                                        </label>
-                                    </li>
-                                    <li class="col-sm-12">
-                                        <label> *YOUR REVIEW
-                                            <textarea></textarea>
-                                        </label>
-                                    </li>
-                                    <li class="col-sm-6">
-                                        <!-- Rating Stars -->
-                                        <div class="stars"> <span>YOUR RATING</span> <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-                                    </li>
-                                    <li class="col-sm-6">
-                                        <button type="submit" class="btn btn-dark btn-small pull-right no-margin">POST REVIEW</button>
-                                    </li>
-                                </ul>
-                            </form>
-                        </div>
-
-                        <!-- TAGS -->
-                        <div role="tabpanel" class="tab-pane fade" id="tags"> </div>
                     </div>
                 </div>
             </div>
@@ -251,9 +158,8 @@
                             <!-- Overlay -->
                             <div class="overlay">
                                 <div class="position-center-center">
-                                    <div class="inn"><a href="{{ asset ('images/backend_images/products/large/'.$chunk->image) }}" data-lighter><i class="icon-magnifier"></i></a>
-                                        <a href="#."><i class="icon-basket"></i></a>
-                                        <a href="#." ><i class="icon-heart"></i></a>
+                                    <div class="inn"><a href="{{ asset ('images/backend_images/products/large/'.$chunk->image) }}" data-lighter><i class="icon-eye"></i></a>
+                                        <a href="{{ url('product/'.$chunk->id) }}"><i class="icon-magnifier"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -263,7 +169,7 @@
                            <!-- <p>Lorem ipsum dolor sit amet</p> -->
                         </div>
                         <!-- Price -->
-                        <span class="price"><small>€</small>{{ $chunk->price }}</span>
+                    <!-- <span class="price"><small>€</small>{{ $chunk->price }}</span> -->
                     </div>
                 @endforeach
                 </div>

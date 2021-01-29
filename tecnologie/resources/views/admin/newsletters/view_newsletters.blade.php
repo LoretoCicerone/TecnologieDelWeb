@@ -3,7 +3,7 @@
 
     <div id="content">
         <div id="content-header">
-            <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Newsletter Subscribers</a> <a href="#" class="current">View Newsletter</a> </div>
+            <div id="breadcrumb"> <a href="{{url ('admin/dashboard')}}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="">Newsletter Subscribers</a> <a href="" class="current">View Newsletter</a> </div>
             <h1>Newsletter</h1>
         <div style="margin-left: 170px">
             <a href="{{url('/admin/export-newsletter-emails')}}" class="btn btn-primary btn-mini">Esporta</a>

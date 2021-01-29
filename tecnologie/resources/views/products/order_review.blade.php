@@ -122,10 +122,10 @@
                                             @if(!empty(Session::get('CouponAmount')))
                                                 <p class="all-total">COUPON<span><?php echo Session::get('CouponAmount'); ?> €</span></p>
                                             @else
-                                                <p class="all-total">SUB TOTAL<span><?php echo $total_amount; ?> €</span></p>
+                                                <p class="all-total">TOTALE PARZIALE<span><?php echo $total_amount; ?> €</span></p>
                                             @endif
                                                 <p class="all-total">SPEDIZIONE<span> {{ $shippingCharges }}€</span></p>
-                                                <p class="all-total">GRAND TOTAL
+                                                <p class="all-total">TOTALE FINALE
                                                     <?php
                                                     $grand_total = $total_amount - Session::get('CouponAmount') + $shippingCharges;
                                                     $getCurrencyRates = Product::getCurrencyRates($total_amount);?>
@@ -161,7 +161,7 @@
                                                 @endif
                                             </ul>
                                             <button class="btn  btn-dark pull-right margin-top-30" type="submit"
-                                               onclick=" return selectPaymentMethod(); " >PLACE ORDER</button> </div>
+                                               onclick=" return selectPaymentMethod(); " >ACQUISTA</button> </div>
                                         </form>
                                     </div>
                                 </div>

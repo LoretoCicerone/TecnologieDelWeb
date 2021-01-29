@@ -60,11 +60,12 @@ class Product extends Model
         $userCart = json_decode(json_encode($userCart),true);
         foreach ($userCart as $product){
             $productPrice = Product::where(['product_code'=>$product['product_code']])->first();
-            $priceArray[]=$productPrice->price;
+            $getQuantity = DB::table('cart')->select('quantity')->where(['product_code'=>$product['product_code']])->first();
+            // Quantity find out end,
+            $priceArray[] = $productPrice->price*$getQuantity->quantity;
         }
         $grandTotal = array_sum($priceArray) - Session::get('CouponAmount') + Session::get('ShippingCharges');
         return $grandTotal;
-
     }
 
 }

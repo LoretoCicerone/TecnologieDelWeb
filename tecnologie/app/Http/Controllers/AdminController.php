@@ -54,16 +54,16 @@ class AdminController extends Controller
             if($adminCount == 1){
                 $password = md5($data['new_pwd']);
                 Admin::where('username',Session::get('adminSession'))->update(['password'=>$password]);
-                return redirect('/admin/settings')->with('flash_message_success','Password update Successfully!');
+                return redirect('/admin/settings')->with('flash_message_success','Password aggiornata con successo!');
             }else{
-                return redirect('/admin/settings')->with('flash_message_error','Incorrect Current Password!');
+                return redirect('/admin/settings')->with('flash_message_error','Password non corretta!');
             }
         }
     }
 
     public function logout(){
         Session::flush();
-        return redirect('/admin')->with('flash_message_success','Logged out Successfully');
+        return redirect('/admin')->with('flash_message_success','Logout effettuato con successo!');
     }
 
     public function viewAdmins(){
@@ -143,7 +143,7 @@ class AdminController extends Controller
             }
             if($data['type']=="Admin") {
                 Admin::where('username',$data['username'])->update(['password'=>md5($data['password']),'status'=>$data['status']]);
-                return redirect('/admin/view-admins')->with('flash_message_success', 'Admin updated successfully!');
+                return redirect('/admin/view-admins')->with('flash_message_success', 'Admin aggiornato con successo!');
             }else if($data['type']=="Sub Admin"){
                 if(empty($data['categories_view_access'])){
                     $data['categories_view_access'] = 0;
@@ -172,7 +172,7 @@ class AdminController extends Controller
                     'categories_view_access'=>$data['categories_view_access'],'categories_edit_access'=>$data['categories_edit_access'],
                     'categories_full_access'=>$data['categories_full_access'], 'products_access'=>$data['products_access'],
                     'orders_access'=>$data['orders_access'],'users_access'=>$data['users_access']]);
-                return redirect('/admin/view-admins')->with('flash_message_success', 'Sub Admin updated successfully!');
+                return redirect('/admin/view-admins')->with('flash_message_success', 'Sub Admin aggiornato con successo!');
             }
         }
         return view('admin.admins.edit_admin')->with(compact('adminDetails'));

@@ -2718,8 +2718,7 @@ header .is-sticky .sticky .user-basket .dropdown-menu {
 }
 
 .shopping-cart .bootstrap-select.btn-group .dropdown-menu li {
-	min-height: 0px;
-    max-height: 20px;
+    min-height: inherit;
 }
 .shopping-cart img {
 	width: 100%;

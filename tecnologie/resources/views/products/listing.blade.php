@@ -40,7 +40,7 @@
                     <!-- Main Heading -->
                     <div class="heading text-center">
                         <h4>Prodotti Vari</h4>
-                        <span>Mettice quello che te pare</span> </div>
+                        <span>Qui puoi visualizzare tutti i prodotti della stessa categoria</span> </div>
                 </div>
                 <!-- New Arrival -->
                 <div class="arrival-block">
@@ -53,7 +53,13 @@
                         <div class="overlay">
                             <!-- Price -->
                             <span class="price"><small>€</small>{{ $pro->price }}</span>
-                            <div class="position-center-center"> <a href="{{ asset ('images/backend_images/products/large/'.$pro->image) }}" data-lighter><i class="icon-magnifier"></i></a> </div>
+                            <div class="position-center-center">
+
+                                <a href="{{ asset ('images/backend_images/products/large/'.$pro->image) }}" data-lighter>
+                                    <i class="icon-eye"></i></a>
+                                <a href="{{ url('product/'.$pro->id) }}">
+                                    <i class="icon-magnifier"></i></a>
+                            </div>
                         </div>
                         <!-- Item Name -->
                         <div class="item-name"> <a href="{{ url('/product/'.$pro->id) }}">{{ $pro->product_name }}</a>
@@ -69,7 +75,7 @@
                     <!-- Main Heading -->
                     <div class="heading text-center">
                         <h4>Categorie</h4>
-                        <span>Incredibile quanto questo sito riesca a non vendere nemmeno un prodotto ma avere la sezione popolari!</span> </div>
+                        <span>Scegli tra le migliori marche!</span> </div>
                     <!-- Popular Item Slide -->
                     <div class="papular-block block-slide">
                         <!-- CATEGORIE -->
@@ -81,12 +87,12 @@
                                 <!-- Overlay -->
                                 <div class="overlay">
                                     <div class="position-center-center">
-                                        <a href="#." class="btn btn-small btn-round">MOSTRA</a> </div>
+                                        <a href="{{ asset('products/'.$cat->url) }}" class="btn btn-small btn-round">MOSTRA</a> </div>
                                 </div>
                             </div>
                             <!-- Item Name -->
                             <div class="item-name">
-                                <a href="#{{$cat->id}}">{{$cat->name}}</a> </div>
+                                <a href="{{ asset('products/'.$cat->url) }}">{{$cat->name}}</a> </div>
                             <!-- Price -->
                         </div>
                             <!--SOTTOCLASSE-->
@@ -99,11 +105,11 @@
                                     <!-- Overlay -->
                                     <div class="overlay">
                                         <div class="position-center-center">
-                                            <a href="#." class="btn btn-small btn-round">MOSTRA</a> </div>
+                                            <a href="{{ asset('products/'.$subcat->url) }}" class="btn btn-small btn-round">MOSTRA</a> </div>
                                     </div>
                                 </div>
                                 <!-- Item Name -->
-                                <div id="{{$cat->id}}" class="item-name"> <a href="#.">{{ $subcat->name }}</a> </div>
+                                <div id="{{$cat->id}}" class="item-name"> <a href="{{ asset('products/'.$subcat->url) }}">{{ $subcat->name }}</a> </div>
                                 <!-- Price -->
                             </div>
                             @endforeach

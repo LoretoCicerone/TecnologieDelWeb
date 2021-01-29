@@ -19,7 +19,7 @@
                 <div class="shopping-cart">
 
                     <!-- SHOPPING INFORMATION -->
-                    <div class="cart-ship-info">
+                    <div class="cart-ship-info register">
                         <div class="row">
 
                             <!-- ESTIMATE SHIPPING & TAX -->
@@ -73,7 +73,7 @@
                                         <li class="col-md-6">
                                             <div class="checkbox margin-0 margin-top-20">
                                                 <input @if(!empty($userDetails->address)) value="{{$userDetails->name}}" @endif id="copyAddress" class="styled" type="checkbox">
-                                                <label for="copyAddress"> Shipping Address same as Billing Address </label>
+                                                <label for="copyAddress"> L'indirizzo di spedizione è lo stesso</label>
                                             </div>
                                         </li>
                                     </ul>
@@ -132,8 +132,8 @@
                                             </label>
                                         </li>
                                         <!-- PHONE -->
-                                        <li class="col-md-6">
-                                            <button type="submit" class="btn">SUBMIT</button>
+                                        <li class="col-md-7">
+                                            <button type="submit" class="btn">CONFERMA</button>
                                         </li>
                                     </ul>
                             </div>

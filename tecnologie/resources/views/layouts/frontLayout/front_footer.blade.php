@@ -3,11 +3,11 @@
     <div class="container">
         <div class="heading light-head text-center margin-bottom-30">
             <h4>NEWSLETTER</h4>
-            <span>Minchia ora ti mandiamo tante di quelle email spam che manco telenorba faceva così tanta pubblicità </span> </div>
+            <span>Iscriviti per ricevere offerte sui nostri prodotti migliori </span> </div>
         <form action="javascript:void(0);" type="post">{{csrf_field()}}
             <input onfocus="enableSubscriber();" onfocusout="checkSubscriber();" name="subscriber_email" id="subscriber_email" type="email" style="outline: none"
                    placeholder="Inserisci la tua Email" required >
-            <button onclick="checkSubscriber(); addSubscriber();" id="btnSubmit" type="submit" class="btn" style="outline: none">UNISCITI</button>
+            <button onclick="checkSubscriber(); addSubscriber();" id="btnSubmit" type="submit" style="outline: none">UNISCITI</button>
             <div id="statusSubscribe" style="display: none;"></div>
         </form>
     </div>
@@ -42,7 +42,7 @@
         </div>
         <!-- Rights -->
         <div class="rights">
-            <p>©  2020 PELISHOP Tutti diritti riservati. </p>
+            <p>©  2020 RAZORSHOP Tutti diritti riservati. </p>
             <div class="scroll"> <a href="#wrap" class="go-up"><i class="lnr lnr-arrow-up"></i></a> </div>
         </div>
     </div>
@@ -62,7 +62,7 @@
                     $("#statusSubscribe").html("<div style='padding: 25px'> &nbsp;</div><font color='red'><b>Errore: Email già registrata!</b></font>");
                 }
             },error:function (){
-                alert("Error");
+
             }
         });
     }
@@ -84,7 +84,7 @@
                 $("#statusSubscribe").html("<div style=' padding: 25px'> &nbsp;</div><font color='#90ee90'><b>Successo: Email registrata!</b></font>");
                 }
             },error:function (){
-                alert("Error");
+                //alert("Error");
             }
         });
     }

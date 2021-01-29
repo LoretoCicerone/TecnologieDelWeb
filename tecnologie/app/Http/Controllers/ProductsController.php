@@ -49,11 +49,6 @@ class ProductsController extends Controller
             }else{
                 $product->description = '';
             }
-            if(empty($data['feature_item'])){
-                $feature_item = '0';
-            }else{
-                $feature_item = '1';
-            }
             $product->price = $data['price'];
 
             // Upload Image
@@ -74,9 +69,12 @@ class ProductsController extends Controller
                     $product->image = $filename;
                 }
             }
-
             $product->stock = $data['stock'];
-            $product->feature_item = $data['feature_item'];
+            if(empty($data['feature_item'])){
+                $feature_item = '0';
+            }else{
+                $product->feature_item = $data['feature_item'];
+            }
             $product->save();
             //return redirect()->back()->with('flash_message_success','Product has been added successfully!');
             return redirect('/admin/view-products')->with('flash_message_success','Il prodotto è stato aggiunto correttamente!');
@@ -681,7 +679,7 @@ class ProductsController extends Controller
                     'userDetails' => $userDetails
                 ];
                 Mail::send('emails.order',$messageData,function($message) use($email){
-                    $message->to($email)->subject('Order Placed - E-com Website');
+                    $message->to($email)->subject('Ordine Piazzato - E-com Website');
                 });
                 /*Code for Order Email Ends */
                 Session::forget('CouponAmount');
@@ -1002,7 +1000,7 @@ class ProductsController extends Controller
         if($request->isMethod('post')){
             $data = $request->all();
             Order::where('id',$data['order_id'])->update(['order_status'=>$data['order_status']]);
-            return redirect()->back()->with('flash_message_success','Order Status has been updated successfully!');
+            return redirect()->back()->with('flash_message_success','Stato ordine aggiornato con successo!');
         }
     }
 
